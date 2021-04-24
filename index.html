@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2021/04/23/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E7%BC%96%E5%86%99%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/">
+        <p class="h4 index-header">MSF模块编写初学</p>
+      </a>
+
+      <a href="/2021/04/23/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E7%BC%96%E5%86%99%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">0x00 简介学习文章：(文章99%的代码来自下列学习文章中)
+
+雷神众测 - 打造Metasploit
+三米前有蕉皮 - Metasploit后渗透模块开发
+
+官方文档：
+
+Github源码
+metasploit Post Wiki
+
+刚开始看，就挑简单的先写，因为msf使用的函数，需要自己在源码中查看，wiki也有一部分，但是没写全
+不要问我为啥不看，问就是懒，没救了
+0x01 基础格式讲解require &#39;msf/core&#39;
+
+class MetasploitModule &lt; Msf::Post
+
+    def initialize(info={})
+      </div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-04-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E9%9A%8F%E6%89%8B%E8%AE%B0/">随手记</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2021/02/01/%E6%BC%8F%E6%B4%9E/CVE-2021-3156/">
+        <p class="h4 index-header">CVE-2021-3156 Sudo提权漏洞复现</p>
+      </a>
+
+      <a href="/2021/02/01/%E6%BC%8F%E6%B4%9E/CVE-2021-3156/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">简介2021年1月26日，Sudo发布安全通告，修了一个基于堆的缓冲区溢出
+任何本地用户，都可以利用此漏洞，而无需进行身份验证
+
+Ps：攻击者不需要知道用户的密码，成功利用此漏洞可获得root权限
+
+检查方法：以非root用户登录系统，并使用命令sudoedit -s /
+
+以sudoedit开头的错误，表示可能存在漏洞
+以usage开头的错误，表明补丁已生效
+
+影响版本众多就不一一列举了
+
+不影响版本 sudo =&gt; 1.9.5 p2
+
+sudo官方位于1月26日已经修复，后面安装的sudo已经补上了
+
+前天测试的时候Ubuntu最新版本已经补上
+
+
+
+复现过程复现环境：Ubuntu </div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2021-02-01&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%BC%8F%E6%B4%9E/">漏洞</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2020/08/23/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/%E9%80%9A%E8%BE%BE%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+        <p class="h4 index-header">OA和深信服漏洞 简略分析</p>
+      </a>
+
+      <a href="/2020/08/23/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/%E9%80%9A%E8%BE%BE%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">OA - 任意文件删除实测影响版本：通达OA V11.6（其他版本未测）
+根据网上的exp直接定位到漏洞文件MYOA\webroot\module\appbuilder\assets\print.php
+通达OA的文件需要进行解密才可以进行查看源码，否则是乱码
+解密后，内容如下：
+
+可以看到该页面并没有何的需要登录验证的文件包含
+并且$s_tmp的并没进行任何的过滤直接带入了unlink()删除文件函数中
+导致了任意文件的删除！
+起始目录：/../../../../logs/appbuilder/logs/
+漏洞验证：删除一个txt文件
+
+至于文件上传，看的有点糊涂就不写了
+
+深信服任意文件登</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-08-23&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>&nbsp;
+          
+            <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/">PHP</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2020/04/10/Web/%E9%9D%B6%E5%9C%BA/Me-and-My-Girlfriend-1/">
+        <p class="h4 index-header">VulnHub:Me-and-My-Girlfriend-1</p>
+      </a>
+
+      <a href="/2020/04/10/Web/%E9%9D%B6%E5%9C%BA/Me-and-My-Girlfriend-1/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">简介第一次玩vulnhub,先根据了自己的思路来但是提权那我不会,按部就班的学习：https://www.freebuf.com/articles/others-articles/227157.html
+题目下载地址：me-and-my-girlfriend-1
+
+测试过程
+nmap扫描主机nmap -A 192.168.177.129发现只开放了22和88端口
+
+
+尝试SSH爆破：使用MSF自带的模块use auxiliary/scanner/ssh/ssh_login
+set RHOSTS 192.168.177.129
+set USERNAME root
+set PASS_FILE /r</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-04-10&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2020/02/25/Python/phpmyadmin%E7%88%86%E7%A0%B4/">
+        <p class="h4 index-header">phpmyadmin爆破</p>
+      </a>
+
+      <a href="/2020/02/25/Python/phpmyadmin%E7%88%86%E7%A0%B4/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">分析环境：
+
+phpstudy2016
+PHP5.4.5
+
+对phpmyadmin进行抓包分析
+
+可以看到提交的参数
+pma_username=root&amp;pma_password=root&amp;server=1&amp;token=a40f1e11ec5dd5b0a7d3ea945ae0adfb分别是：用户，密码，服务，token
+查看下提交页面的源码以获取token
+
+token是可以在网页中获取到的，进行下一步提交
+
+利用了GET方式向index.php提交了token，继续
+
+GET方式向navigation.php提交了token，继续
+
+提交了之后，可以看到网页显示了，一</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-02-25&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Python/">Python</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2020/01/29/%E6%BC%8F%E6%B4%9E/Flask-ssti/">
+        <p class="h4 index-header">Flask-SSTI (模板注入漏洞)</p>
+      </a>
+
+      <a href="/2020/01/29/%E6%BC%8F%E6%B4%9E/Flask-ssti/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">简介SSTI（Server-Side Template Injection）：服务端模板注入，服务器模板中拼接了恶意用户输入导致各种漏洞通过模板，web应用可以把输入转换成特定的HTML文件或email格式
+Jinja2：Flask作者开发的模板系统，存在三种分隔符语法从HTML转义
+
+{ % ... % }：控制结构
+{ { ... } }：变量取值，表达式打印到模板输出（是一种特殊的占位符）
+{ # ... # }：注释
+
+
+实战测试漏洞代码：
+from flask import Flask, request
+from jinja2 import Template
+
+app = Flask</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2020-01-29&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E6%BC%8F%E6%B4%9E/">漏洞</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/11/24/Python/%E5%85%88%E7%9F%A5%E6%96%87%E7%AB%A0%E7%88%AC%E8%99%AB/">
+        <p class="h4 index-header">先知文章爬虫</p>
+      </a>
+
+      <a href="/2019/11/24/Python/%E5%85%88%E7%9F%A5%E6%96%87%E7%AB%A0%E7%88%AC%E8%99%AB/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">简介前几天，由于意见征集稿的出现
+所以决定先把一些文章给爬下来，存着以待学习，转换成markdown的格式以便观看
+转换md用的第三方模块：html2text
+
+Code思路：
+
+用BS获取对应位置的内容
+然后用html2text转换成md格式
+
+
+Ps：先知的标题奇奇怪怪的，如果要用来做文件名，请用正则进行过滤，否则你会爬一天的。。。。
+
+import requests
+import html2text,os,codecs,re
+from bs4 import BeautifulSoup
+
+# 获取网站源码
+def get_html(url):
+    result = requests.g</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Python/">Python</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/11/17/Python/%E7%AE%80%E9%99%8Bpoc%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/">
+        <p class="h4 index-header">简陋POC框架编写</p>
+      </a>
+
+      <a href="/2019/11/17/Python/%E7%AE%80%E9%99%8Bpoc%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">网上现在有很多类似的框架，甚至架构已经十分完善的（MSF，Pocsuite3），那我为啥还要重复造造轮子呢？
+写了这么多的exp，放在那里很混乱，方便管理与更新
+在写框架时，遇到了很多之前不曾想过的问题，在其他的框架的分析时，学到了很多
+每次的编写，都是为了以后能够制作
+总结：学到了就是我的了
+
+大体结构
+lib：存储核心文件
+poc：存储 poc/exp 文件
+main.py：启动脚本
+
+
+Code颜色与banner文件：lib\common.py
+
+控制端颜色输出：使用库colorama
+
+至于为什么不使用其他的，因为我看着脑壳痛，拿个最简单的来使用吧
+from colorama impo</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-11-17&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Python/">Python</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/09/24/Web/PHP%E7%B1%BB%E6%B3%A8%E9%87%8A%E7%BB%95%E8%BF%87D%E7%9B%BE/">
+        <p class="h4 index-header">PHP传值方式绕过D盾</p>
+      </a>
+
+      <a href="/2019/09/24/Web/PHP%E7%B1%BB%E6%B3%A8%E9%87%8A%E7%BB%95%E8%BF%87D%E7%9B%BE/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">起因这两天因phpstudy后门事件，郁闷的不行，用了这么久都没有发现。。。吓得我直接扔虚拟机了
+啥都不会的我，只能拿D盾压压惊（其实是因为早就写好的绕过一片红，全部被加进了规则库）
+现在网上流传的工具，开始逐渐的被各种杀软所识别，渐渐失效
+各自研究的武器，都在各自的手里，我也没啥思路制作，总结：菜啊。。。
+
+Code
+先来看看，被查杀的一句话
+
+class get{
+    public function setName($name){
+        return $this -&gt; name = $name;
+    }
+}
+$obj = new get();
+$s = $obj -</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-09-24&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/19/Web/php%E4%B8%80%E5%8F%A5%E8%AF%9DD%E7%9B%BE/">
+        <p class="h4 index-header">PHP一句话过D盾</p>
+      </a>
+
+      <a href="/2019/08/19/Web/php%E4%B8%80%E5%8F%A5%E8%AF%9DD%E7%9B%BE/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">Code一个早期的webshell一句话，早就被查杀
+&lt;?php
+    @eval($_POST[1]);
+?&gt;...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-19&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fas fa-angle-double-right"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "学而为之&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>python序列化模块 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    1.9k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      7 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 5:12 下午</p>
+            
+            <div class="markdown-body">
+              <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>序列化：将原本的字典，列表等内容转换成一个字符串的过程<br>反序列化：从字符串转换成数据类型的过程</p>
+<p><strong>序列化的目的</strong></p>
+<ul>
+<li>以某种存储形式使自定义对象持久化</li>
+<li>将对象从一个地方传递到另一个地方</li>
+<li>使程序更具维护性</li>
+</ul>
+<a id="more"></a>
+
+
+<p><strong>常用模块</strong></p>
+<ul>
+<li><p>json</p>
+<blockquote>
+<p>通用的序列化格式<br>只有很少的一部分数据类型能够通过json转换成字符串</p>
+</blockquote>
+</li>
+<li><p>pickle</p>
+<blockquote>
+<p>所有的python中的数据类型都可转化成字符串形式<br>pickle序列化的内容只有python能理解<br>且部分反序列化依赖代码</p>
+</blockquote>
+</li>
+<li><p>shelve</p>
+<blockquote>
+<p>序列化句柄<br>使用句柄直接操作，非常方便</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h1 id="json"><a href="#json" class="headerlink" title="json"></a>json</h1><p>可以转换的数据类型：数字，字符串，列表，字典，元组</p>
+<p>Json模块提供了四个功能</p>
+<ul>
+<li>dumps – 序列化方法</li>
+<li>loads – 反序列化方法</li>
+<li>dump – 序列化，并写入文件</li>
+<li>load – 只接收文件文件描述符，完成读取文件和反序列化</li>
+</ul>
+<h2 id="dumps-和-loads"><a href="#dumps-和-loads" class="headerlink" title="dumps 和 loads"></a>dumps 和 loads</h2><p>dumps格式</p>
+<pre><code>def dumps(obj, skipkeys=False, ensure_ascii=True, check_circular=True,allow_nan=True, cls=None, indent=None, separators=None,default=None, sort_keys=False, **kw):pass
+
+参数说明：
+skipkeys：默认值时False，如果dict的keys内的数据不是python的基本类型，设置为False时，就会报TypeError的错误。此时设置成True，则会跳过这类key
+
+ensure_ascii：当它为True的时候，所有非ASCII码字符显示为\uXXXX序列，只需在dump时将ensure_ascii设置为False即可
+
+indent：应该是一个非负的整型，如果是0就是顶格分行显示，如果为空就是一行最紧凑显示，否则会换行且按照indent的数值显示前面的空白分行显示
+
+separators：分隔符，实际上是(item_separator, dict_separator)的一个元组，默认的就是(‘,’,’:’)；这表示dictionary内keys之间用“,”隔开，而KEY和value之间用“：”隔开
+
+sort_keys：将数据根据keys的值进行排序</code></pre><pre><code class="python"># 序列化与反序列化
+import json
+
+dict = {&#39;k1&#39;:&#39;v1&#39;}
+x = json.dumps(dict)
+
+print(json.loads(x))</code></pre>
+<blockquote>
+<p>dumps序列化时对中文默认使用的ascii编码，想输出真正的中文需要指定<code>ensure_ascii=False</code></p>
+</blockquote>
+<h2 id="dump-和-load"><a href="#dump-和-load" class="headerlink" title="dump 和 load"></a>dump 和 load</h2><blockquote>
+<p>Tips：每次读取和写入最好都是一条一条的</p>
+</blockquote>
+<pre><code class="python">import json
+
+f = open(&#39;json_file&#39;,&#39;w&#39;)
+dic = {&#39;k1&#39;:&#39;v1&#39;,&#39;k2&#39;:&#39;v2&#39;,&#39;k3&#39;:&#39;v3&#39;}
+json.dump(dic,f) #dump方法接收一个文件句柄，直接将字典转换成json字符串写入文件 f.close()
+
+f = open(&#39;json_file&#39;)
+dic2 = json.load(f) #load方法接收一个文件句柄，直接将文件中的json字符串转换成数据结构返回
+f.close() print(type(dic2),dic2)
+</code></pre>
+<p>利用dumps 和 loads写入和读取</p>
+<pre><code class="python">import json
+
+# 写入
+l = [{&#39;k&#39;:&#39;111&#39;},{&#39;k2&#39;:&#39;22&#39;},{&#39;k3&#39;:&#39;22&#39;}]
+f = open(&#39;pass.txt&#39;,&#39;w&#39;,encoding=&#39;utf-8&#39;)
+for dic in l:
+    str_dic = json.dumps(dic)
+    f.write(str_dic+&#39;\n&#39;)
+f.close()
+
+# 读取
+l = []
+for line in f:
+    dic = json.loads(line.strip())
+    l.append(dic)
+l.close</code></pre>
+<hr>
+<h1 id="pickle"><a href="#pickle" class="headerlink" title="pickle"></a>pickle</h1><p>json：用于字符串和python数据类型间进行转换<br>pickle：用于python特有的类型和python的数据类型间进行转换</p>
+<p>pickle模块提供了四个功能：dumps，dump，loads，load</p>
+<blockquote>
+<p>Tips：<br>可以把python中任意的数据类型序列化<br>由于是二进制内容，需要在每个模式后面加b进行写入<br>支持分批次load<br>都是二进制的</p>
+</blockquote>
+<h2 id="dumps"><a href="#dumps" class="headerlink" title="dumps"></a>dumps</h2><pre><code class="python">pickle.dumps(obj[, protocol])</code></pre>
+<p>将obj对象序列化为string形式，而不是存入文件中</p>
+<h2 id="loads"><a href="#loads" class="headerlink" title="loads"></a>loads</h2><pre><code class="python">pickle.loads(string)</code></pre>
+<p>反序列化</p>
+<blockquote>
+<p>Tips：dump()函数能一个接着一个地将几个对象序列化存储到同一个文件中，随后调用load()来以同样的顺序反序列化读取这些对象</p>
+</blockquote>
+<h2 id="dump"><a href="#dump" class="headerlink" title="dump"></a>dump</h2><pre><code class="python">pickle.dump(obj,file,[protocol])</code></pre>
+<blockquote>
+<p>参数说明：<br>obj：想要序列化的obj对象<br>file：文件名称<br>protocol：序列化使用的协议,如果该项省略，则默认为0。如果为负值或HIGHEST_PROTOCOL，则使用最高的协议版本</p>
+</blockquote>
+<h2 id="load"><a href="#load" class="headerlink" title="load"></a>load</h2><pre><code class="python">pickle.load(file)</code></pre>
+<p>将file中的对象序列化读取</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><pre><code class="python">import pickle
+
+dic = {&#39;k1&#39;:&#39;v1&#39;,&#39;k2&#39;:&#39;v2&#39;}
+str_dic = pickle.dumps(dic,)
+print(str_dic)
+
+dic2 = pickle.loads(str_dic)
+print(dic2)</code></pre>
+<hr>
+<h1 id="shelve"><a href="#shelve" class="headerlink" title="shelve"></a>shelve</h1><p>比pickle用起来更简单<br>将对象保存到文件里面，缺省(即默认)的数据存储文件是二进制</p>
+<ul>
+<li>用法<blockquote>
+<p>使用时，只需要使用open函数获取一个shelf对象，然后对数据进行增删改查操作<br>在完成工作，并且将内存存储到磁盘中，最后调用close函数变回将数据写入文件</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="shelve-open"><a href="#shelve-open" class="headerlink" title="shelve.open"></a>shelve.open</h2><p>创建或打开一个shelve对象<br>shelve默认打开方式支持同时读写操作</p>
+<pre><code>shelve.open(filename, flag=’c’, protocol=None, writeback=False)
+
+# 参数说明
+* filenam：关联的文件路径
+* flag [可选]：默认为‘c’，如果数据文件不存在，就创建，允许读写；可以是: ‘r’: 只读；’w’: 可读写; ‘n’: 每次调用open()都重新创建一个空的文件，可读写
+* protocol：是序列化模式，默认值为None。具体还没有尝试过，从pickle的资料中查到以下信息【protocol的值可以是1或2，表示以二进制的形式序列化】
+* writeback：默认为False。当设置为True以后，shelf将会将所有从DB中读取的对象存放到一个内存缓存。当我们close()打开的shelf的时候，缓存中所有的对象会被重新写入DB</code></pre><p>由于shelve在默认情况下是不会记录待持久化对象的任何修改的，所以我们在shelve.open()时候需要修改默认参数，否则对象的修改不会保存(writeback参数)</p>
+<blockquote>
+<p>writeback缺点：使用writeback以后，shelf在open()的时候会增加额外的内存消耗，并且当DB在close()的时候会将缓存中的每一个对象都写入到DB，这也会带来额外的等待时间。因为shelve没有办法知道缓存中哪些对象修改了，哪些对象没有修改，因此所有的对象都会被写入<br>为了保存增，删，改的内容，建议显示的标明writeback=True</p>
+</blockquote>
+<p><strong>shelve模块限制</strong></p>
+<blockquote>
+<p>它不支持多个应用同一时间往同一个DB（文件）进行写操作，所以如果只需进行读操作，可以修改默认参数<code>flag=’r’</code> 让shelve通过只读方式打开DB（文件）<br>python2.7有效</p>
+</blockquote>
+<p>存储文件在键(如果使用现有的key，将会覆盖旧数据)<br>格式：<code>文件句柄[key] = data</code></p>
+<pre><code class="python">import shelve
+
+d = shelve.open(&#39;pass&#39;)
+# d[&#39;key&#39;] = [&#39;xxx&#39;,&#39;aaa&#39;]
+# d.close()</code></pre>
+<p>取出数据的时候也只需要直接用key获取即可，但是如果key不存在会报错</p>
+<pre><code class="python">import shelve
+
+d = shelve.open(&#39;pass&#39;)
+existing = d[&#39;key&#39;]
+d.close()
+print(existing)</code></pre>
+<p>writeback(没开的情况下，增，删，改都不会记录)</p>
+<pre><code class="python">import shelve
+
+# 没开的情况
+d = shelve.open(&#39;pass&#39;)
+d[&#39;key&#39;] = [&#39;1111&#39;,&#39;2222&#39;]
+d[&#39;key&#39;].append(&#39;333&#39;)
+print(d[&#39;key&#39;])
+结果：[&#39;1111&#39;, &#39;2222&#39;]
+
+# 开
+d = shelve.open(&#39;pass&#39;,writeback=True)
+d[&#39;key&#39;] = [&#39;1111&#39;,&#39;2222&#39;]
+d[&#39;key&#39;].append(&#39;333&#39;)
+print(d[&#39;key&#39;])
+结果：[&#39;1111&#39;, &#39;2222&#39;, &#39;333&#39;]</code></pre>
+<h2 id="shelve-close"><a href="#shelve-close" class="headerlink" title="shelve.close"></a>shelve.close</h2><pre><code class="python">shelve.close()</code></pre>
+<p>同步关闭shelve对象</p>
+<blockquote>
+<p>Tips：每次使用完毕，都必须确保shelve对象被安全关闭，同样可以使用with语句</p>
+</blockquote>
+<pre><code class="python">with shelve.open(&#39;span&#39;) as db:
+    db[&#39;eggs&#39;] = &#39;eggs&#39;</code></pre>
+<h2 id="只读"><a href="#只读" class="headerlink" title="只读"></a>只读</h2><pre><code>import shelve
+
+f = shelve.open(&#39;shelve_file&#39;, flag=&#39;r&#39;)
+existing = f[&#39;key&#39;]
+f.close()
+print(existing)</code></pre>
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/import/PrettyTable/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>PrettyTable</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/python%E8%BD%ACexe/">
+                        <span>Python打包成exe文件</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python序列化模块&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

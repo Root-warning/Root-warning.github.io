@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>PrettyTable - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    608 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      2 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 5:12 下午</p>
+            
+            <div class="markdown-body">
+              <h2 id="0X00-安装"><a href="#0X00-安装" class="headerlink" title="0X00 安装"></a>0X00 安装</h2><pre><code>pip install prettytable</code></pre><h2 id="0X01-创建表"><a href="#0X01-创建表" class="headerlink" title="0X01 创建表"></a>0X01 创建表</h2><h3 id="1-直接创建"><a href="#1-直接创建" class="headerlink" title="(1).直接创建"></a>(1).直接创建</h3><pre><code class="python">x = PrettyTable()</code></pre>
+<a id="more"></a>
+
+<p>例：</p>
+<pre><code>x = PrettyTable([&quot;姓名&quot;,&quot;性别&quot;,&quot;年龄&quot;,&quot;存款&quot;])
+print x</code></pre><p><img src="/images/Python/PrettyTable%E6%A8%A1%E5%9D%97%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C0.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="2-从已有文件创建"><a href="#2-从已有文件创建" class="headerlink" title="(2).从已有文件创建"></a>(2).从已有文件创建</h3><h4 id="CSV"><a href="#CSV" class="headerlink" title="CSV"></a>CSV</h4><pre><code>from prettytable import from_csv 
+fp = open(&quot;mytable.csv&quot;, &quot;r&quot;) 
+pt = from_csv(fp) 
+fp.close()</code></pre><h4 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h4><pre><code>from prettytable import from_html 
+pts = from_html(html_string)</code></pre><h4 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h4><pre><code>from prettytable import from_db_cursor 
+db_cur.execute(&quot;SELECT * FROM mytable&quot;) 
+pt = from_db_cursor(db_cur)</code></pre><h2 id="0x02-添加元素"><a href="#0x02-添加元素" class="headerlink" title="0x02 添加元素"></a>0x02 添加元素</h2><h3 id="1-按行添加-add-row"><a href="#1-按行添加-add-row" class="headerlink" title="(1).按行添加 .add_row()"></a>(1).按行添加 <code>.add_row()</code></h3><h3 id="2-按列添加-add-column"><a href="#2-按列添加-add-column" class="headerlink" title="(2).按列添加 .add_column()"></a>(2).按列添加 <code>.add_column()</code></h3><p>例:</p>
+<pre><code class="python">from prettytable import PrettyTable
+x = PrettyTable([&quot;姓名&quot;, &quot;性别&quot;, &quot;年龄&quot;, &quot;存款&quot;])
+x.add_row([&quot;赵一&quot;,&quot;男&quot;, 20, 100000])
+x.add_row([&quot;钱二&quot;,&quot;男&quot;, 21, 500])</code></pre>
+<p><img src="/images/Python/PrettyTable%E6%A8%A1%E5%9D%97%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C1.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="0x03-输出格式"><a href="#0x03-输出格式" class="headerlink" title="0x03 输出格式"></a>0x03 输出格式</h2><h3 id="ASCII码表"><a href="#ASCII码表" class="headerlink" title="ASCII码表"></a>ASCII码表</h3><p>直接输出 <code>print x</code><br>无表框输出 <code>print pt.get_string()</code></p>
+<h3 id="HTML表-print-pt-get-html-string"><a href="#HTML表-print-pt-get-html-string" class="headerlink" title="HTML表 print pt.get_html_string()"></a>HTML表 <code>print pt.get_html_string()</code></h3><h2 id="0x04-控制表样式"><a href="#0x04-控制表样式" class="headerlink" title="0x04 控制表样式"></a>0x04 控制表样式</h2><h4 id="自带样式"><a href="#自带样式" class="headerlink" title="自带样式"></a>自带样式</h4><pre><code>#参数还可以选择“DEFAULT”、“PLAIN_COLUMNS”
+from prettytable import MSWORD_FRIENDLY
+x.set_style(MSWORD_FRIENDLY) 
+print(x)</code></pre><h4 id="手动控制样式"><a href="#手动控制样式" class="headerlink" title="手动控制样式"></a>手动控制样式</h4><pre><code>border - 布尔类型参数（必须是True或False）。控制表格边框是否显示。
+header - 布尔类型参数（必须是True或False）。控制表格第一行是否作为表头显示。
+header-style - 控制表头信息的大小写。允许的参数值：“cap”（每个单词首字母大写），“title”（除了介词助词首字母大写），“lower”（全部小写）或者None（不改变原内容格式）。默认参数为None。
+hrules - 设置表格内部水平边线。允许的参数值：FRAME，ALL，NONE。注意这些是在prettytable模块内部定义的变量，在使用之前导入或用类似prettytable.FRAME的方法调用。
+vrules - 设置表格内部竖直边线。允许的参数值：FRAME，ALL，NONE。
+align - 水平对齐方式（None，“l”（左对齐），“c”（居中），“r”右对齐）
+valign - 垂直对齐方式（None，“t”（顶部对齐），“m”（居中），“b”底部对齐）
+int_format - 控制整型数据的格式。
+float_format - 控制浮点型数据的格式。
+padding_width - 列数据左右的空格数量。（当左右padding未设置时生效）
+left_padding_width - 列数据左侧的空格数量。
+right_padding_width - 列数据右侧的空格数量。
+vertical_char - 绘制竖直边线的字符，默认为“|”
+horizontal_char - 绘制水平边线的字符，默认为“-”
+junction_char - 绘制水平竖直交汇点的字符，默认为“+”</code></pre><p>用法:</p>
+<pre><code>x = PrettyTable() 
+x.border = False 
+x.header = False 
+x.padding_width = 5</code></pre><p>例如:</p>
+<pre><code>from prettytable import PrettyTable
+x = PrettyTable([&quot;姓名&quot;,&quot;性别&quot;,&quot;年龄&quot;,&quot;存款&quot;])
+x.align[&quot;姓名&quot;] = &quot;1&quot;
+x.add_row([&quot;赵一&quot;,&quot;男&quot;, 20, 100000])
+x.add_row([&quot;钱二&quot;,&quot;男&quot;, 21, 500])
+print x</code></pre><p><img src="/images/Python/PrettyTable%E6%A8%A1%E5%9D%97%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5C2.png" srcset="/img/loading.gif" alt=""></p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Web/%E6%97%A0%E5%AD%97%E6%AF%8D%E4%B8%80%E5%8F%A5%E8%AF%9D%E5%88%86%E6%9E%90/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>分析无字母数字一句话组合</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/import/%E5%BA%8F%E5%88%97%E5%8C%96%E6%A8%A1%E5%9D%97/">
+                        <span>python序列化模块</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "PrettyTable&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

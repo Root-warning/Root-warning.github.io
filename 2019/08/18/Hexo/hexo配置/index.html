@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>Hexo--Next主题优化 设置 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    1.5k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      7 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 六月 9日 星期日, 1:55 下午</p>
+            
+            <div class="markdown-body">
+              <h3 id="该文章非原创-只是为了方便下次重装后修改"><a href="#该文章非原创-只是为了方便下次重装后修改" class="headerlink" title="该文章非原创,只是为了方便下次重装后修改"></a>该文章非原创,只是为了方便下次重装后修改</h3><h3 id="0x00-添加头像-and-设置头像为圆形框"><a href="#0x00-添加头像-and-设置头像为圆形框" class="headerlink" title="0x00 添加头像 and 设置头像为圆形框"></a>0x00 添加头像 and 设置头像为圆形框</h3><h4 id="1-设置头像"><a href="#1-设置头像" class="headerlink" title="1.设置头像"></a>1.设置头像</h4><p>  打开 <code>themes/next</code> 下的  <code>_config.yml</code> 文件<br>  搜索 <code>Sidebar Avatar</code> 关键字,去掉avater前面的 <code>#</code></p>
+<pre><code>  # Sidebar Avatar
+  # in theme directory(source/images): /images/avatar.jpg
+  # in site  directory(source/uploads): /uploads/avatar.jpg
+  avatar: /images/blogLogo.png</code></pre><p>  并把本地图片放入 <code>themes/next/source/images</code><br>  修改文件名为: <code>blogLogo.png</code></p>
+<a id="more"></a>
+
+<h4 id="2-设置头像边框为圆形"><a href="#2-设置头像边框为圆形" class="headerlink" title="2.设置头像边框为圆形"></a>2.设置头像边框为圆形</h4><p>  打开位于 <code>themes/next/source/css/_common/components/sidebar/</code> 下的<br>  <code>sidebar-author.syl</code> 文件,修改如下</p>
+<pre><code>  .site-author-image {
+    display: block;
+    margin: 0 auto;
+    padding: $site-author-image-padding;
+    max-width: $site-author-image-width;
+    height: $site-author-image-height;
+    border: $site-author-image-border-width solid $site-author-image-border-color;
+    // 修改头像边框
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+  }</code></pre><h3 id="0x01-显示当前浏览进度"><a href="#0x01-显示当前浏览进度" class="headerlink" title="0x01 显示当前浏览进度"></a>0x01 显示当前浏览进度</h3><p>打开 <code>themes/next</code> 下的<code>_config.yml</code>,搜索关键字 <code>scrollpercent</code>,把false改为true</p>
+<pre><code># Scroll percent label in b2t button
+scrollpercent: true</code></pre><h3 id="0x02-开启打赏功能-并修复闪动bug"><a href="#0x02-开启打赏功能-并修复闪动bug" class="headerlink" title="0x02 开启打赏功能 并修复闪动bug"></a>0x02 开启打赏功能 并修复闪动bug</h3><p>在<code>_config.yml</code>中配置图片</p>
+<pre><code>#wechat.jpg、aipay.png图片放入themes/next/source/images中
+#在 _config.yml搜索 reward_comment
+
+reward_comment: 坚持原创技术分享，您的支持将鼓励我继续创作！
+wechatpay: /images/wechat.jpg
+alipay: /images/aipay.png</code></pre><p>修复闪动bug</p>
+<p>修改<code>next/source/css/_common/components/post/post-reward.styl</code>，注释<code>wechat:hover</code>和<code>alipay:hover</code></p>
+<pre><code>/* 注释文字闪动函数
+
+#wechat:hover p{
+
+animation: roll 0.1s infinite linear;
+-webkit-animation: roll 0.1s infinite linear;
+-moz-animation: roll 0.1s infinite linear;
+}
+
+#alipay:hover p{
+
+animation: roll 0.1s infinite linear;
+-webkit-animation: roll 0.1s infinite linear;
+-moz-animation: roll 0.1s infinite linear;
+}
+*/</code></pre><h3 id="0x03-设置网站的图片Favicon"><a href="#0x03-设置网站的图片Favicon" class="headerlink" title="0x03 设置网站的图片Favicon"></a>0x03 设置网站的图片Favicon</h3><p>找一张(32*32)的ico图标,并将图标名改为<code>favicon.ico</code><br>然后把图标放在<code>/themes/next/source/images</code><br>并且修改主题配置文件</p>
+<pre><code># Put your favicon.ico into `hexo-site/source/` directory.
+favicon: /images/favicon.ico</code></pre><h3 id="0x04-添加顶部加载条"><a href="#0x04-添加顶部加载条" class="headerlink" title="0x04 添加顶部加载条"></a>0x04 添加顶部加载条</h3><p>打开<code>_config.yml</code>配置文件<br>改为<code>pace: true</code>即可</p>
+<pre><code>pace: true
+# Themes list:
+#pace-theme-big-counter
+#pace-theme-bounce
+#pace-theme-barber-shop
+#pace-theme-center-atom
+#pace-theme-center-circle
+#pace-theme-center-radar
+#pace-theme-center-simple
+#pace-theme-corner-indicator
+#pace-theme-fill-left
+#pace-theme-flash
+#pace-theme-loading-bar
+#pace-theme-mac-osx
+#pace-theme-minimal
+# For example
+# pace_theme: pace-theme-center-simple
+pace_theme: pace-theme-flash #pace-theme-minimal</code></pre><h3 id="0x05-添加jiathis分享"><a href="#0x05-添加jiathis分享" class="headerlink" title="0x05 添加jiathis分享"></a>0x05 添加jiathis分享</h3><p>在配置文件中,jiathis为true,即可</p>
+<pre><code># Share
+jiathis: true
+# Warning: JiaThis does not support https.
+#add_this_id:</code></pre><h3 id="0x06-自定义鼠标样式"><a href="#0x06-自定义鼠标样式" class="headerlink" title="0x06 自定义鼠标样式"></a>0x06 自定义鼠标样式</h3><p>打开<code>themes/next/source/css/_custom/custom.styl</code><br>添加如下代码</p>
+<pre><code>// 鼠标样式
+  * {
+      cursor: url(&quot;http://om8u46rmb.bkt.clouddn.com/sword2.ico&quot;),auto!important
+  }
+  :active {
+      cursor: url(&quot;http://om8u46rmb.bkt.clouddn.com/sword1.ico&quot;),auto!important
+  }</code></pre><p>其中 url 里面必须是 ico 图片，ico 图片可以上传到网上<br>然后获取外链，复制到 url 里就行了</p>
+<h3 id="0x07-设置社交链接"><a href="#0x07-设置社交链接" class="headerlink" title="0x07 设置社交链接"></a>0x07 设置社交链接</h3><p>next 主题配置文件处<br>搜索<code>social</code></p>
+<pre><code>social:
+  Github: URL
+  简书: URL
+
+# Social Links Icons
+# Icon Mapping:
+#   Map a menu item to a specific FontAwesome icon name.
+#   Key is the name of the item and value is the name of FontAwesome icon. Key is case-senstive.
+#   When an globe mask icon presenting up means that the item has no mapping icon.
+social_icons:
+  enable: true
+  icons_only: false
+  transition: false
+  # Icon Mappings.
+  # KeyMapsToSocialItemKey: NameOfTheIconFromFontAwesome
+  #E-Mail: envelope
+  #Google: google
+  Twitter: twitter</code></pre><h3 id="0x08-设置友情链接"><a href="#0x08-设置友情链接" class="headerlink" title="0x08 设置友情链接"></a>0x08 设置友情链接</h3><p>在next主题配置文件<br>搜索<code>Blog rolls</code></p>
+<pre><code># Blogrolls
+links_title: 友情链接
+#links_layout: block
+#links_layout: inline
+links:
+  Java学习天地: https://wangli0.github.com
+  ruulai.com: https://wangli0.github.com
+  视听中国: https://wangli0.github.com</code></pre><h3 id="0x09-博客中插入图片"><a href="#0x09-博客中插入图片" class="headerlink" title="0x09 博客中插入图片"></a>0x09 博客中插入图片</h3><p>基本分为两种方法:</p>
+<h4 id="1-放在本地文件"><a href="#1-放在本地文件" class="headerlink" title="1.放在本地文件"></a>1.放在本地文件</h4><p>首先在<code>username.github.i</code>o目录下确认<code>_config.yml</code>中有<code>post_asset_folder:true</code><br>在hexo目录,执行<code>$ npm install https://github.com/CodeFalling/hexo-asset-image --save</code><br>之后再使用<code>hexo new &#39;new&#39;</code>创建新博客的时候<br>会在<code>source/_posts</code> 里面创建.md文件的同时生成一个相同的名字的文件夹。把该文章中需要使用的图片放在该文件夹下即可。<br>使用的时候:<code>![“图片描述”（可以不写）](/文件夹名/你的图片名字.JPG) 例如： ！[ ] (new/text.jpg)</code></p>
+<h4 id="2-放在网上"><a href="#2-放在网上" class="headerlink" title="2.放在网上"></a>2.放在网上</h4><p>放在七牛上，需要先注册，上传图片生成链接，直接在文章中使用链接即可。<br>也可以放在服务器上，在图片链接输入绝对路径就可以</p>
+<h3 id="0x10-插入音乐"><a href="#0x10-插入音乐" class="headerlink" title="0x10 插入音乐"></a>0x10 插入音乐</h3><p>可以使用网易云音乐,搜索想要的歌曲，点击歌曲名字进入播放器页面，点击生成外链播放器<br>复制代码，直接粘贴到博文中即可。这样会显示一个网易的播放器<br>放在<code>layout/_macro/sidebar.swig</code>文件夹下</p>
+<pre><code>&lt;div id=&quot;music163player&quot;&gt;
+    &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=280 height=86 src=&quot;//music.163.com/outchain/player?type=2&amp;id=38358214&amp;auto=0&amp;height=66&quot;&gt;
+    &lt;/iframe&gt;
+&lt;/div&gt;</code></pre><h3 id="0x11-修改-代码块自定义样式"><a href="#0x11-修改-代码块自定义样式" class="headerlink" title="0x11 修改``代码块自定义样式"></a>0x11 修改``代码块自定义样式</h3><p>打开<code>\themes\next\source\css\_custom\custom.styl</code><br>向里面添加代码(颜色可以自定义)</p>
+<pre><code>// Custom styles.
+code {
+    color: #ff7600;
+    background: #fbf7f8;
+    margin: 2px;
+}
+// 大代码块的自定义样式
+.highlight, pre {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 3px;
+}
+.highlight, code, pre {
+    border: 1px solid #d6d6d6;
+}</code></pre><h3 id="0x12-绚丽的图片文字"><a href="#0x12-绚丽的图片文字" class="headerlink" title="0x12 绚丽的图片文字"></a>0x12 绚丽的图片文字</h3><p>只需要在你得文章<code>*.md</code>文件的头上添加<code>photos</code>项即可<br>然后一行添加你要展示的图片</p>
+<pre><code>---
+title: 我的阅历
+date: 2085-01-16 07:33:44
+tags: [hexo]
+photos:
+ - http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg
+ - http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg
+---</code></pre><h3 id="0x13-博文压缩优化"><a href="#0x13-博文压缩优化" class="headerlink" title="0x13 博文压缩优化"></a>0x13 博文压缩优化</h3><p>安装插件</p>
+<pre><code>npm install hexo-neat --save</code></pre><p>站点配置</p>
+<pre><code>neat_enable: true
+
+neat_html:
+  enable: true
+  exclude:
+
+neat_css:
+  enable: true
+  exclude:
+    - &#39;*.min.css&#39;
+
+neat_js:
+  enable: true
+  mangle: true
+  output:
+  compress:
+  exclude:
+    - &#39;*.min.js&#39;</code></pre><h3 id="0x14-URL链接"><a href="#0x14-URL链接" class="headerlink" title="0x14 URL链接"></a>0x14 URL链接</h3><p>安装插件</p>
+<pre><code>npm install hexo-abbrlink --save</code></pre><p>在站点配置文件<code>_config.yml</code> 添加配置</p>
+<pre><code># permalink: :title/
+permalink: archives/:abbrlink.html
+abbrlink:
+  alg: crc32  # 算法：crc16(default) and crc32
+  rep: hex    # 进制：dec(default) and hex</code></pre><blockquote>
+<p>Ps：html前缀为：对标题+时间进行md5然后再转base64</p>
+</blockquote>
+<h3 id="0x15-Hexo-代码高亮"><a href="#0x15-Hexo-代码高亮" class="headerlink" title="0x15 Hexo 代码高亮"></a>0x15 Hexo 代码高亮</h3><p>安装插件</p>
+<pre><code>npm i -S hexo-prism-plugin</code></pre><p>修改Hexo根目录<code>_config.yml</code>配置文件</p>
+<pre><code>highlight:
+  enable: false</code></pre><p>添加配置</p>
+<pre><code>prism_plugin:
+  mode: &#39;preprocess&#39;    # realtime/preprocess
+  theme: &#39;tomorrow&#39;
+  line_number: false    # default false
+  custom_css:</code></pre><h3 id="0x16-修改注释的样式"><a href="#0x16-修改注释的样式" class="headerlink" title="0x16 修改注释的样式"></a>0x16 修改注释的样式</h3><p><code>next\source\css\_custom\custom.styl</code>文件添加</p>
+<pre><code>blockquote {
+    margin: 10px 0 0 0;
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #42b983;
+    border-radius: 5px; 
+    background-color: rgba(66, 185, 131, .1);
+}</code></pre><h3 id="0x17-页面宽度"><a href="#0x17-页面宽度" class="headerlink" title="0x17 页面宽度"></a>0x17 页面宽度</h3><p>修改<code>next\source\css\_variables\custom.styl</code></p>
+<pre><code>// 修改成你期望的宽度
+$content-desktop = 900px
+
+// 当视窗超过 1600px 后的宽度
+$content-desktop-large = 1100px
+
+// 窗口最大化的宽度
+$content-desktop-largest        = 1100px</code></pre>
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Hexo/">Hexo</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Hexo/">Hexo</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Hexo/%E4%BB%A3%E7%A0%81%E5%9D%97%E4%BC%98%E5%8C%96/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>Next主题 代码段优化</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
+                        <span>Hexo + Github + 域名 搭建个人博客(不免费搭建)</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hexo--Next主题优化 设置&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>命令执行 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    1.2k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      4 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 8:51 晚上</p>
+            
+            <div class="markdown-body">
+              <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>PHP中，我们可以对输入进行注入攻击，命令注入也称命令执行<br><code>注入</code>：通过利用无验证码变量构造特殊语句对服务器进行渗透<br>命令执行：可以执行系统或应用指令的漏洞（例如：CMD命令或bash命令）<br>而该漏洞的产生主要是<code>基于一些函数的过滤不严导致</code></p>
+<a id="more"></a>
+
+
+<h1 id="执行函数"><a href="#执行函数" class="headerlink" title="执行函数"></a>执行函数</h1><ul>
+<li><p><code>system()</code></p>
+<p> 执行外部程序，并且显示输出</p>
+<pre><code class="php">system($command[,int &amp;$return_ar]);
+/*
+command：要执行的命令
+return_var：外部命令执行后的返回状态会设置到此变量中
+*/</code></pre>
+<p>执行系统外部命令时，直接将结果输出到浏览器</p>
+<p>执行成功：true，失败：false</p>
+</li>
+<li><p><code>exec()</code></p>
+<p>主要用于执行外部程序</p>
+<pre><code class="php">exec($command [, array &amp;$output [, int &amp;$return_var ]] );
+/*
+command：要执行的命令
+output：命令执行的输出填充此数组，每行没输出填充数组的一个元素
+ 数组中的数据不包含行尾的空白字符
+ Ps：如果数组中已经包含部分元素，会在数组末尾追加内容
+ 如果你不想在数组末尾进行追加，在使用之前对数组进行重置（unset）
+return_var：命令执行后的返回状态会被写入到此变量
+*/
+
+# 例子
+$command = &quot;ls&quot;;
+exec($command,$array);
+print_r($array);
+
+// Linux中执行：php ./exec.php</code></pre>
+</li>
+<li><p><code>shell_exec()</code></p>
+<p>通过shell环境执行命令，并且将完整的输出以字符串的方式返回</p>
+<pre><code class="php">shell_exec($cmd);
+// 如果执行过程中发生错误或者进程不产生输出，则返回NULL</code></pre>
+</li>
+<li><p><code>passthru()</code></p>
+<p>执行外部程序并且显示原始输出</p>
+<pre><code class="php">passthru($command[,int &amp;$return_var]);
+/*
+command：要执行的命令
+return_var：返回状态会被写入到此变量
+*/</code></pre>
+<p>当所执行的Unix命令输出二进制数据，并且需要直接传输到浏览器时，就需要用到此函数</p>
+</li>
+<li><p><code>pcntl_exec()</code></p>
+<p>在当前进程空间执行指定程序</p>
+<pre><code class="php">pcntl_exec($path[,$args[,$envs]]);
+/*
+path：必须是可执行程序路径 或 一个在文件第一行指定一个可执行文件路径标头的脚本
+ 例如第一行：#!/usr/local/bin/perl
+args(array)：要传递给程序的参数的字符串数组
+envs(array)：要传递给程序作为环境变量的字符串数组
+ 数组格式：key=&gt;value
+ key：传递的环境变量的名称
+ value：环境变量值
+*/</code></pre>
+</li>
+<li><p><code>popen()</code></p>
+<p>打开进程文件指针</p>
+<pre><code class="php">popen(command,mode);
+/*
+command：要执行的命令
+mode：连接模式
+ r：只读
+ w：只写（打开并清空或创建一个新文件）
+*/
+
+# 例子
+popen(&#39;whoami &gt;&gt; D:/2.txt&#39;,&#39;r&#39;);</code></pre>
+</li>
+<li><p><code>proc_open()</code></p>
+<p>执行一个命令，并且打开用来输入/输出的文件指针</p>
+<pre><code class="php">proc_open($cmd, array $descriptorspec,array &amp;$pipes[,string $cwd[,array $env [,array $other_options]]]);
+/*
+cmd：要执行的命令
+descriptorspec：一个索引数组
+ 数组的键表示描述符
+ 数组元素值表示PHP如何将这些描述传至子进程
+ 0 标准输入
+ 1 标准输出
+ 2 标准错误
+pipes：将被置为索引数组，其中的元素是被执行程序创建的管道对应到PHP这一端的文件指针
+cwd：要执行命令的初始工作目录，必须是绝对路径，设置为NULL表示使用默认值（当前目录）
+env：要执行的命令所使用的环境变量
+other_options：指定一些附加选项
+ suppress_errors(winds平台)：True，抑制本函数产生的错误
+ bypass_shell（win平台）：True，绕过cmd.xex shell
+*/</code></pre>
+</li>
+</ul>
+<p>另外反引号（`）也是可以执行命令，不过实际上这种方式也是调用的shell_exec()函数</p>
+<pre><code class="php">echo `whoami`; // 在后面调用shell_exec()函数实现的</code></pre>
+<hr>
+<h1 id="简易复现"><a href="#简易复现" class="headerlink" title="简易复现"></a>简易复现</h1><p>这是自己手写的超级难看的靶场了吧</p>
+<pre><code class="php">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;命令执行&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form action=&quot;cmd.php&quot; method=&quot;POST&quot;&gt;
+    Ping：&lt;input type=&quot;text&quot; name=&quot;cmd&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;执行&quot; name=&quot;run&quot;&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;?php
+if(isset($_POST[&#39;run&#39;])){
+    $cmd = $_POST[&#39;cmd&#39;];
+    if(trim($cmd)){
+        $run = &#39;ping &#39; . $cmd;
+        echo &quot;&lt;pre&gt;&quot;.iconv(&#39;GB2312&#39;,&#39;UTF-8&#39;,shell_exec($run)).&quot;&lt;/pre&gt;&quot;;
+    }else{
+        echo &quot;IP Error&quot;;
+    }
+}
+?&gt;</code></pre>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/ping.jpg" srcset="/img/loading.gif" alt=""></p>
+<p>本意：这只是用来检测网址的连通情况<br>然而，发现我们可以使用一些其他符号进行绕过，执行其他的命令<br>例如：<code>|</code></p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/whoami.jpg" srcset="/img/loading.gif" alt=""><br>这里是因为没有对我们输入的字符进行过滤，导致了用户可以通过其他字符进行绕过</p>
+<p>达到执行任意命令的效果</p>
+<hr>
+<h1 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h1><ul>
+<li>自定义函数过滤或使用正则</li>
+<li>escapeshellarg()</li>
+<li>escapeshellcmd()</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                      &nbsp;
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/">PHP</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">PHP代码审计</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>代码审计之文件读取</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/vauditdemo%E9%87%8D%E8%A3%85%E6%BC%8F%E6%B4%9E/">
+                        <span>vauditdemo重装漏洞 复现</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "命令执行&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

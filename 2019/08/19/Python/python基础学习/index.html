@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>Python基础 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    5.9k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      25 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 4:32 下午</p>
+            
+            <div class="markdown-body">
+              <h1 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h1><p>该文章都是摘自一些视频的笔记和一些博客！<br><a href="http://www.cnblogs.com/jin-xin/articles/7459977.html" target="_blank" rel="noopener">http://www.cnblogs.com/jin-xin/articles/7459977.html</a></p>
+<hr>
+<h1 id="0x01-python种类"><a href="#0x01-python种类" class="headerlink" title="0x01 python种类"></a>0x01 python种类</h1><h2 id="CPython"><a href="#CPython" class="headerlink" title="CPython"></a>CPython</h2><p>当我们从Python官方网站下载并安装好Python3.6后，我们就直接获得了一个<strong>官方版本的解释器：CPython</strong><br>这个解释器是用C语言开发的</p>
+<p>在命令行下运行python就是启动CPython解释器</p>
+<a id="more"></a>
+
+<h2 id="IPython"><a href="#IPython" class="headerlink" title="IPython"></a>IPython</h2><p>是<strong>基于CPython之上的一个交互式解释器</strong></p>
+<p><strong>Cpython</strong>用：<code>&gt;&gt;&gt;</code>作为提示符<br><strong>IPython</strong>用：<code>In[序号]：</code>作为提示符</p>
+<h2 id="PyPy"><a href="#PyPy" class="headerlink" title="PyPy"></a>PyPy</h2><p>是另一个Python解释器，它的目标是执行速度</p>
+<p>PyPy采用JIT技术，<strong>对Python代码进行动态编译</strong>（注意不是注释）</p>
+<p>绝大部分Python代码都可以在PyPy下运行，但是PyPy和CPython有一些不同</p>
+<p>这就导致相同的python代码再两种解释器下执行可能会有不同的结果</p>
+<h2 id="Jython"><a href="#Jython" class="headerlink" title="Jython"></a>Jython</h2><p><strong>运行在Java平台上的Python解释器</strong>，可以直接把Python代码编译成Java字节码执行</p>
+<h2 id="IronPython"><a href="#IronPython" class="headerlink" title="IronPython"></a>IronPython</h2><p><strong>运行在微软.Net平台上的Python解释器</strong>，可以直接把Python代码编译成.Net的字节码</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>Python的解释器很多，但使用最广泛的还是CPython。如果要和Java或.Net平台交互，最好的办法不是用Jython或IronPython，而是通过网络调用来交互，确保各程序之间的独立性</p>
+<hr>
+<h1 id="0x02-变量"><a href="#0x02-变量" class="headerlink" title="0x02 变量"></a>0x02 变量</h1><p>变量是为了存储信息被调用，并且还提供方式标记,数据,描述性理解更清晰</p>
+<p>变量在程序中就是用一个<code>变量名表示</code><br>变量名必须是<code>大小写英文</code>,<code>数字</code>和<code>_</code>的组合，且<code>不能用数字开头</code></p>
+<pre><code class="python">a = 1
+t_007 = &#39;007&#39; #这个一个字符串</code></pre>
+<p>等号<code>=</code>是赋值语句,把任意数据类型赋值给变量,同一个变量可以反复赋值，而且可以是不同类型的变量</p>
+<pre><code class="python">a = 123
+print(a) #a是整数
+
+a = &#39;abc&#39; #a变为字符串
+print(a)</code></pre>
+<p>变量本身类型不固定的语言称之为<code>动态语言</code>，与之对应的是静态语言</p>
+<p>静态语言在定义变量时必须<code>指定变量类型</code>，如果赋值的时候类型不匹配,就会报错</p>
+<p>最后理解在计算机内存中的表示也非常重要,当我们写：</p>
+<pre><code>a = &#39;ABC&#39;</code></pre><p><strong>Python解释器干了两件事</strong></p>
+<ul>
+<li>在内存中创建了一个’ABC’的字符串</li>
+<li>在内存中创建了一个名为<code>a</code>的变量,并把它指向’abc’</li>
+</ul>
+<h2 id="变量定义规则"><a href="#变量定义规则" class="headerlink" title="变量定义规则"></a>变量定义规则</h2><ul>
+<li>变量名只能是 字母、数字或下划线的任意组合</li>
+<li>变量名的第一个字符不能是数字</li>
+<li>以下关键字不能声明为变量名<pre><code>and, as, assert, break, class
+continue, def, del, elif, else
+except, exec, finally, for, from
+global, if, import, in, is
+lambda, not, or, pass, print
+raise, return, try, while, with, yield</code></pre></li>
+</ul>
+<h2 id="推荐定义方式"><a href="#推荐定义方式" class="headerlink" title="推荐定义方式"></a>推荐定义方式</h2><ul>
+<li>驼峰体</li>
+</ul>
+<pre><code class="python">AgeOfOldboy = 56
+
+NumberOfStudents = 80</code></pre>
+<ul>
+<li>下划线</li>
+</ul>
+<pre><code class="python">age_of_oldboy = 56
+
+number_of_students = 80</code></pre>
+<hr>
+<h1 id="0x03常量"><a href="#0x03常量" class="headerlink" title="0x03常量"></a>0x03常量</h1><p>所谓常量就是<strong>不能变的变量</strong>，比如常用的数字常数π就是一个常量</p>
+<p>在Python中,通常用<code>全部大写的变量名表示常量</code></p>
+<pre><code class="python">PI = 3.15159265359</code></pre>
+<p>事实上任然是一个<code>常量</code>,<strong>在Python根本没有任何机制保证PI不会被改变</strong><br>所以,用全部大写的变量名表示常量只是一个习惯上的用法</p>
+<p><code>python是不区分常量和变量的</code></p>
+<hr>
+<h1 id="0x04-字符编码"><a href="#0x04-字符编码" class="headerlink" title="0x04 字符编码"></a>0x04 字符编码</h1><p>python解释器在加载<code>.py</code>文件中代码时,<code>会对内容进行编码(默认ascill)</code><br>ascii码无法将世界上的各种文字和字符全部显示，所以就需要新出一种可以代表所有字符和符号的编码 即:<code>unicode</code></p>
+<h2 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h2><p><code>Unicode</code>(统一码,万国码)是一种在计算机上使用的字符编码</p>
+<p>Unicode是为了解决传统的字符编码方案的局限而产生的<br>他为每种语言中的每个字符设定了统一并且唯一的二进制编码,规定虽有的字符和符号最少由16位来表示(2字节) 2**16 = 65536</p>
+<h2 id="utf-8"><a href="#utf-8" class="headerlink" title="utf-8"></a>utf-8</h2><p><code>utf-8</code> 是对Unicode编码的压缩和优化,它不再使用最少使用2个字节,而是将所有的字符和符号进行分类</p>
+<h2 id="python2-x-3-x-默认编码"><a href="#python2-x-3-x-默认编码" class="headerlink" title="python2.x/3.x 默认编码"></a>python2.x/3.x 默认编码</h2><p>ASCII码中的内容用1个字节保存<br>欧洲的字符用2个字节保存<br>东南亚的字符用3个字节保存。。。</p>
+<p>所以,python解释器在加载.py文件中的代码时,会对内容进行编码(默认为ascill)<br>而输入中文的话,会报错(ASCII码无法支持中文)</p>
+<p>ASCII ==&gt; GB2312 ==&gt; gbk1.0 ==&gt; gb18030<br>ASCII ==&gt; Unicode ==&gt; utf-8 </p>
+<p>Python2.x == ASCII 默认编码<br>Python3.x == Unicode 默认编码</p>
+<hr>
+<h1 id="0x05-注释"><a href="#0x05-注释" class="headerlink" title="0x05 注释"></a>0x05 注释</h1><ul>
+<li>单行注释</li>
+</ul>
+<pre><code class="python"># 被注释的内容</code></pre>
+<ul>
+<li>多行注释</li>
+</ul>
+<pre><code class="python">&#39;&#39;&#39;
+被注释内容
+&#39;&#39;&#39;
+
+或
+
+&quot;&quot;&quot;
+被注释内容
+&quot;&quot;&quot;</code></pre>
+<hr>
+<h1 id="0x06-输入-输出"><a href="#0x06-输入-输出" class="headerlink" title="0x06 输入/输出"></a>0x06 输入/输出</h1><h2 id="print"><a href="#print" class="headerlink" title="print"></a>print</h2><p>用<code>print()</code>在括号中加上字符串,就可以向屏幕上输出指定的文字</p>
+<pre><code class="python">print(&quot;hello&quot;)</code></pre>
+<p><strong>可以接受多个字符串</strong>，用<code>,</code>逗号隔开,就可以连成一串输出</p>
+<pre><code class="python">print(&quot;The quick brown fox&quot;,&#39;jumps over&#39;,&#39;the lazy dog&#39;)</code></pre>
+<p><code>print()</code>会依次打印每个字符串</p>
+<blockquote>
+<p>遇到逗号<code>,</code>会输出一个空格</p>
+</blockquote>
+<h2 id="input"><a href="#input" class="headerlink" title="input"></a>input</h2><p><code>input()</code>可以让用户输入一个字符串,并放到一个变量里</p>
+<pre><code class="python">name = imput()</code></pre>
+<hr>
+<h1 id="0x07-数据类型"><a href="#0x07-数据类型" class="headerlink" title="0x07 数据类型"></a>0x07 数据类型</h1><h2 id="整数"><a href="#整数" class="headerlink" title="整数"></a>整数</h2><p>python可以处理任意大小的整数,包括负整数</p>
+<blockquote>
+<p>例如: 1,-1,8080 等等之类的数字</p>
+</blockquote>
+<p>计算机由于使用<code>二进制</code>，所以有时候用十六进制表示整数比较方便，十六进制<code>0x</code>开头</p>
+<h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数也就是小数<br>浮点数运算则可能会有四舍五入的误差</p>
+<pre><code class="python">name = 0.00001</code></pre>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>字符串是以单引号<code>&#39;</code>，或双引号<code>&quot;</code>括起来的任意文字</p>
+<blockquote>
+<p>Tips：<code>&#39;&#39;</code>或<code>&quot;&quot;</code>本身只是一种表示方式,不是字符串的一部分</p>
+</blockquote>
+<pre><code class="python">name = &#39;my name&#39;</code></pre>
+<h3 id="字符串拼接"><a href="#字符串拼接" class="headerlink" title="字符串拼接"></a>字符串拼接</h3><blockquote>
+<p>Tips：字符串的拼接只能是双方都是字符串，不能跟数字或其他类型拼接</p>
+</blockquote>
+<ul>
+<li><code>+</code></li>
+</ul>
+<pre><code class="python">name = &quot;xiao san&quot;
+age = &quot;22&quot;
+
+print(&quot;小三的信息是：&quot;+name+age)</code></pre>
+<ul>
+<li><code>*</code></li>
+</ul>
+<pre><code>name = &quot;xiao san&quot;
+age = &quot;22&quot;
+
+# 相城就是复制自己多次再拼接在一起
+print(name * 10)</code></pre><h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><p>只要把要打印的格式先准备好，由于里面的一些信息是需要用户输入的，你没办法预设知道<br>因此可以先放置个占位符，再把字符串里面的占位符与外部的变量做个映射关系</p>
+<h4 id="占位符"><a href="#占位符" class="headerlink" title="% 占位符"></a>% 占位符</h4><p><strong>格式化输出字符串:<code>%</code></strong></p>
+<table>
+<thead>
+<tr>
+<th>占位符</th>
+<th>替换内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%d</td>
+<td>整数</td>
+</tr>
+<tr>
+<td>%f</td>
+<td>浮点数</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>字符串</td>
+</tr>
+<tr>
+<td>%x</td>
+<td>十六进制整数</td>
+</tr>
+<tr>
+<td>%%</td>
+<td>输出第二个百分号</td>
+</tr>
+</tbody></table>
+<p>例如：让用户输出用户信息</p>
+<pre><code class="python">name = input(&quot;Name:&quot;)
+age = input(&quot;Age:&quot;)
+job = input(&quot;Job:&quot;)
+hobbie = input(&quot;Hobbie:&quot;)
+
+info = &#39;&#39;&#39;
+------------ info of %s -----------
+Name  : %s
+Age   : %s
+job   : %s
+Hobbie: %s
+------------- end -----------------&#39;&#39;&#39; %(name,name,age,job,hobbie)
+print(info)</code></pre>
+<h4 id="format"><a href="#format" class="headerlink" title="format()"></a>format()</h4><p><strong>格式化输出字符串:<code>format()</code></strong><br>他会用传入的参数一次替换字符串的占位符<code>{0}</code>,<code>{1}</code>….</p>
+<pre><code class="python">name = &#39;admin&#39;
+print(&#39;{}&#39;.format(name))</code></pre>
+<ul>
+<li>三种玩法</li>
+</ul>
+<pre><code class="python">res=&#39;{} {} {}&#39;.format(&#39;egon&#39;,18,&#39;male&#39;)
+res=&#39;{1} {0} {1}&#39;.format(&#39;egon&#39;,18,&#39;male&#39;)
+res=&#39;{name} {age} {sex}&#39;.format(sex=&#39;male&#39;,name=&#39;egon&#39;,age=18)</code></pre>
+<h3 id="转义字符"><a href="#转义字符" class="headerlink" title="转义字符"></a>转义字符</h3><p>转义字符<code>\</code>,可以转义很多字符</p>
+<table>
+<thead>
+<tr>
+<th>转义字符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\n</td>
+<td>换行符</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>制表符</td>
+</tr>
+<tr>
+<td>\</td>
+<td>反斜线”\ “</td>
+</tr>
+</tbody></table>
+<p>如果字符里面很多字符都需要转义,为了简化<br><strong>python还允许用<code>r&#39; &#39;</code>表示<code>&#39; &#39;</code>内部的字符串默认不转义</strong></p>
+<pre><code class="python">print(r&#39;/t&#39;)|</code></pre>
+<p>如果字符串内有很多换行,为了简化<br>python运行用 <code>&#39;&#39;&#39;.......&#39;&#39;&#39;</code>的格式表示多行内容</p>
+<pre><code class="python">print(&#39;&#39;&#39;
+lin1
+lin2
+&#39;&#39;&#39;)</code></pre>
+<p>多行字符串<code>&#39;&#39;&#39;.....&#39;&#39;&#39;</code>,还可以在前面加上<code>r</code>使用</p>
+<h3 id="字符串的切片与索引"><a href="#字符串的切片与索引" class="headerlink" title="字符串的切片与索引"></a>字符串的切片与索引</h3><p><strong>索引</strong></p>
+<ul>
+<li>索引即下标，就是字符串组成的元素从第一个开始，初始索引为0以此类推</li>
+</ul>
+<pre><code class="python">a = &#39;ABCDEFGHIJK&#39;
+print(a[0])
+print(a[1])</code></pre>
+<p><strong>切片</strong></p>
+<ul>
+<li>切片就是通过索引（索引:索引:步长）截取字符串的一段，形成新的字符串</li>
+</ul>
+<pre><code class="python">a = &#39;ABCDEFGHIJK&#39;
+
+print(a[0:3])
+print(a[2:5])
+print(a[0:])    # 默认到最后
+print(a[0:-1])  # -1就是最后一个</code></pre>
+<h3 id="字符串常用方法"><a href="#字符串常用方法" class="headerlink" title="字符串常用方法"></a>字符串常用方法</h3><ul>
+<li>首字母大写</li>
+</ul>
+<pre><code class="python">capitalize()</code></pre>
+<ul>
+<li>大小写翻转</li>
+</ul>
+<pre><code class="python">swapcase()</code></pre>
+<ul>
+<li>每个单词的首字母大写</li>
+</ul>
+<pre><code class="python">title()</code></pre>
+<ul>
+<li>内容句容，总长度，空白处填充</li>
+</ul>
+<pre><code class="python"># 第二个为填充内容，不填默认为空白
+center(20,&quot;*&quot;)</code></pre>
+<ul>
+<li>计算长度</li>
+</ul>
+<pre><code class="python">len()</code></pre>
+<ul>
+<li>判断是否以…开头</li>
+</ul>
+<pre><code class="python">startswith()</code></pre>
+<ul>
+<li>判断是否以…结尾</li>
+</ul>
+<pre><code class="python">endswith()</code></pre>
+<ul>
+<li>寻找字符串中的元素是否存在</li>
+</ul>
+<p><strong>find</strong></p>
+<pre><code class="python">find(sub[,start=0[,end=len(S)]])</code></pre>
+<p>参数说明：</p>
+<ul>
+<li>sub  –  指定检索的子字符串</li>
+<li>start –  可选参数，开始索引，默认为0（可单独指定）</li>
+<li>end – 可选参数，结束索引，默认为字符串长度（不能单独指定）</li>
+</ul>
+<blockquote>
+<p>tips：返回子字符串的第一个匹配项出现在字符串中的索引位置，如果没有匹配性则返回-1</p>
+</blockquote>
+<p><strong>index</strong></p>
+<pre><code class="python">index(str, beg=0, end=len(string))</code></pre>
+<p>参数说明：</p>
+<ul>
+<li>sub  –  指定检索的字符串</li>
+<li>beg – 开始索引，默认为0</li>
+<li>end – 结束索引，默认为字符串的长度</li>
+</ul>
+<blockquote>
+<p>tips： 如果包含子字符串返回开始的索引值，否则抛出异常</p>
+</blockquote>
+<ul>
+<li><p>分割</p>
+<pre><code class="python">split()</code></pre>
+</li>
+<li><p>去除首位字符</p>
+<pre><code class="python">strip()</code></pre>
+</li>
+<li><p>替换字符串</p>
+<pre><code class="python">replace(old, new[, max])</code></pre>
+<p>参数说明：</p>
+</li>
+<li><p>old – 将被替换的子字符串</p>
+</li>
+<li><p>new – 新字符串，用于替换old子字符串</p>
+</li>
+<li><p>max – 可选字符串，替换不超过max次</p>
+</li>
+</ul>
+<h2 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h2><p>布尔值只有<code>true</code>和<code>false</code>两种值</p>
+<h2 id="空值"><a href="#空值" class="headerlink" title="空值"></a>空值</h2><p>空值是Python里的一个特殊的值,用<code>None</code>表示<br>None不能理解为0,因为0是有意义的</p>
+<hr>
+<h1 id="0x08-流程控制"><a href="#0x08-流程控制" class="headerlink" title="0x08 流程控制"></a>0x08 流程控制</h1><h2 id="条件判断语句"><a href="#条件判断语句" class="headerlink" title="条件判断语句"></a>条件判断语句</h2><h3 id="if"><a href="#if" class="headerlink" title="if"></a>if</h3><pre><code>if (判断条件):
+    满足条件后要执行的代码</code></pre><p>例如：判断小李的年龄是否为22</p>
+<pre><code class="python">age = 22
+if (age == 22):
+    print(&#39;小李的年龄是：%s&#39;%(age))</code></pre>
+<h3 id="if-…else"><a href="#if-…else" class="headerlink" title="if …else"></a>if …else</h3><pre><code>if (条件):
+    为真则执行这段代码
+else:
+    if条件为假执行的代码</code></pre><p>例如：判断小李的年龄是否为22，为真打印，为假输出骗子</p>
+<pre><code class="python">age = 33
+if (age == 22):
+    print(&#39;小李的年龄是：%s&#39;%(age))
+else:
+    print(&quot;我是骗子，来打我啊&quot;)</code></pre>
+<h3 id="if…else…"><a href="#if…else…" class="headerlink" title="if…else…"></a>if…else…</h3><p>可以有多个分支条件</p>
+<pre><code>if 条件:
+    满足条件执行代码
+elif 条件:
+    上面的条件不满足就走这个
+elif 条件:
+    上面的条件不满足就走这个
+elif 条件:
+    上面的条件不满足就走这个    
+else:
+    上面所有的条件不满足就走这段</code></pre><h2 id="while"><a href="#while" class="headerlink" title="while"></a>while</h2><pre><code>while 条件:
+    # 循环体
+
+    # 如果条件为真，那么循环体则执行
+    # 如果条件为假，那么循环体不执行</code></pre><h3 id="循环中止语句"><a href="#循环中止语句" class="headerlink" title="循环中止语句"></a>循环中止语句</h3><ul>
+<li><code>break</code>,用于完全结束一个循环，跳出循环体执行循环后面的语句</li>
+</ul>
+<pre><code class="python">count = 0
+
+while count &lt;= 100:
+    print(&quot;loop &quot;,count)
+    if count == 5:
+        break
+    count +=1
+print(&quot;-----out of while loop ------&quot;)</code></pre>
+<ul>
+<li><code>continue</code>只是终止本次循环，接着还执行后面的循环</li>
+</ul>
+<pre><code class="python">count = 0
+
+while &lt;= 100:
+    count += 1
+    if count &gt; 5 adn count &lt;95:
+        continue
+    print(&quot;loop &quot;,count)
+print(&quot;-----out of while loop ------&quot;)</code></pre>
+<h3 id="while…else"><a href="#while…else" class="headerlink" title="while…else"></a>while…else</h3><blockquote>
+<p>Tips：当while循环被<code>break</code>打断，就不会执行else的结果</p>
+</blockquote>
+<p>while 后面的else作用是指，当while循环正常执行完，中间没有被break中止的话，就会执行else后面的语句</p>
+<pre><code class="python">count = 0
+
+while count &lt;= 5:
+    count += 1
+    print(&quot;loop &quot;,count)
+else:
+    print(&quot;循环正常执行完&quot;)
+print(&quot;-----out of while loop ------&quot;)</code></pre>
+<h3 id="while例子"><a href="#while例子" class="headerlink" title="while例子"></a>while例子</h3><ul>
+<li>求 1-100的所有数的和</li>
+</ul>
+<pre><code class="python">i = 0
+count = 1
+
+while i &lt;= 100:
+    count += i
+    i += 1
+print(count)</code></pre>
+<ul>
+<li>输出1-100内的所有奇数</li>
+</ul>
+<pre><code class="python">count = 0
+
+while count &lt;= 100:
+    count += 1
+    if (count%2 != 0):
+        print(count)</code></pre>
+<ul>
+<li>输出1-100内所有的偶数</li>
+</ul>
+<pre><code class="python">
+count = 0
+
+while count &lt;= 100:
+    count += 1
+    if (count%2 == 0):
+        print(count)</code></pre>
+<ul>
+<li>求 1-2+3-4+5…9的所有数的和</li>
+</ul>
+<pre><code class="python">count = 0
+sum = 0
+
+while count &lt; 100:
+    if (count%2 == 0):
+        sum = sum - count
+    else:
+        sum = sum +count
+    count += 1
+print(sum)
+
+# 说明
+当count为偶数的时候，进行1-2等运算，若不是偶数，则进行sum+count</code></pre>
+<ul>
+<li>用户登录(三次机会)</li>
+</ul>
+<pre><code class="python">admin = &#39;admin&#39;
+passwds = &#39;pass&#39;
+count = 1
+
+while count &lt;= 3:
+    name = input(&quot;name：&quot;)
+    passwd = input(&quot;password：&quot;)
+    if ((name == admin) and (passwd == passwds)):
+        print(&quot;登录成功&quot;)
+        break
+    else:
+        count +=1
+        print(&quot;\n 用户或密码不正确，请重新输入 \n&quot;)
+else:
+    print(&quot;登录失败&quot;)</code></pre>
+<h2 id="for-循环"><a href="#for-循环" class="headerlink" title="for 循环"></a>for 循环</h2><p>for循环可以遍历任何序列的项目，如一个列表或者一个字符串</p>
+<pre><code class="python">for ... in ....</code></pre>
+<p>例如：遍历一个python</p>
+<pre><code class="python">a = &#39;python&#39;
+for i in a:
+    print(i)</code></pre>
+<hr>
+<h1 id="0x09-运算符"><a href="#0x09-运算符" class="headerlink" title="0x09 运算符"></a>0x09 运算符</h1><h2 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h2><p>这里就不过多说明了，我在这里就列个表</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>+</td>
+<td>加</td>
+</tr>
+<tr>
+<td>-</td>
+<td>减</td>
+</tr>
+<tr>
+<td>*</td>
+<td>乘</td>
+</tr>
+<tr>
+<td>/</td>
+<td>除</td>
+</tr>
+<tr>
+<td>%</td>
+<td>取模，返回除法的余数</td>
+</tr>
+<tr>
+<td>**</td>
+<td>幂，返回x的y次幂</td>
+</tr>
+<tr>
+<td>//</td>
+<td>取整除，返回商的整数部分</td>
+</tr>
+</tbody></table>
+<h2 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>==</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>大于等于</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>小于等于</td>
+</tr>
+</tbody></table>
+<h2 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>=</td>
+<td>赋值</td>
+</tr>
+<tr>
+<td>+=</td>
+<td>加法赋值运算符</td>
+</tr>
+<tr>
+<td>-=</td>
+<td>减法赋值运算符</td>
+</tr>
+<tr>
+<td>*=</td>
+<td>乘法赋值运算符</td>
+</tr>
+<tr>
+<td>/=</td>
+<td>除法赋值运算符</td>
+</tr>
+<tr>
+<td>%=</td>
+<td>取模赋值运算符</td>
+</tr>
+<tr>
+<td>**=</td>
+<td>幂赋值运算符</td>
+</tr>
+<tr>
+<td>//=</td>
+<td>取整赋值运算符</td>
+</tr>
+</tbody></table>
+<pre><code># 例子
+c += a  ===&gt; c = c+a</code></pre><h2 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h2><table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>返回</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>and</td>
+<td>与</td>
+<td>两边为真，才为真</td>
+</tr>
+<tr>
+<td>or</td>
+<td>或</td>
+<td>只要有一个为真，则为真</td>
+</tr>
+<tr>
+<td>not</td>
+<td>非</td>
+<td>取反，真为假，假为真</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>tips 1：<code>在没有()的情况下</code>，not优先级高于and，and优先级高于or，即<code>()&gt;not&gt;and&gt;or</code><br>tips 2：布尔值为0，false，不为0，true<br>tips 3：布尔值真假，可以转换为1和0</p>
+</blockquote>
+<p><strong>短路原则</strong></p>
+<ul>
+<li><code>and</code>的第一个条件为假，后面的不管怎样都为假</li>
+<li><code>or</code>的第一个条件为真，湖面的不管为什么都为真</li>
+</ul>
+<pre><code class="python"># x and y ,x 为 true，则返回y
+print(1 and 2)  #2
+
+# x or y，x为true，则返回x
+print(3 or 100 or 5 or 2) # 3</code></pre>
+<hr>
+<h1 id="0x10-元组（tupe）"><a href="#0x10-元组（tupe）" class="headerlink" title="0x10 元组（tupe）"></a>0x10 元组（tupe）</h1><p><code>元组</code>被称为只读列表，即数据可以被查询，但不能被修改</p>
+<ul>
+<li>定义一个空的tuple,可以写成<code>()</code>,只有一个元素的tuple定义时必须加一个逗号<code>,</code></li>
+</ul>
+<pre><code class="python">x =() #定义空的tuple
+
+x = (1,) 
+print(x)</code></pre>
+<p><strong>tuple一旦初始化就不能修改</strong></p>
+<pre><code class="python">x = (&#39;Michael&#39;, &#39;Bob&#39;, &#39;Tracy&#39;)
+
+t = (&#39;a&#39;, &#39;b&#39;, [&#39;A&#39;, &#39;B&#39;])
+t[2][0] = &#39;X&#39;
+t[2][1] = &#39;Y&#39;</code></pre>
+<ul>
+<li>tuple的陷阱:当你定义一个tuple时,在定义的时候.tuple的元素就必须被确定下来</li>
+</ul>
+<p><strong>修改元组中的列表</strong></p>
+<pre><code class="python">a = (1,2,3,4,5,6,[7,8,9,10],11,12,13)
+a[6][0] = &#39;你大爷&#39;
+print(a)</code></pre>
+<hr>
+<h1 id="0x11-列表（list）"><a href="#0x11-列表（list）" class="headerlink" title="0x11 列表（list）"></a>0x11 列表（list）</h1><p>list是一种有序的集合,可以随时添加和和删除其中的元素</p>
+<pre><code class="python">x = [&#39;a&#39;,&#39;b&#39;]</code></pre>
+<p>列表的数据项不需要具有相同的类型<br>创建一个列表,只要把逗号分隔额数据项使用方括号括起来即可</p>
+<p>列表可以进行截取,组合等</p>
+<h2 id="增"><a href="#增" class="headerlink" title="增"></a>增</h2><p>你可以对列表的数据进行修改或更新</p>
+<ul>
+<li><code>append()</code>方法来添加列表项</li>
+<li><code>insert(位置,&#39;更新的值&#39;)</code>，把元素插入到指定的位置</li>
+<li><code>extend</code>，在列表的末尾一次性追加另一个序列中的多个值</li>
+</ul>
+<pre><code class="python">list1 = [1, 2, 3, 4, 5, 6, 7 ]
+print(list1)
+x = list1.insert(8,&quot;next&quot;)
+print(list1)
+
+b = [1,2,3]
+c = [4,5,6]
+b.extend(b)
+#把c的值,添加到b中,创建全新的列表
+print(a)</code></pre>
+<h2 id="删"><a href="#删" class="headerlink" title="删"></a>删</h2><ul>
+<li><code>del</code>语句来删除列表的的元素</li>
+<li><code>pop()</code> 删除list末尾的元素,也可以删除指定位置的元素</li>
+<li><code>clear</code> 清空</li>
+<li><code>remove(&quot;内容&quot;)</code></li>
+</ul>
+<pre><code class="python">list1 = [1, 2, 3, 4, 5, 6, 7 ]
+del list[2]
+
+x  = [1,2,3,4,5,6]
+print(x.pop())
+print(x)
+print(x.pop(0))
+print(x)</code></pre>
+<h2 id="改-查"><a href="#改-查" class="headerlink" title="改+查"></a>改+查</h2><ul>
+<li>使用下标索引来访问列表中的值,同样你也可以使用方括号的形式截取字符</li>
+<li>切片去查，或者循环去查</li>
+</ul>
+<pre><code class="python">list1 = [&#39;Google&#39;, &#39;Runoob&#39;, 1997, 2000]
+list2 = [1, 2, 3, 4, 5, 6, 7 ]
+
+print(&quot;list1[0]:&quot;,list1[0]) #使用下标获取
+print(&quot;list2[1:5]: &quot;, list2[1:5]) #通过截取获得
+
+##########################################
+
+a = [1,2,3,4,5,6]
+
+print(a[1:]) #从下标1取到最后
+print(a[1:-1]) #取倒数第二值
+print(a[1:-1:1]) #从左到右一个一个去取
+print(a[1::2]) #从左到右隔一个去取
+print(a[3::-1])</code></pre>
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><ul>
+<li><code>count</code>，计算某元素出现的次数</li>
+</ul>
+<pre><code class="python">a = [1,2,3,4,5,6,1,2,2,2,2,2,2].count(2)
+print(a) #打印a中的2出现的次数</code></pre>
+<ul>
+<li><code>index</code>，用于从列表中找出某个值第一个匹配的索引位置</li>
+</ul>
+<pre><code class="python">a = [&#39;xiaoli&#39;,&#39;jinqi&#39;,&#39;xiaopan&#39;]
+print(a.index(&#39;xiaopan&#39;))
+
+#返回列表中以下标出现的索引值</code></pre>
+<ul>
+<li><code>sort</code>，用于在原位置对列表进行排序</li>
+<li><code>reverse</code>，将列表中的元素反向存放</li>
+</ul>
+<pre><code class="python">a = [2,1,3,4,5]
+a.sort()
+# 他没有返回值，所以只能打印a
+print(a) 
+# [1, 2, 3, 4, 5]
+
+###############################
+
+a.reverse()
+#他也没有返回值，所以只能打印a
+print(a)
+# [5, 4, 3, 1, 2]</code></pre>
+<ul>
+<li>join()</li>
+</ul>
+<p>用于将序列中的元素以指定的字符连接成一个新的字符串</p>
+<pre><code class="python">a = &#39;abcde&#39;
+print(&#39;*&#39;.join(a))</code></pre>
+<h2 id="嵌套列表"><a href="#嵌套列表" class="headerlink" title="嵌套列表"></a>嵌套列表</h2><p>即在列表里创建其他列表</p>
+<pre><code class="python">a = [1,2,3,4,5,6]
+b = [7,8,9]
+
+x = [a,b]
+print(x)</code></pre>
+<p>访问嵌套列表中的值</p>
+<pre><code class="python"># 访问字符串中的某个字
+li = [&#39;asadasd&#39;,&#39;吴越&#39;,&#39;大浪&#39;]
+print(li[2][1])
+
+a = [1,2,3,4,5,6,[7,8,9]]
+# 访问7
+print(a[6][0])</code></pre>
+<h2 id="列表操作符"><a href="#列表操作符" class="headerlink" title="列表操作符"></a>列表操作符</h2><ul>
+<li><code>len()</code>   获取长度</li>
+<li><code>+</code>       组合</li>
+<li><code>*</code>       重复</li>
+<li><code>in</code>      元素是否存在于列表中</li>
+<li><code>for x in [1,2,3]:print(x,end=&quot;&quot;)</code>    迭代</li>
+</ul>
+<pre><code class="python">len([1,2,3])
+
+name = [1,2,3]+[4,5,6]
+x = [&quot;HI&quot;]*4
+
+print(3 in [1,2,3])
+print(x)
+print(name)</code></pre>
+<hr>
+<h1 id="0x12-字典（dict）"><a href="#0x12-字典（dict）" class="headerlink" title="0x12 字典（dict）"></a>0x12 字典（dict）</h1><p>dict在其他语言中也称为map,使用键-值(key-value)存储,具有极快的查找速度</p>
+<p>dict的key必须是不可变对象<br>这是因为dict根据key来计算value的存储位置,如果每次计算相同的key得出的结果结果不同<br>那dict内部就完全混乱了<br>通过key计算位置的算法称为哈希算法(Hash)</p>
+<p>把数据放入dict的方法,除了初始化时指定外,还可以通过key放入</p>
+<pre><code class="python">d = {&#39;Michael&#39;: 95, &#39;Bob&#39;: 75, &#39;Tracy&#39;: 85}
+d[&#39;admin&#39;]=67
+print(d)
+
+&gt;&gt; {&#39;Michael&#39;: 95, &#39;Bob&#39;: 75, &#39;Tracy&#39;: 85, &#39;admin&#39;: 67}</code></pre>
+<blockquote>
+<p>tips：<code>由于一个key只能对应一个value，所以，多次对一个key放入value，后面的值会把前面的值冲掉</code></p>
+</blockquote>
+<h2 id="判断key是否存在"><a href="#判断key是否存在" class="headerlink" title="判断key是否存在"></a>判断key是否存在</h2><blockquote>
+<p>tips： 如果key值不存在，dict就会报错，所以报避免key不存在的错误</p>
+</blockquote>
+<ul>
+<li><code>in</code>判断key是否存在</li>
+<li>dict提供的<code>get()</code>方法，如果key不存在，可以返回None，或者自己指定的value</li>
+</ul>
+<pre><code class="python">d = {&#39;Michael&#39;: 95, &#39;Bob&#39;: 75, &#39;Tracy&#39;: 85}
+print(&quot;rom&quot; in d)
+
+print(d.get(&#39;rom&#39;,&quot;不存在&quot;))</code></pre>
+<h2 id="增-1"><a href="#增-1" class="headerlink" title="增"></a>增</h2><ul>
+<li><code>setdefault(key,default=None)</code>，如果键不存在与字典中，将会添加键并将值设为默认值</li>
+</ul>
+<pre><code class="python">d = {&#39;dict&#39;:&#39;字典&#39;,}
+d[&#39;hello&#39;] = &#39;你好&#39;
+print(d)
+
+dict = {&#39;runoob&#39;: &#39;菜鸟教程&#39;, &#39;google&#39;: &#39;Google 搜索&#39;}
+print(&quot;Value : %s&quot; % dict.setdefault(&#39;runoob&#39;, None)) #Value : 菜鸟教程
+print(&quot;Value : %s&quot; % dict.setdefault(&#39;Taobao&#39;, &#39;淘宝&#39;)) #Value : 淘宝
+print(dict)
+
+# {&#39;runoob&#39;: &#39;菜鸟教程&#39;, &#39;google&#39;: &#39;Google 搜索&#39;, &#39;Taobao&#39;: &#39;淘宝&#39;}</code></pre>
+<h2 id="删除元素"><a href="#删除元素" class="headerlink" title="删除元素"></a>删除元素</h2><ul>
+<li>删除一个key,用<code>pop(key)</code>方法,对应的value也会从dict中删除</li>
+<li><code>clear</code>清空字典</li>
+<li><code>popitem()</code>随机删除字典中的某个键值对，将删除的键值对以元组的形式返回</li>
+</ul>
+<pre><code class="python">d = {&#39;Michael&#39;: 95, &#39;Bob&#39;: 75, &#39;Tracy&#39;: 85}
+print(d.pop(&#39;Bob&#39;))
+print(d)
+
+&gt;&gt; 75   {&#39;Michael&#39;: 95, &#39;Tracy&#39;: 85}</code></pre>
+<blockquote>
+<p>tips:dict内部存放的顺序和key放入的顺序是没有关系的</p>
+</blockquote>
+<h2 id="改"><a href="#改" class="headerlink" title="改"></a>改</h2><p><strong>update</strong></p>
+<pre><code class="python"># 将dict所有的键值对覆盖添加(相同的覆盖，没有的添加)到dic2中
+
+dic = {&quot;name&quot;:&quot;jin&quot;,&quot;age&quot;:18,&quot;sex&quot;:&quot;male&quot;}
+dic2 = {&quot;name&quot;:&quot;alex&quot;,&quot;weight&quot;:75}
+dic2.update(dic)
+print(dic2)</code></pre>
+<h2 id="查"><a href="#查" class="headerlink" title="查"></a>查</h2><pre><code class="python">dict = {&#39;runoob&#39;: &#39;菜鸟教程&#39;, &#39;google&#39;: &#39;Google 搜索&#39;}
+value = dict[&quot;google&quot;]
+print(value) #没有会报错</code></pre>
+<h2 id="其他操作-1"><a href="#其他操作-1" class="headerlink" title="其他操作"></a>其他操作</h2><ul>
+<li><code>items()</code>，返回可遍历的（键,值）元组数组</li>
+</ul>
+<pre><code class="python">dict = {&#39;Google&#39;: &#39;www.google.com&#39;, &#39;Runoob&#39;: &#39;www.runoob.com&#39;, &#39;taobao&#39;: &#39;www.taobao.com&#39;}
+print(dict.items())
+
+for i in dict.items():
+    print(i)
+
+# (&#39;Google&#39;, &#39;www.google.com&#39;)
+# (&#39;Runoob&#39;, &#39;www.runoob.com&#39;)
+# (&#39;taobao&#39;, &#39;www.taobao.com&#39;)</code></pre>
+<ul>
+<li><code>values()</code>以列表返回字典中的所有值</li>
+</ul>
+<pre><code class="python">dict = {&#39;Google&#39;: &#39;www.google.com&#39;, &#39;Runoob&#39;: &#39;www.runoob.com&#39;,}
+print(dict.values())
+
+# 返回 ==&gt; dict_values([&#39;www.google.com&#39;, &#39;www.runoob.com&#39;])</code></pre>
+<ul>
+<li><code>keys()</code>以列表返回一个字典所有的键</li>
+</ul>
+<pre><code class="python">dict = {&#39;Name&#39;: &#39;Zara&#39;, &#39;Age&#39;: 7}
+
+print &quot;Value : %s&quot; %  dict.keys()</code></pre>
+<h2 id="字典的循环"><a href="#字典的循环" class="headerlink" title="字典的循环"></a>字典的循环</h2><pre><code class="python">dict = {&#39;runoob&#39;: &#39;菜鸟教程&#39;, &#39;google&#39;: &#39;Google 搜索&#39;}
+
+# 如果直接循环，默认是直接打印他的键
+for i in dict:
+    print(i)
+
+# 用元组显示键值
+for item in dict.items():
+    print(item)
+
+# 分别打印键和值
+for key,value in dict.items():
+    print(key,value)</code></pre>
+<h2 id="字典的嵌套"><a href="#字典的嵌套" class="headerlink" title="字典的嵌套"></a>字典的嵌套</h2><pre><code class="python">dic = {
+    &#39;name&#39;:[&#39;alex&#39;,&#39;wusir&#39;,&#39;taibai&#39;],
+    &#39;py9&#39;:{
+        &#39;time&#39;:&#39;123&#39;,
+        &#39;learn_money&#39;:19800,
+        &#39;addr&#39;:&#39;CBD&#39;,
+    },
+    &#39;age&#39;:21
+}
+</code></pre>
+<p><strong>dcit的特点</strong></p>
+<ul>
+<li>查找和插入的速度极快,不会随着key的增加而变慢 </li>
+<li>需要占用大量的内存,内存浪费多</li>
+</ul>
+<hr>
+<h1 id="0x13-Set"><a href="#0x13-Set" class="headerlink" title="0x13 Set"></a>0x13 Set</h1><p>集合是无须的，不重复的数据集合，它里面的元素是可哈希的（不可变类型），但是集合本身是不可哈希（所以集合做不了字典的键）的。</p>
+<ul>
+<li>去重，把一个列表变成集合，就自动去重了</li>
+<li>关系测试，测试两组数据之前的交集，差集，并集等关系</li>
+</ul>
+<h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><pre><code class="python">parame = {value,value1,value2,.......}
+或
+set(value)</code></pre>
+<h2 id="增-2"><a href="#增-2" class="headerlink" title="增"></a>增</h2><ul>
+<li><code>add()</code>，重复的元素在set中自动被过滤</li>
+<li><code>update()</code></li>
+</ul>
+<pre><code class="python">set1 = {1,2,3,4,5,6,7,8,9}
+set1.add(123)
+set1.update(789)
+print(set1)</code></pre>
+<h2 id="删-1"><a href="#删-1" class="headerlink" title="删"></a>删</h2><ul>
+<li><code>remove()</code>，按元素删除</li>
+<li><code>clear()</code>，清空集合</li>
+<li><code>del</code> 删除整个集合</li>
+<li><code>pop()</code>，随机删除</li>
+</ul>
+<pre><code class="python">set1 = {1,2,3,4,5,6,7,8,9}
+print(set1.pop())
+
+set1.remove(7)
+print(set1)
+
+del set1</code></pre>
+<h2 id="查-1"><a href="#查-1" class="headerlink" title="查"></a>查</h2><p>只能用for去查</p>
+<pre><code class="python">set1 = {1,2,3,4,5,6,7,8,9}
+for i in set1:
+    print(i)</code></pre>
+<h2 id="其他操作-2"><a href="#其他操作-2" class="headerlink" title="其他操作"></a>其他操作</h2><ul>
+<li>交集，(<code>&amp;</code>  或者 <code>intersection</code>)，就是两个集合中相同的</li>
+</ul>
+<pre><code class="python">set1 = {1,2,3,4,5}
+set2 = {4,5,6,7,8}
+print(set1 &amp; set2)  # {4, 5}
+print(set1.intersection(set2))  # {4, 5}</code></pre>
+<ul>
+<li>并集，（<code>|</code> 或者 <code>union</code>）,两个集合合并，相同的去掉</li>
+</ul>
+<pre><code class="python">set1 = {1,2,3,4,5}
+set2 = {4,5,6,7,8}
+print(set1 | set2)  # {1, 2, 3, 4, 5, 6, 7}
+
+print(set2.union(set1))  # {1, 2, 3, 4, 5, 6, 7}</code></pre>
+<ul>
+<li>差集，（<code>-</code> 或者 <code>difference</code>），集合独有的</li>
+</ul>
+<pre><code class="python">set1 = {1,2,3,4,5}
+set2 = {4,5,6,7,8}
+print(set1 - set2)  # {1, 2, 3}
+print(set1.difference(set2))  # {1, 2, 3}</code></pre>
+<ul>
+<li>反交集，（<code>^</code> 或者 <code>symmetric_difference</code>），去掉相同的并返回</li>
+</ul>
+<pre><code class="python">set1 = {1,2,3,4,5}
+set2 = {4,5,6,7,8}
+print(set1 ^ set2)  # {1, 2, 3, 6, 7, 8}
+print(set1.symmetric_difference(set2))  # {1, 2, 3, 6, 7, 8}</code></pre>
+<ul>
+<li>子集与超集</li>
+</ul>
+<p>子集：一个集合包含另一个集合中的所有</p>
+<pre><code class="python">set1 = {1,2,3}
+set2 = {1,2,3,4,5,6}
+
+print(set1 &lt; set2)
+print(set1.issubset(set2))  # 这两个相同，都是说明set1是set2子集。
+
+print(set2 &gt; set1)
+print(set2.issuperset(set1))  # 这两个相同，都是说明set2是set1超集。</code></pre>
+<ul>
+<li>frozenset不可变集合，让集合变成不可变类型</li>
+</ul>
+<pre><code class="python">s = frozenset(&#39;barry&#39;)
+print(s,type(s))  # frozenset({&#39;a&#39;, &#39;y&#39;, &#39;b&#39;, &#39;r&#39;}) &lt;class &#39;frozenset&#39;&gt;</code></pre>
+<ul>
+<li>例子：列表去重</li>
+</ul>
+<pre><code class="python">li = [1,1,1,1,1,2,2,2,2,3,4,5,49,9,1]
+set1 = set(li)
+li = list(set1)
+print(li)</code></pre>
+<hr>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>Python基础之面向对象</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Linux/kali/msfconsole/msfvenom/msfvenom%E5%90%8E%E9%97%A8%E5%AD%A6%E4%B9%A0-windows%E7%AF%87/">
+                        <span>【学习篇】msfvenom使用</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Python基础&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

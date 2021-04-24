@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>简陋POC框架编写 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    1.6k 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      7 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 十一月 17日 星期日, 9:05 晚上</p>
+            
+            <div class="markdown-body">
+              <p>网上现在有很多类似的框架，甚至架构已经十分完善的（MSF，Pocsuite3），那我为啥还要重复造造轮子呢？</p>
+<p>写了这么多的exp，放在那里很混乱，方便管理与更新</p>
+<p>在写框架时，遇到了很多之前不曾想过的问题，在其他的框架的分析时，学到了很多</p>
+<p>每次的编写，都是为了以后能够制作</p>
+<p>总结：学到了就是我的了</p>
+<hr>
+<h1 id="大体结构"><a href="#大体结构" class="headerlink" title="大体结构"></a>大体结构</h1><ul>
+<li><code>lib</code>：存储核心文件</li>
+<li><code>poc</code>：存储 poc/exp 文件</li>
+<li><code>main.py</code>：启动脚本</li>
+</ul>
+<hr>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><h2 id="颜色与banner"><a href="#颜色与banner" class="headerlink" title="颜色与banner"></a>颜色与banner</h2><p>文件：<code>lib\common.py</code></p>
+<ul>
+<li><code>控制端颜色输出</code>：使用库<code>colorama</code></li>
+</ul>
+<p>至于为什么不使用其他的，因为我看着脑壳痛，拿个最简单的来使用吧</p>
+<pre><code class="python">from colorama import Fore,Style,init
+
+def Color(Conversion,color,Info=&#39;&#39;):
+    init(autoreset=True)
+
+    if color == &quot;red&quot;:
+        print(Fore.RED + Conversion + Fore.WHITE + Info)
+    elif color == &quot;green&quot;:
+        print(Fore.GREEN + Conversion + Fore.WHITE + Info)
+    elif color == &quot;yellow&quot;:
+        print(Fore.YELLOW + Conversion + Fore.WHITE + Info)
+    elif color == &quot;blue&quot;:
+        print(Fore.BLUE + Conversion + + Fore.WHITE + Info)
+    else:
+        print(Fore.RED + &quot;Eroor：Not color&quot;)</code></pre>
+<p><img src="/images/Python/POC%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/color.png" srcset="/img/loading.gif" alt=""></p>
+<ul>
+<li><code>banner</code>：网上有在线的文字转banner</li>
+</ul>
+<pre><code class="python">from colorama import Fore,Style,init
+
+# 转换颜色
+def Color(Conversion,color,Info=&#39;&#39;):
+    init(autoreset=True)
+
+    if color == &quot;red&quot;:
+        print(Fore.RED + Conversion + Fore.WHITE + Info)
+    elif color == &quot;green&quot;:
+        print(Fore.GREEN + Conversion + Fore.WHITE + Info)
+    elif color == &quot;yellow&quot;:
+        print(Fore.YELLOW + Conversion + Fore.WHITE + Info)
+    elif color == &quot;blue&quot;:
+        print(Fore.BLUE + Conversion + + Fore.WHITE + Info)
+    else:
+        print(Fore.RED + &quot;Eroor：Not color&quot;)
+
+# banner
+def banner():
+    def banner():
+    banner = &#39;&#39;&#39;
+     ______ _____ _____ _______ _    _ 
+    |  ____|  __ \_   _|__   __| |  | | 
+    | |__  | |  | || |    | |  | |__| |
+    |  __| | |  | || |    | |  |  __  |
+    | |____| |__| || |_   | |  | |  | |
+    |______|_____/_____|  |_|  |_|  |_|
+
+            Author: {}
+    &#39;&#39;&#39;.format(&quot;只因不值得&quot;)
+    print(Fore.RED + banner)
+    print(Style.RESET_ALL)</code></pre>
+<ul>
+<li><code>main.py</code>文件进行调用</li>
+</ul>
+<pre><code class="python">from lib.common import banner
+
+def main():
+    banner()
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<p><img src="/images/Python/POC%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/banner.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="加载模块-–-动态加载"><a href="#加载模块-–-动态加载" class="headerlink" title="加载模块 – 动态加载"></a>加载模块 – 动态加载</h2><p>两种方法：</p>
+<ul>
+<li><p><code>__import__()</code>：自带函数进行加载</p>
+</li>
+<li><p><code>importlib</code>：第三方模块进行加载</p>
+</li>
+</ul>
+<p>文件：<code>Registry.py</code></p>
+<p>在这里我选择了使用第三方模块进行加载</p>
+<pre><code class="python">import importlib.util
+import importlib.machinery
+from lib.common import Color
+
+# 从本地导入模块
+def load_file_modules(file_path):
+    &quot;&quot;&quot;
+    需要加载完整的文件路径
+    &quot;&quot;&quot;
+    if &#39;&#39; not in importlib.machinery.SOURCE_SUFFIXES:
+        importlib.machinery.SOURCE_SUFFIXES.append(&#39;&#39;)
+
+    try:
+        module_file_path = file_path # file_path
+        # print(module_file_path) 文件路径
+        module_name = file_path.stem
+        # print(module_name) 文件名
+        spec = importlib.util.spec_from_file_location(module_name,module_file_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        # print(dir(module))
+        return module
+    except:
+        error_msg = &quot;Load module &#39;{0}&#39; failed! &quot;.format(file_path)
+        Color(error_msg,&quot;red&quot;)</code></pre>
+<p>加载完模块之后，可以使用<code>getattr</code>调用脚本的函数之类</p>
+<h2 id="Tab补全"><a href="#Tab补全" class="headerlink" title="Tab补全"></a>Tab补全</h2><p>其实写这个框架很久了，一直卡在这个功能这里</p>
+<p>尤其是：<code>readline</code>模块，看的我脑壳痛，想自定义tab提示与补全，搞不定。。。肝了很久放弃ing</p>
+<p>最后还是使用九世搞得：<code>prompt_toolkit</code>模块</p>
+<p>在进行tab补全的时候，顺便把分隔命令一起写了吧。。。</p>
+<p>文件：<code>lib/command.py</code></p>
+<pre><code class="python">from prompt_toolkit import PromptSession,shortcuts
+from prompt_toolkit.completion import Completer,Completion,FuzzyCompleter
+
+
+class Console_command(Completer):
+    def __init__(self):
+        self.hostname = &quot;Clover&quot; # 标识符
+        self.global_cmd = [&quot;help&quot;, &quot;use&quot;, &quot;exit&quot;, &quot;search&quot;, &quot;version&quot;, &quot;clear&quot;]
+        self.module_cmd = [&quot;run&quot;, &quot;back&quot;, &quot;set&quot;,&quot;list&quot;,&quot;show&quot;]
+        self.module_cmd.extend(self.global_cmd) # 全部命令
+        self.poc_paths = [] # 模块路径
+
+    # 分隔命令
+    def parse_line(self,line):
+        &quot;&quot;&quot;
+        :return: 命令,参数
+        &quot;&quot;&quot;
+        command, _, arg = line.strip().partition(&quot; &quot;)
+        return command, arg.strip()
+
+    # tab补全
+    def get_completions(self, document, complete_event,*args, **kwargs):
+        if &quot;use&quot; in str(document):
+            for poc in self.poc_paths:
+                yield Completion(poc,start_position=0)
+        else:
+            for command in self.module_cmd:
+                yield  Completion(command,start_position=0)</code></pre>
+<p>判断当前输入的行中<code>str(document)</code>，是否有我们定义的关键字，如果有，则返回我们设定</p>
+<h2 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h2><pre><code class="python">from prompt_toolkit import PromptSession,shortcuts
+from prompt_toolkit.completion import Completer,Completion,FuzzyCompleter
+
+
+class Console_command(Completer):
+    def __init__(self):
+        self.hostname = &quot;Clover&quot; # 标识符
+        self.global_cmd = [&quot;help&quot;, &quot;use&quot;, &quot;exit&quot;, &quot;search&quot;, &quot;version&quot;, &quot;clear&quot;]
+        self.module_cmd = [&quot;run&quot;, &quot;back&quot;, &quot;set&quot;,&quot;list&quot;,&quot;show&quot;]
+        self.module_cmd.extend(self.global_cmd) # 全部命令
+        self.poc_paths = [] # 模块路径
+
+    # 分隔命令
+    def parse_line(self,line):
+        &quot;&quot;&quot;
+        :return: 命令,参数
+        &quot;&quot;&quot;
+        command, _, arg = line.strip().partition(&quot; &quot;)
+        return command, arg.strip()
+
+    # tab补全
+    def get_completions(self, document, complete_event,*args, **kwargs):
+        if &quot;use&quot; in str(document):
+            for poc in self.poc_paths:
+                yield Completion(poc,start_position=0)
+        else:
+            for command in self.module_cmd:
+                yield  Completion(command,start_position=0)
+
+    # 执行命令
+    def get_command_handler(self,command):
+        try:
+            get_command = getattr(self,&quot;command_{}&quot;.format(command))
+        except:
+            Color(&quot;Unknown Command: &quot;,&quot;red&quot;,&quot;{}&quot;.format(command))
+        return get_command</code></pre>
+<p>通过<code>getattr</code>执行我们当前脚本的函数</p>
+<p>如：当我们在终端输入</p>
+<pre><code>shell &gt; use</code></pre><p>在我们后端，执行的方式就是：<code>getattr(self,command_use)</code>执行当前类中的<code>command_use</code>方法</p>
+<p>所以，我们的大体的执行命令，定义的使用应该以，<code>command_命令</code></p>
+<h2 id="运行框架"><a href="#运行框架" class="headerlink" title="运行框架"></a>运行框架</h2><p>文件：<code>lib\command.py</code></p>
+<pre><code class="python">from prompt_toolkit import PromptSession,shortcuts
+from prompt_toolkit.completion import Completer,Completion,FuzzyCompleter
+
+
+class Console_command(Completer):
+    def __init__(self):
+        self.hostname = &quot;Clover&quot; # 标识符
+        self.global_cmd = [&quot;help&quot;, &quot;use&quot;, &quot;exit&quot;, &quot;search&quot;, &quot;version&quot;, &quot;clear&quot;]
+        self.module_cmd = [&quot;run&quot;, &quot;back&quot;, &quot;set&quot;,&quot;list&quot;,&quot;show&quot;]
+        self.module_cmd.extend(self.global_cmd) # 全部命令
+        self.poc_paths = [] # 模块路径
+
+    # 分隔命令
+    def parse_line(self,line):
+        &quot;&quot;&quot;
+        :return: 命令,参数
+        &quot;&quot;&quot;
+        command, _, arg = line.strip().partition(&quot; &quot;)
+        return command, arg.strip()
+
+    # tab补全
+    def get_completions(self, document, complete_event,*args, **kwargs):
+        if &quot;use&quot; in str(document):
+            for poc in self.poc_paths:
+                yield Completion(poc,start_position=0)
+        else:
+            for command in self.module_cmd:
+                yield  Completion(command,start_position=0)
+
+    # 执行命令
+    def get_command_handler(self,command):
+        try:
+            get_command = getattr(self,&quot;command_{}&quot;.format(command))
+        except:
+            Color(&quot;Unknown Command: &quot;,&quot;red&quot;,&quot;{}&quot;.format(command))
+        return get_command
+
+    # 运行
+    def start(self):
+        session = PromptSession()
+        while True:
+            try:
+                command,args = self.parse_line(session.prompt(self.prompt+&quot; &gt; &quot;,completer=FuzzyCompleter(Console_command())))
+                command = command.lower()
+                if not command:
+                    continue
+                command_run = self.get_command_handler(command)
+                command_run(args)
+            except Exception as e:
+                pass</code></pre>
+<ul>
+<li>文件：<code>main.py</code></li>
+</ul>
+<pre><code class="python">from lib.Command import Console_command
+from lib.common import banner
+
+def main():
+    banner()
+    command = Console_command()
+    command.start()
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<p><img src="/images/Python/POC%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/start.png" srcset="/img/loading.gif" alt=""></p>
+<hr>
+<h1 id="命令例子"><a href="#命令例子" class="headerlink" title="命令例子"></a>命令例子</h1><p>文件：<code>lib\command.py</code></p>
+<ul>
+<li>version</li>
+</ul>
+<pre><code class="python"># 版本号
+def command_version(self,*args, **kwargs):
+    Version = &quot;vserion: 0.01 \n&quot;
+    Color(Version,&quot;red&quot;)</code></pre>
+<ul>
+<li>exit</li>
+</ul>
+<pre><code class="python"># 退出
+def command_exit(self,*args, **kwargs):
+    Color(&quot;[-] Exit...&quot;,&quot;red&quot;)
+    exit(0)</code></pre>
+<p><img src="/images/Python/POC%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/test.png" srcset="/img/loading.gif" alt=""></p>
+<p>这里，只弄了两个最简易的例子，其他的，就请各位自己尝试编写看看</p>
+<p>这个初次框架，尝试的是单例模式，可以根据各自的需要改成多线程模式！</p>
+<hr>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p><img src="/images/Python/POC%E6%A1%86%E6%9E%B6%E7%BC%96%E5%86%99/POC.gif" srcset="/img/loading.gif" alt=""></p>
+<p>一个框架的威力，取决于exp的数量与质量</p>
+<p>但是，编写一个适合自己使用的框架，是在造灰机的过程中是必不可少的过程</p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/11/24/Python/%E5%85%88%E7%9F%A5%E6%96%87%E7%AB%A0%E7%88%AC%E8%99%AB/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>先知文章爬虫</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/09/24/Web/PHP%E7%B1%BB%E6%B3%A8%E9%87%8A%E7%BB%95%E8%BF%87D%E7%9B%BE/">
+                        <span>PHP传值方式绕过D盾</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "简陋POC框架编写&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

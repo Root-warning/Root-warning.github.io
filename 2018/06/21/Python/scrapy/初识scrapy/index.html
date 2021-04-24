@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>初识scrapy框架 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    994 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      3 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 5:20 下午</p>
+            
+            <div class="markdown-body">
+              <h2 id="认识scrapy"><a href="#认识scrapy" class="headerlink" title="认识scrapy"></a>认识scrapy</h2><p>Scrapy是为了爬取网址数据，提取结构性数据而编写的应用框架</p>
+<h2 id="了解-scrapy-文件"><a href="#了解-scrapy-文件" class="headerlink" title="了解 scrapy 文件"></a>了解 scrapy 文件</h2><p><code>__init__</code>初始化文件，主要写的是一份项目的初始化信息<br><code>items.py</code>数据容器文件，主要用来定义我们要获取的数据<br><code>pipelines.py</code> 管道文件，主要用来对items里面定义的数据进一步的加工与处理<br><code>settings.py</code> 设置文件，主要为爬虫项目的一些设置信息<br><code>spiders</code>文件夹放置的是爬虫项目中的爬虫部分相关的文件<br>spiders文件夹下<code>__init__</code>初始化文件，主要对spiders进行初始化</p>
+<a id="more"></a>
+
+<h2 id="创建爬虫项目"><a href="#创建爬虫项目" class="headerlink" title="创建爬虫项目"></a>创建爬虫项目</h2><p>在<code>cmd</code>中，选择创建爬虫的目录</p>
+<pre><code>scrapy startproject 项目名</code></pre><p>创建成功后，可以进入爬虫所在目录</p>
+<h2 id="常用工具命令"><a href="#常用工具命令" class="headerlink" title="常用工具命令"></a>常用工具命令</h2><p>全局命令<br>项目命令</p>
+<blockquote>
+<p>bench命令比较特殊，虽在Available commands中展现，但仍归为项目命令</p>
+</blockquote>
+<h3 id="全局命令"><a href="#全局命令" class="headerlink" title="全局命令"></a>全局命令</h3><pre><code># fetch
+主要用来显示爬虫爬取的过程
+scrapy fetch http://www.baidu.com/
+scrapy fetch -h 获取帮助
+
+# runspider
+实现不依托scrapy的爬虫项目，直接运行一个爬虫文件
+scrpay runspider --loglevel=INFO 爬虫文件
+
+# settings
+查看scrapy对应的配置信息
+如果在项目目录使用setting命令，查看的对应项目的配置信息
+如果在项目外使用setting命令，查看的对scrapy默认配置信息
+scrapy settings --get BOT_NAME
+
+要想查看配置信息中的其他配置信息，我们只需要将上述命令中BOT_NAME位置换成要查询的配置信息项即可
+SPIDER_MODULES(爬虫模块相关)
+
+# shell
+可以启动Scrapy的交互终端(Scrapy shell)
+经常在开发以及调试的时候用到
+在不启动Scrapy爬虫的情况下，对网站响应进行调试，我们也可以写一些Python代码进行相应测试
+scrapy shell http://www.baidu.com --nolog
+爬虫完立即进入交互模式
+
+# startproject
+用于创建项目
+
+# version
+直接显示Scrapy的版本相关信息
+
+# view
+实现下载某个网页并用浏览器查看的功能
+scrapy view http://news.163.com</code></pre><h3 id="项目命令"><a href="#项目命令" class="headerlink" title="项目命令"></a>项目命令</h3><blockquote>
+<p>项目命令一般只能在Scrapy爬虫项目文件夹中使用</p>
+</blockquote>
+<pre><code># bench
+可以测试本地硬件的性能
+会创建一个本地服务器并且会以最大的速度爬行，在此不进行内容的处理
+scrapy bench
+
+# check
+对爬虫进行合同检查
+scrapy check 爬虫名(无后缀)
+
+# crawl
+启动某个爬虫
+scrapy crwal 爬虫名
+
+# edit
+直接打开编辑器对爬虫文件进行编辑，在Windows中执行会出现问题
+
+# genspider
+创建爬虫文件，这是一种快速创建爬虫文件的方式
+基于现有的爬虫模板直接生产一个新的爬虫文件
+
+可以使用-l参数来查看当前可以使用的爬虫模板
+scrapy genspider -l
+
+使用任意一个模板来生成一个爬虫文件
+scrapy genspider -t 模板 新爬虫名 新爬虫爬取的域名
+
+-d    查看爬虫模板的内容
+scrapy genspider -d csvfeed
+
+# list
+列出当前可使用的爬虫文件
+scrapy list
+
+# parse
+获取指定的URL网址，并使用对应的爬虫文件进行处理和分析
+scrapy parse http://www.baidu.com
+parse有很多参数
+scrapy parse -h
+参数大致分为两类，普通参数(Options)和全局参数(Global Options)</code></pre><h3 id="parse命令对应的参数"><a href="#parse命令对应的参数" class="headerlink" title="parse命令对应的参数"></a>parse命令对应的参数</h3><table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">–spider=SPIDER</td>
+<td align="center">强行指定某个爬虫文件spider进行处理</td>
+</tr>
+<tr>
+<td align="center">-a NAME=VALUE</td>
+<td align="center">设置spider的参数，可能会重复</td>
+</tr>
+<tr>
+<td align="center">–pipelines</td>
+<td align="center">通过pipelines来处理items</td>
+</tr>
+<tr>
+<td align="center">–nolinks</td>
+<td align="center">不展示提取的链接信息</td>
+</tr>
+<tr>
+<td align="center">–noitems不展示得到的items</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">–nocolour</td>
+<td align="center">输出结果颜色不高亮</td>
+</tr>
+<tr>
+<td align="center">–rules,-r</td>
+<td align="center">使用CrawlSpider规则去处理回调函数</td>
+</tr>
+<tr>
+<td align="center">–callback=CALLBACK,-c CALLBACK</td>
+<td align="center">指定spider中用于处理返回的响应的回调函数</td>
+</tr>
+<tr>
+<td align="center">–depth=DEPTH,-d DEPTH</td>
+<td align="center">指定爬行深度，默认深度为1</td>
+</tr>
+<tr>
+<td align="center">–verbose,-v</td>
+<td align="center">显示每层的详细信息</td>
+</tr>
+</tbody></table>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2018/10/11/%E7%A1%AC%E4%BB%B6/PM3%20%E5%88%B7%E5%9B%BA%E4%BB%B6%E9%97%AE%E9%A2%98/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>PM3刷固件出问题</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2018/03/16/%E9%9A%8F%E6%89%8B%E8%AE%B0/win10%E5%A4%96%E6%8E%A5%E6%98%BE%E7%A4%BA%E5%99%A8/">
+                        <span>win10外接显示器实现双屏操作</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "初识scrapy框架&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

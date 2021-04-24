@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>OA和深信服漏洞 简略分析 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    956 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      4 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2020 , 八月 23日 星期日, 11:37 晚上</p>
+            
+            <div class="markdown-body">
+              <h1 id="OA-任意文件删除"><a href="#OA-任意文件删除" class="headerlink" title="OA - 任意文件删除"></a>OA - 任意文件删除</h1><p>实测影响版本：通达OA V11.6（其他版本未测）</p>
+<p>根据网上的exp直接定位到漏洞文件<code>MYOA\webroot\module\appbuilder\assets\print.php</code></p>
+<p>通达OA的文件需要进行解密才可以进行查看源码，否则是乱码</p>
+<p>解密后，内容如下：</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/1.png" srcset="/img/loading.gif" alt=""></p>
+<p>可以看到该页面并没有何的需要登录验证的文件包含</p>
+<p>并且<code>$s_tmp</code>的并没进行任何的过滤直接带入了<code>unlink()</code>删除文件函数中</p>
+<p>导致了任意文件的删除！</p>
+<p>起始目录：<code>/../../../../logs/appbuilder/logs/</code></p>
+<p>漏洞验证：删除一个txt文件</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/2.gif" srcset="/img/loading.gif" alt=""></p>
+<p>至于文件上传，看的有点糊涂就不写了</p>
+<hr>
+<h1 id="深信服任意文件登录"><a href="#深信服任意文件登录" class="headerlink" title="深信服任意文件登录"></a>深信服任意文件登录</h1><ul>
+<li>漏洞文件：<code>ui/login.php</code></li>
+</ul>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/3.png" srcset="/img/loading.gif" alt=""></p>
+<p>看构造进行Session前的if语句</p>
+<pre><code class="php">if((isset($_SERVER[&quot;REMOTE_ADDR&quot;]) &amp;&amp; (&quot;127.0.0.2&quot; == $_SERVER[&quot;REMOTE_ADDR&quot;] || &quot;127.0.0.1&quot; == $_SERVER[&quot;REMOTE_ADDR&quot;]))
+            || $docker)
+        {
+            //构造session
+            if(isset($_GET[&quot;user&quot;]))
+            {
+                $auth_value[&quot;auth_user&quot;] = $_GET[&quot;user&quot;];
+            }
+            elseif($docker)
+            {
+                $auth_value[&quot;auth_user&quot;] = $username;
+            }
+            else
+            {
+                //$auth_value[&quot;auth_user&quot;] = &quot;SCLOUDE&quot;;
+                //免密登录后，人为loginout，还是需要密码登录，url不一样
+                return;
+            }
+            session_start();</code></pre>
+<p>先判断了<code>$_SERVER[&quot;REMOTE_ADDR&quot;]</code>是否存在，接着判断了<code>$_SERVER[&quot;REMOTE_ADDR&quot;]</code>是否等于<code>127.0.0.2</code>或<code>127.0.0.1</code>以及<code>$docker</code></p>
+<blockquote>
+<p>不知道哪里出了问题，导致了<code>$_SERVER[&quot;REMOTE_ADDR&quot;] == 127.0.0.1</code>为真</p>
+<p>所以等于这个判断为永真，直接就进入到了构造session的环节</p>
+</blockquote>
+<pre><code class="php">//构造session
+if(isset($_GET[&quot;user&quot;]))
+{
+    $auth_value[&quot;auth_user&quot;] = $_GET[&quot;user&quot;];
+}
+elseif($docker)
+{
+    $auth_value[&quot;auth_user&quot;] = $username;
+}
+else
+{
+    //$auth_value[&quot;auth_user&quot;] = &quot;SCLOUDE&quot;;
+    //免密登录后，人为loginout，还是需要密码登录，url不一样
+    return;
+            }
+session_start();</code></pre>
+<p>如果存在<code>$_GET[&quot;user&quot;]</code>则直接写入到<code>$auth_value[&quot;auth_user&quot;]</code>中，没有进行任何的过滤</p>
+<pre><code class="php">$_SESSION[&quot;auth_user_info&quot;] = $auth_value;</code></pre>
+<p>也就是说用户名是直接带入到<code>$_SESSION[&quot;auth_user_info&quot;]</code>中的，并且是可以控制的</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/4.png" srcset="/img/loading.gif" alt=""></p>
+<p>调用了一些函数，但是该php中并没有定义，跟进文件开始时包含的<code>platform</code>查看相应函数的代码</p>
+<ul>
+<li><code>ui/platform.php</code></li>
+</ul>
+<p><code>user_logined_get()</code>：</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/5.png" srcset="/img/loading.gif" alt=""></p>
+<p>有问题的if判断：条件为真，则<code>$login_user</code>获取登录到后台管理员的用户名</p>
+<pre><code class="php">if (isset($_SESSION[&quot;auth_user_info&quot;][&quot;authed&quot;]) and $_SESSION[&quot;auth_user_info&quot;][&quot;authed&quot;] === true )
+{
+    $login_user = $_SESSION[&quot;auth_user_info&quot;][&quot;auth_user&quot;];
+}</code></pre>
+<p>先判断了<code>isset($_SESSION[&quot;auth_user_info&quot;][&quot;authed&quot;])</code>是否存在</p>
+<p>接着判断<code>$_SESSION[&quot;auth_user_info&quot;][&quot;authed&quot;] === true</code>是否全等于true</p>
+<p>这两个判断条件是有问题的</p>
+<p>因为在<code>login.php</code>中<code>$_SESSION[&quot;auth_user_info&quot;][&quot;authed&quot;]</code>已经默认设置为<code>true</code></p>
+<p>所以该判断条件是为永真的，像当于直接就执行了<code>$login_user = $_SESSION[&quot;auth_user_info&quot;][&quot;auth_user&quot;];</code></p>
+<blockquote>
+<p>Ps：<code>$_SESSION[&quot;auth_user_info&quot;][&quot;auth_user&quot;]</code>是在<code>login.php</code>中由<code>$_GET[&quot;user&quot;]</code>可控参数获取的</p>
+</blockquote>
+<p>接着查看判断是否为超级管理员的函数</p>
+<p><code>admin_login_check()</code>：</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/6.png" srcset="/img/loading.gif" alt=""></p>
+<p>和前面函数判断一样，都是if判断出现了逻辑问题，并且用户名是可控的</p>
+<p>即：<code>$_GET[&quot;user&quot;]= admin</code>即为超级管理员权限</p>
+<pre><code class="php">// login.php
+header(&#39;Location: index.php&#39;);</code></pre>
+<p><code>login.php</code>的<code>check_free_loginbyscl()</code>执行到最后，跳转到了<code>index.php</code>页面</p>
+<ul>
+<li><code>ui/index.php</code></li>
+</ul>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/7.png" srcset="/img/loading.gif" alt=""></p>
+<p>查看获取用户权限的函数：<code>ui/platform.php</code>文件中</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/8.png" srcset="/img/loading.gif" alt=""></p>
+<p>发现该函数过度信任admin用户，只要是admin用户则一直为管理员</p>
+<p>接着查看<code>index.php</code>获取用户权限函数后的两个if语句</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/9.png" srcset="/img/loading.gif" alt=""></p>
+<p><code>$_SESSION[&quot;is_bbs_login&quot;]</code>在<code>login.php</code>中已经默认设置为<code>true</code></p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/OA%E5%92%8C%E6%B7%B1%E4%BF%A1%E6%9C%8D/10.png" srcset="/img/loading.gif" alt=""></p>
+<p>所以这个判断也是为永真状态</p>
+<p>也就是说无论什么用户，<code>$dev0ption[&#39;isAdmin&#39;]</code>一定是为true的</p>
+<p>并且<code>user_permission</code>设置为true，并带入到其他变量中</p>
+<p>不再往下分析，简单的说就是判断逻辑不严谨并且用户名参数可控导致了漏洞存在！</p>
+<hr>
+<h1 id="该文章仅为自己的看法，如有错误，请告知"><a href="#该文章仅为自己的看法，如有错误，请告知" class="headerlink" title="该文章仅为自己的看法，如有错误，请告知"></a>该文章仅为自己的看法，如有错误，请告知</h1>
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                      &nbsp;
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/">PHP</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">PHP代码审计</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2021/02/01/%E6%BC%8F%E6%B4%9E/CVE-2021-3156/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>CVE-2021-3156 Sudo提权漏洞复现</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2020/04/10/Web/%E9%9D%B6%E5%9C%BA/Me-and-My-Girlfriend-1/">
+                        <span>VulnHub:Me-and-My-Girlfriend-1</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "OA和深信服漏洞 简略分析&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

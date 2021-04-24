@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="fas fa-angle-down scroll-down-arrow"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5 z-depth-3" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Web/PHP%E5%B0%8F%E9%A9%AC%E5%9F%BA%E6%9C%AC%E7%BC%96%E5%86%99/">
+        <p class="h4 index-header">PHP简易小马编写</p>
+      </a>
+
+      <a href="/2019/08/18/Web/PHP%E5%B0%8F%E9%A9%AC%E5%9F%BA%E6%9C%AC%E7%BC%96%E5%86%99/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">大概页面一个是你需要保存的文件地址一个是你提交数据的一个提交数据的按钮
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;form action=&quot;&quot; method=&quot;POST&quot;&gt;
+    上传路径: &lt;input type=&#39;text&#39; name=&#39;path&#39; tyle=&quot;width:400px&quot; value=&quot;&lt;?php echo __DIR__.&quot;\\&quot;;?&gt;&quot; /&gt;&lt;br&gt;&gt;
+    提交内容&lt;br&gt;
+    &lt;textarea name=&#39;comm&#39; rows=&quot;10&quot; cols=&quot;54&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;write&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Web/NetCat%E8%AF%A6%E8%A7%A3%E5%8F%82%E6%95%B0/">
+        <p class="h4 index-header">NetCat命令详解</p>
+      </a>
+
+      <a href="/2019/08/18/Web/NetCat%E8%AF%A6%E8%A7%A3%E5%8F%82%E6%95%B0/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">Netcat下载下载地址：https://eternallybored.org/misc/netcat/
+Netcat 是非常简单易用的基于tcp/ip协议`(c/s模型)的”瑞士军刀”
+详解命令参数查看命令参数nc -h...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Web/Google%20hack%E8%AF%AD%E6%B3%95/">
+        <p class="h4 index-header">常用Google-hack语法</p>
+      </a>
+
+      <a href="/2019/08/18/Web/Google%20hack%E8%AF%AD%E6%B3%95/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">intitle 搜索网页标题中包含有特定字符的网页。例如“intitle: cbi”，这样网页标题中带有cbi的网页都会被搜索出来
+inurl 搜索包含有特定字符的URL。例如“inurl:cbi”，则可以找到带有cbi字符的URL
+intext 搜索网页正文内容中的指定字符。例如“intext:pdf”。这个语法类似我们平时在某些网站中使用的“文章内容搜索”功能...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Web/CSRF/">
+        <p class="h4 index-header">CSRF学习笔记</p>
+      </a>
+
+      <a href="/2019/08/18/Web/CSRF/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">简介 &amp; 原理CSRF（Cross-site request Forgery）是指跨站请求伪造，也被成为”One Click Attack”通常缩写（CSRF或XSRF）
+CSRF通过伪装成受信任用户请求信任的网站CSRF的攻击是建立在会话之上的！
+原理网站的cookie在浏览器中不会过期，只要不关闭浏览器或退出登录，在这期间，攻击者发送了构造后的CSRF脚本或者包含CSRF的脚本链接，可能会执行一些用户不想操作的事情！
+主要是你的浏览器正处于与此网站的会话之中，那么在你权限内可进行的操作都是合法的！
+也是就：攻击者盗用了你等身份，以你的身份进行一系列的操作...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Web/BurpSuite%E6%8A%93HTTPS%E6%95%B0%E6%8D%AE%E5%8C%85/">
+        <p class="h4 index-header">BurpSuite抓HTTPS数据包</p>
+      </a>
+
+      <a href="/2019/08/18/Web/BurpSuite%E6%8A%93HTTPS%E6%95%B0%E6%8D%AE%E5%8C%85/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">0x00 下载burp的内置证书开启BurpSuite
+访问http://burp,下载burp的内置证书
+下载并保存到桌面...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Web/">Web</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Hexo/%E4%BB%A3%E7%A0%81%E5%9D%97%E4%BC%98%E5%8C%96/">
+        <p class="h4 index-header">Next主题 代码段优化</p>
+      </a>
+
+      <a href="/2019/08/18/Hexo/%E4%BB%A3%E7%A0%81%E5%9D%97%E4%BC%98%E5%8C%96/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">代码块高亮颜色修改\source\css\_common\components\highlight\theme.styl
+if $highlight_theme == &quot;normal&quot;
+  $highlight-background   = #1b2426
+  $highlight-current-line = #efefef
+  $highlight-selection    = #d6d6d6
+  $highlight-foreground   = #b9bdb6
+  $highlight-comment      = #8e908c
+  $highlight-red          = #c82829
+  $highlight-orange       = #f5871f
+  $highlight-yellow       = #eab700
+  $highlight-green        = #009900
+  $highlight-aqua         = #5ce638
+  $highlight-blue         = #4271ae
+  $highlight-purple       = #8959a8
+  $highlight-gutter       = {
+    color: #869194,
+    bg-color: #373b41
+  }...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Hexo/">Hexo</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Hexo/hexo%E9%85%8D%E7%BD%AE/">
+        <p class="h4 index-header">Hexo--Next主题优化 设置</p>
+      </a>
+
+      <a href="/2019/08/18/Hexo/hexo%E9%85%8D%E7%BD%AE/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">该文章非原创,只是为了方便下次重装后修改0x00 添加头像 and 设置头像为圆形框1.设置头像  打开 themes/next 下的  _config.yml 文件  搜索 Sidebar Avatar 关键字,去掉avater前面的 #
+  # Sidebar Avatar
+  # in theme directory(source/images): /images/avatar.jpg
+  # in site  directory(source/uploads): /uploads/avatar.jpg
+  avatar: /images/blogLogo.png  并把本地图片放入 themes/next/source/images  修改文件名为: blogLogo.png...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Hexo/">Hexo</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2019/08/18/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
+        <p class="h4 index-header">Hexo + Github + 域名 搭建个人博客(不免费搭建)</p>
+      </a>
+
+      <a href="/2019/08/18/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">0x00 准备Git: https://git-scm.com/ #需要配置相应的环境变量Node: https://nodejs.org/zh-cn/  #需要配置相应的环境变量Github账号: https://github.com/域名:我这里准备的是阿里云的(.top/.net/.cc/.site/.club/.fun/.biz/.red 等等之类 都很便宜的)...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-08-18&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Hexo/">Hexo</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2018/10/11/%E7%A1%AC%E4%BB%B6/PM3%20%E5%88%B7%E5%9B%BA%E4%BB%B6%E9%97%AE%E9%A2%98/">
+        <p class="h4 index-header">PM3刷固件出问题</p>
+      </a>
+
+      <a href="/2018/10/11/%E7%A1%AC%E4%BB%B6/PM3%20%E5%88%B7%E5%9B%BA%E4%BB%B6%E9%97%AE%E9%A2%98/">
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">之前刷固件出了点问题，插在电脑上不识别解决方法：按住按钮重新拔插，然后再刷，刷完了断电，再松开按钮！
+</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2018-10-11&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/%E7%A1%AC%E4%BB%B6%E7%9B%B8%E5%85%B3/">硬件相关</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
+      <a href="/2018/06/21/Python/scrapy/%E5%88%9D%E8%AF%86scrapy/">
+        <p class="h4 index-header">初识scrapy框架</p>
+      </a>
+
+      <a href="/2018/06/21/Python/scrapy/%E5%88%9D%E8%AF%86scrapy/">
+        
+        
+          
+          
+        
+        <div class="index-excerpt" style="max-height: none;">
+          <div class="index-text mb-1">认识scrapyScrapy是为了爬取网址数据，提取结构性数据而编写的应用框架
+了解 scrapy 文件__init__初始化文件，主要写的是一份项目的初始化信息items.py数据容器文件，主要用来定义我们要获取的数据pipelines.py 管道文件，主要用来对items里面定义的数据进一步的加工与处理settings.py 设置文件，主要为爬虫项目的一些设置信息spiders文件夹放置的是爬虫项目中的爬虫部分相关的文件spiders文件夹下__init__初始化文件，主要对spiders进行初始化...</div>
+        </div>
+      </a>
+
+      <div class="index-btm">
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2018-06-21&nbsp;&nbsp;
+        
+        
+          <i class="iconfont icon-inbox"></i>
+          
+            <a href="/categories/Python/">Python</a>&nbsp;
+          &nbsp;
+        
+        
+      </div>
+    </div>
+  </div>
+
+
+
+  <nav aria-label="index posts navigation">
+    <span class="pagination pg-blue justify-content-center mt-5" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/5/"><i class="fas fa-angle-double-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fas fa-angle-double-right"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByClassName("page-number")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "学而为之&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

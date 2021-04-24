@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>Typecho 反序列化漏洞导致前台getshell漏洞复现 - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    981 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      3 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 八月 19日 星期一, 1:17 下午</p>
+            
+            <div class="markdown-body">
+              <h1 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h1><p>影响版本：v1.1 ~ 15.5.12 及以前的版本</p>
+<p>该漏洞发生在 install.php文件中,在参数 __typecho_config中我们可以传入一些构造数据<br>使程序进行一系列的操作，最后由<code>call_user_func()</code>函数 或者 是 <code>array_map()</code> 实现任意代码执行</p>
+<a id="more"></a>
+
+
+<h1 id="Code-分析"><a href="#Code-分析" class="headerlink" title="Code 分析"></a>Code 分析</h1><h2 id="文件-install-php"><a href="#文件-install-php" class="headerlink" title="文件: install.php"></a>文件: install.php</h2><p>![](/images/PHP/代码审计/typecho 反序列前台getshell/0.png)</p>
+<p>在这 我们发现 <code>__typecho_config</code> 参数是可控的</p>
+<p>经过 <code>base64 解码</code> 再进行反序列化 最终赋值给 <code>$config</code></p>
+<p>然后往下看到了 一个实例化类的操作 <code>new Typecho_Db</code></p>
+<p>这里我们想是否 能利用 这个实例化类的操作<br>触发一些魔法函数，再看这些魔法函数中是否有一些危险函数</p>
+<p>这里最有可能触发的 就是 <code>__construct()</code>这个魔法函数</p>
+<p><code>__construct()</code>触发条件：当一个对象被创建时调用的</p>
+<h2 id="文件-Db-php"><a href="#文件-Db-php" class="headerlink" title="文件: Db.php "></a>文件: Db.php </h2><p>我们在整个源码中搜索 <code>__construct()</code> 函数<br>发现 Db.php文件 调用了 __construct() 函数<br>![](/images\PHP\代码审计\typecho 反序列前台getshell\1.png)</p>
+<p>这里可以 看到并没有什么可以直接利用的危险函数</p>
+<p>可是，这里执行了一个字符串拼接的操作(字符串拼接一个变量的操作)</p>
+<p>adapterName 对应 config 里面的adapter</p>
+<p>如果我们用 <code>adapter</code> 来实例化一个类,PHP是弱类型的语音<br><code>把一个字符串和类拼接的时候会强制把类转换成字符串，这个时候就会触发 __toString 方法</code></p>
+<p><code>__toString()</code>的触发条件：把类当作字符串使用时触发</p>
+<h2 id="文件：Feed-php"><a href="#文件：Feed-php" class="headerlink" title="文件：Feed.php"></a>文件：Feed.php</h2><p>接下来就是搜索<code>__toString()</code>函数</p>
+<p>在Feed.php文件中发现了__toString()函数<br><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/2.png" srcset="/img/loading.gif" alt=""></p>
+<p>在这函数中 并没有发现可以直接利用的函数或参数</p>
+<p>于是对代码进行分析</p>
+<p>发现 <code>$item</code> 是 <code>$this -&gt; _items</code> 的 <code>foreach 循环</code>出来的</p>
+<p>并且 <code>$this -&gt; _items</code> 是Typecho_Feed类 的 一个<code>private属性</code></p>
+<p>在这里如果可以将 <code>$item[&#39;author&#39;] 定义为一个类</code></p>
+<p><code>而该类中未定义screenName变量</code></p>
+<p>当执行到 290行 <code>$item[&#39;author&#39;] -&gt; screenName</code> 时</p>
+<p>则会自动调用<code>__get()</code>魔法函数</p>
+<p><code>__get()</code>触发条件：用于从不可访问的属性读取数据</p>
+<h2 id="文件：Request-php"><a href="#文件：Request-php" class="headerlink" title="文件：Request.php"></a>文件：Request.php</h2><p>接下来我们就 需要 寻找一个类中有 __get()魔法函数，并且这个函数中有可利用的危险函数</p>
+<p>发现 Db.php文件 调用了 __get() 函数</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/3.png" srcset="/img/loading.gif" alt=""></p>
+<p>发现 __get()函数 进行了一系列的操作之后 进入<code>_applyFilter</code>函数</p>
+<p>发现 这个函数中 调用了两个可以执行任意代码危险函数<br><code>array_map()</code><br><code>call_user_func()</code></p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/4.png" srcset="/img/loading.gif" alt=""></p>
+<p>接下来我们 看下危险代码的函数的参数是否 可控</p>
+<p>发现<code>_filter</code> 参数，在文件刚开始就定义了<br><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/5.png" srcset="/img/loading.gif" alt=""><br>说明这是可控的</p>
+<p>而 <code>$value</code> 参数是 通过<code>_params</code>获取的 然后通过 __get()方法一系列操作之后 传入<code>_applyFilter</code>函数的<br>于是我们搜索<code>_params</code>,发现也是可控的<br><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/6.png" srcset="/img/loading.gif" alt=""><br><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/7.png" srcset="/img/loading.gif" alt=""></p>
+<h2 id="整个过程"><a href="#整个过程" class="headerlink" title="整个过程"></a>整个过程</h2><p>数据的输入点为 install.php 文件中的参数 _typecho_config，从外部读入我们构造的序列化数据</p>
+<p>是程序会进入类的 Typecho_Db类的 __ocnstruct()函数,然后进入 Typecho_Feed类的 _toString()函数</p>
+<p>再依次进入 Typecho_Request类的 __get() ==&gt; get() ==&gt; _applyFilter()函数</p>
+<p>最后由 call_user_func() 或 array_map() 函数实现任意代码执行</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/8.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h1><h2 id="漏洞复现条件"><a href="#漏洞复现条件" class="headerlink" title="漏洞复现条件"></a>漏洞复现条件</h2><p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/9.png" srcset="/img/loading.gif" alt=""></p>
+<p>1.在 install.php 文件开头声明了 必须要有 <code>finish</code> 参数才可以进行下一步操作<br>2.这里拦截了跨站请求，说明<code>referer</code>需要是本站才行</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/10.png" srcset="/img/loading.gif" alt=""><br>在install.php 调用的Typecho_Cookie 这里类中发现不仅可以cookie访问，还可以post访问</p>
+<p>这里我就不写poc了，因为我这里只是对漏洞进行复现，学习思路，做下笔记<br>就直接进行漏洞复现了</p>
+<p><img src="/images/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/typecho%E5%8F%8D%E5%BA%8F%E5%88%97%E5%89%8D%E5%8F%B0getshell/11.png" srcset="/img/loading.gif" alt=""></p>
+<h1 id="文章说明：该文章是-看漏洞银行视频，作的笔记，学习思路"><a href="#文章说明：该文章是-看漏洞银行视频，作的笔记，学习思路" class="headerlink" title="文章说明：该文章是 看漏洞银行视频，作的笔记，学习思路"></a>文章说明：该文章是 看漏洞银行视频，作的笔记，学习思路</h1>
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                      &nbsp;
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/">PHP</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">PHP代码审计</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/Linux/kali/kali%E5%AE%89%E8%A3%85vmtools/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>kali安装vmtools</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2019/08/19/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/PHP/vauditdemo%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">
+                        <span>vauditdemo二次注入 复现</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Typecho 反序列化漏洞导致前台getshell漏洞复现&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

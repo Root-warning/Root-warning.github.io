@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="只因不值得">
+  <meta name="keywords" content="">
+  <title>Hexo + Github + 域名 搭建个人博客(不免费搭建) - 只因不值得</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/mdbootstrap/4.13.0/css/mdb.min.css" />
+<link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/3.0.1/github-markdown.min.css" />
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+
+
+
+  <link  rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css" />
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link defer rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+<!-- 自定义样式保持在最底部 -->
+
+  
+<link rel="stylesheet" href="/css/custom.css">
+
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>只因不值得</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">首页</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">归档</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">分类</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">关于</a>
+          </li>
+        
+          
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/links/">友链</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+
+              <p class="mt-1">
+                
+                  
+                  <span class="post-meta">
+                    <i class="far fa-chart-bar"></i>
+                    995 字
+                  </span>
+                
+
+                
+                  
+                  <span class="post-meta">
+                      <i class="far fa-clock"></i>
+                      3 分钟
+                  </span>
+                
+
+                
+              </p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5 z-depth-3" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+              <p
+                class="note note-warning">本文最后更新于：2019 , 六月 9日 星期日, 10:51 上午</p>
+            
+            <div class="markdown-body">
+              <h3 id="0x00-准备"><a href="#0x00-准备" class="headerlink" title="0x00 准备"></a>0x00 准备</h3><p>Git: <code>https://git-scm.com/</code> #需要配置相应的环境变量<br>Node: <code>https://nodejs.org/zh-cn/</code>  #需要配置相应的环境变量<br>Github账号: <code>https://github.com/</code><br>域名:我这里准备的是阿里云的(.top/.net/.cc/.site/.club/.fun/.biz/.red 等等之类 都很便宜的)</p>
+<a id="more"></a>
+
+<h3 id="0x01-安装Hexo"><a href="#0x01-安装Hexo" class="headerlink" title="0x01 安装Hexo"></a>0x01 安装Hexo</h3><p>首先在本地磁盘中建立一个文件夹(名字随意),用于本地保存和测试</p>
+<p>在你创建的文件夹中 右键 Git bash Here<br>Git bash Here(git命令行模式)安装Hexo<br>命令行中输入<code>npm install hexo -g</code><br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/2.png" srcset="/img/loading.gif" alt=""></p>
+<p>输入<code>hexo -v</code>,检查hexo是否安装成功<br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/11.png" srcset="/img/loading.gif" alt=""></p>
+<p>安装好之后,对hexo进行初始胡:<code>hexo init</code><br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/3.png" srcset="/img/loading.gif" alt=""></p>
+<p>然后输入<code>npm install</code></p>
+<p>生成静态页面<code>hexo g</code>(hexo generate的简写)<br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/4.png" srcset="/img/loading.gif" alt=""></p>
+<p>本地启动<code>hexo s</code><br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/5.png" srcset="/img/loading.gif" alt=""></p>
+<p>访问<code>127.0.0.1:4000</code>就可以看到你的个人博客初步建成了<br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/6.png" srcset="/img/loading.gif" alt=""></p>
+<h3 id="0x02-上传-Github"><a href="#0x02-上传-Github" class="headerlink" title="0x02 上传 Github"></a>0x02 上传 Github</h3><h4 id="在github创建项目"><a href="#在github创建项目" class="headerlink" title="在github创建项目"></a>在github创建项目</h4><p>登录注册之后的github账号<br>在github上面创建项目<br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/7.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/8.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/9.png" srcset="/img/loading.gif" alt=""></p>
+<p>注意:这里的名字必须和前面的名字相同,后缀一定是.github.io</p>
+<h4 id="添加ssh-key-到github中"><a href="#添加ssh-key-到github中" class="headerlink" title="添加ssh key 到github中"></a>添加ssh key 到github中</h4><p>生成SSH  keys</p>
+<blockquote>
+<p>ssh-keygen -t rsa -C “Github的注册邮箱地址”<br>一路回车即可,待秘钥生成完毕，会得到两个文件id_rsa和id_rsa.pub</p>
+</blockquote>
+<p>通过<code>cd ~/.ssh/</code>达到ssh保存的位置<br>查看id_rsa.pub文件中的ssh key，并复制到github中</p>
+<blockquote>
+<p>cat id_rsa.pub</p>
+</blockquote>
+<p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/12.png" srcset="/img/loading.gif" alt=""></p>
+<p>进入自己刚注册的Github<br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/13.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/14.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/15.png" srcset="/img/loading.gif" alt=""></p>
+<p>接下来测试SSH是否配好,输入下面的指令,会提示你输入yes/no你输入yes就行，这样ssh就配好</p>
+<blockquote>
+<p>ssh -T <a href="mailto:git@github.com">git@github.com</a><br>第一次 可能会让你输入用户和密码 就是你注册github的用户和密码</p>
+</blockquote>
+<p>此时你还需配置</p>
+<blockquote>
+<p>git config –global user.name “liuxianan” // 你的github用户名，非昵称<br>git config –global user.email  “<a href="mailto:xxx@qq.com">xxx@qq.com</a>“ //填写你的github注册邮箱</p>
+</blockquote>
+<p>问题：假如ssh-key配置失败，那么只要以下步骤就能完全解决</p>
+<blockquote>
+<p>首先，清除所有的key-pair<br>ssh-add -D<br>rm -r ~/.ssh<br>删除你在github中的public-key<br>然后重复一次 “添加ssh key 到github中的” 操作</p>
+</blockquote>
+<h4 id="上传至github项目中"><a href="#上传至github项目中" class="headerlink" title="上传至github项目中"></a>上传至github项目中</h4><p>修改博客根目录下的 _config.yml,修改 Deployment 部分</p>
+<pre><code># Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  #repository: 此处为你的github链接,不懂请看下图
+  repository: https://github.com/Root-warning/Root-warning.github.io.git
+  branch: master</code></pre><p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/10.png" srcset="/img/loading.gif" alt=""></p>
+<p>弄好之后就可以开始部署(上传至github了)<code>hexo d</code></p>
+<p>输入hexo d可能会报ERROR Deployer not fount： git错误<br>这是因为没有安装hexo-deployer-git这个模块，导致Git不能识别该命令，输入下面指令安装该模块即可。</p>
+<blockquote>
+<p>npm install hexo-deployer-git –save</p>
+</blockquote>
+<p>等模块安装完再次执行<code>hexo d</code><br>会有弹出框，输入自己之前注册的github账号进行登录即可</p>
+<p>稍等一会,成功之后，在浏览器中输入 你的github用户名.github.io<br>这样就可以访问你的博客了</p>
+<p>附录:<br>常用指令:</p>
+<pre><code>hexo g  #完整命令为hexo generate,用于生成静态文件
+hexo s  #完整命令为hexo server,用于启动服务器，主要用来本地预览
+hexo d  #完整命令为hexo deploy,用于将本地文件发布到github上
+hexo h  #完整命令为hexo new,用于新建一篇文章</code></pre><h3 id="0x03-绑定域名"><a href="#0x03-绑定域名" class="headerlink" title="0x03 绑定域名"></a>0x03 绑定域名</h3><p>在这里我就不写怎么购买域名了，个人感觉很简单</p>
+<p>在博客目录下的<code>source</code>目录新建<code>CNAME</code>文件</p>
+<blockquote>
+<p><a href="http://www.sariel.top" target="_blank" rel="noopener">www.sariel.top</a></p>
+</blockquote>
+<p>上面的是我的域名<br><code>CNAME</code>文件内就是,你所购买的域名,不需要任何的<code>http://</code><br>注意<code>CNAME</code>文件名一定要大写</p>
+<p>上传<code>hexo d</code></p>
+<p>接下来就是解析了,最新的规定 <code>你购买的域名一定要实名认证否则是解析不了</code><br><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/16.png" srcset="/img/loading.gif" alt=""></p>
+<p><img src="/images/Hexo/hexo+github%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/17.png" srcset="/img/loading.gif" alt=""></p>
+<p>添加这两条就够了,记录值就是 你github上创建的项目 github用户名.github.io 这样格式的访问地址</p>
+<p>这样之后，稍等几分钟，主要看各地运行商刷新 DNS的时间吧</p>
+<p>输入你的 域名就可访问了</p>
+
+            </div>
+            <hr>
+            <div>
+              <p>
+                
+                  <span>
+                <i class="iconfont icon-inbox"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Hexo/">Hexo</a>
+                      &nbsp;
+                    
+                  </span>&nbsp;&nbsp;
+                
+                
+                  <span>
+                <i class="iconfont icon-tag"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Hexo/">Hexo</a>
+                    
+                  </span>
+                
+              </p>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" target="_blank" rel="nofollow noopener noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-12 col-md-6">
+                    
+                      <a href="/2019/08/18/Hexo/hexo%E9%85%8D%E7%BD%AE/">
+                        <i class="fa fa-chevron-left"></i>
+                        <span>Hexo--Next主题优化 设置</span>
+                      </a>
+                    
+                  </div>
+                  <div class="post-next col-12 col-md-6">
+                    
+                      <a href="/2018/10/11/%E7%A1%AC%E4%BB%B6/PM3%20%E5%88%B7%E5%9B%BA%E4%BB%B6%E9%97%AE%E9%A2%98/">
+                        <span>PM3刷固件出问题</span>
+                        <i class="fa fa-chevron-right"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc-start"></div>
+<div id="toc">
+  <p class="h5"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a rel="nofollow noopener"><b>2018</b></a>
+      <i class="fab fa-angular"></i>
+      <a rel="nofollow noopener"> <b>只因不值得</b></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="https://cdn.staticfile.org/mdbootstrap/4.13.0/js/mdb.min.js" ></script>
+<script  src="/js/main.js" ></script>
+
+
+  <script  src="/js/lazyload.js" ></script>
+
+
+
+  
+  <script  src="https://cdn.staticfile.org/tocbot/4.10.0/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var navHeight = $('#navbar').height();
+      var toc = $('#toc');
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+      var tocLimMax = 2 * boardTop + boardCtn.height();
+
+      $(window).scroll(function () {
+        var tocLimMin = $('#toc-start').offset().top - navHeight;
+        var scroH = document.body.scrollTop + document.documentElement.scrollTop;
+
+        if (tocLimMin <= scroH && scroH <= tocLimMax) {
+          toc.css({
+            'display': 'block',
+            'position': 'fixed',
+            'top': navHeight,
+          });
+        } else if (scroH <= tocLimMin) {
+          toc.css({
+            'position': '',
+            'top': '',
+          });
+        } else if (scroH > tocLimMax) {
+          toc.css('display', 'none');
+        }
+      });
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '.post-content',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc > p').css('visibility', 'visible');
+      }
+      var offset = boardCtn.css('margin-right')
+      $('#toc-ctn').css({
+        'right': offset
+      })
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+<!-- Plugins -->
+
+
+
+  <script  src="https://cdn.staticfile.org/prettify/188.0.0/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint  ');
+      prettyPrint();
+    })
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Hexo + Github + 域名 搭建个人博客(不免费搭建)&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script defer src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <script>
+    $("#post img:not(.no-zoom img, img[no-zoom])").each(
+      function () {
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "images");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
